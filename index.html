@@ -109,12 +109,38 @@
             <div id="releases"></div>
         </div>
 
-        <!-- 푸터 -->
-        <footer class="mt-24 text-center text-sm text-stone-400">
-            <a href="https://github.com/qwerfunch/logcat-on-releases/releases" target="_blank" rel="noopener"
-                class="hover:text-[#E67E22] transition-colors inline-flex items-center gap-1.5">
-                <i class="ph-bold ph-github-logo"></i> GitHub Releases
-            </a>
+        <!-- 푸터 — 개발자 정보 -->
+        <footer class="mt-24 w-full flex flex-col items-center">
+            <div class="flex items-center w-full mb-10">
+                <div class="h-px bg-stone-200 flex-1"></div>
+                <i class="ph-fill ph-paw-print text-stone-300 px-4 text-lg"></i>
+                <div class="h-px bg-stone-200 flex-1"></div>
+            </div>
+            <div class="flex items-center gap-4 bg-white/70 border border-stone-200/70 rounded-2xl pl-5 pr-7 py-4 shadow-[0_4px_20px_rgba(230,126,34,0.06)]">
+                <img src="https://github.com/qwerfunch.png?size=96" alt="qwerfunch" loading="lazy"
+                    class="w-12 h-12 rounded-full border-2 border-[#E67E22]/30">
+                <div class="text-left">
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-black text-stone-900">qwerfunch</span>
+                        <span data-i18n="footer.role" class="text-xs text-stone-400"></span>
+                    </div>
+                    <div class="flex items-center gap-4 mt-1.5 text-sm">
+                        <a href="mailto:qwerfunch@gmail.com"
+                            class="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#E67E22] transition-colors">
+                            <i class="ph-bold ph-envelope-simple"></i>qwerfunch@gmail.com
+                        </a>
+                        <a href="https://github.com/qwerfunch" target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#E67E22] transition-colors">
+                            <i class="ph-bold ph-github-logo"></i>GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-6 text-xs text-stone-400">
+                © 2026 LogcatOn ·
+                <a href="https://github.com/qwerfunch/logcat-on-releases/releases" target="_blank" rel="noopener"
+                    class="hover:text-[#E67E22] transition-colors">GitHub Releases</a>
+            </p>
         </footer>
     </main>
 

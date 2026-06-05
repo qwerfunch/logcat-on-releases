@@ -31,6 +31,7 @@ export const STRINGS = {
     'empty.body': '첫 공개 릴리즈를 준비하고 있어요. 곧 다운로드를 제공할게요!',
     'video.unmute': '소리 켜기',
     'video.mute': '소리 끄기',
+    'footer.role': 'LogcatOn 만든 사람',
   },
   en: {
     'meta.title': 'LogcatOn — Android Logcat Viewer',
@@ -59,6 +60,7 @@ export const STRINGS = {
     'empty.body': "We're preparing the first public release. Downloads will be here soon!",
     'video.unmute': 'Unmute',
     'video.mute': 'Mute',
+    'footer.role': 'Maker of LogcatOn',
   },
 };
 
