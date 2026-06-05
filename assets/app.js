@@ -257,9 +257,10 @@ function setupVideo() {
   if (!video) return;
   video.addEventListener('ended', () => {
     setTimeout(() => {
-      // 페이지가 안 보이거나 창 포커스가 없으면 재시작하지 않는다 — 숨김 상태
-      // 재생이 자동 PiP 를 유발할 수 있음. 복귀 시 resume 이 재개 담당.
-      if (document.hidden || !document.hasFocus()) return;
+      // 페이지가 안 보이거나 포커스가 없거나 PiP 창이 떠 있으면 재시작하지
+      // 않는다 — 숨김 상태 재생이 자동 PiP 를 유발할 수 있음. 복귀 시
+      // scheduleResume 이 재개 담당.
+      if (document.hidden || !document.hasFocus() || document.pictureInPictureElement) return;
       video.currentTime = 0;
       video.play();
     }, 3000);
@@ -268,25 +269,50 @@ function setupVideo() {
 
   // 페이지가 보일 때만 재생 — 탭/스페이스 이동 시 자동 PiP(영상 따라오기) 방지.
   // disablepictureinpicture 속성(index.html)과 다층 방어 + 백그라운드 리소스 절약.
-  const resume = () => {
-    if (document.hidden) return;
-    if (video.ended) video.currentTime = 0;
-    video.play()?.catch(() => {});
+  //
+  // 빠른 스페이스 전환 레이스 대응:
+  //   • 멈춤(halt)은 즉시, 재개(resume)는 300ms 디바운스 — 전환이 끝나기 전에
+  //     play() 가 다시 걸려 Arc 가 재차 PiP 를 잡는 악순환을 끊는다.
+  //   • Arc 의 PiP 결정은 브라우저 프로세스라 페이지가 100% 선제 차단할 수는
+  //     없음 — 그래서 뚫리면 exitPip 재시도 루프로 즉시 닫는다(아래).
+  let resumeTimer = 0;
+  const scheduleResume = () => {
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => {
+      if (document.hidden || !document.hasFocus() || document.pictureInPictureElement) return;
+      if (video.ended) video.currentTime = 0;
+      video.play()?.catch(() => {});
+    }, 300);
+  };
+  const halt = () => {
+    clearTimeout(resumeTimer);
+    video.pause();
   };
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) video.pause();
-    else resume();
+    if (document.hidden) halt();
+    else scheduleResume();
   });
   // Arc 등 일부 브라우저는 macOS 스페이스 이동 시 창 가림(occlusion)을
   // visibilitychange 로 안 알려준다 — 창 포커스 신호로도 멈춘다.
-  window.addEventListener('blur', () => video.pause());
-  window.addEventListener('focus', resume);
-  // 자동 PiP 가 disablepictureinpicture 를 무시하는 경우의 최후 방어:
-  // PiP 진입 즉시 탈출해 미니 플레이어를 닫는다.
-  video.addEventListener('enterpictureinpicture', () => {
-    video.pause();
-    document.exitPictureInPicture?.()?.catch(() => {});
-  });
+  window.addEventListener('blur', halt);
+  window.addEventListener('focus', scheduleResume);
+
+  // 자동 PiP 가 disablepictureinpicture 를 무시하고 뚫은 경우의 최후 방어.
+  // enterpictureinpicture 시점에 pictureInPictureElement 가 아직 미설정인
+  // 레이스가 있어 1회 exit 는 조용히 실패하고 좀비 PiP 창이 남는다 —
+  // 120ms 간격으로 닫힐 때까지 재시도(최대 6회).
+  const exitPip = (attempt = 0) => {
+    if (attempt > 6) return;
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture().catch(() => {});
+    }
+    setTimeout(() => {
+      if (document.pictureInPictureElement) exitPip(attempt + 1);
+    }, 120);
+  };
+  video.addEventListener('enterpictureinpicture', () => exitPip());
+  // PiP 가 닫힌 뒤 페이지가 보이는 상태면 정상 재생 복귀
+  video.addEventListener('leavepictureinpicture', scheduleResume);
 
   // 소리 토글 — 자동재생은 음소거 필수(브라우저 정책)이므로 기본 muted,
   // 버튼은 영상 내 워터마크를 덮는 위치(index.html)에 항상 표시된다.
