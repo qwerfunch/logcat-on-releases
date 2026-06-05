@@ -56,6 +56,11 @@
         <!-- 비디오 영역 -->
         <div class="w-full rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(230,126,34,0.12)] border border-stone-200/50 mb-20 relative aspect-video flex items-center justify-center bg-slate-900">
             <video id="demoVideo" src="video/logcat-on.mp4" poster="assets/poster.jpg" class="w-full h-full object-cover" autoplay muted playsinline></video>
+            <!-- 소리 토글 — 영상 워터마크(✦, 중심 92.7%/86.8%) 위를 정확히 덮는 위치 -->
+            <button id="soundToggle" style="left: 92.7%; top: 86.8%;"
+                class="absolute -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-slate-900/80 backdrop-blur-sm border border-white/20 text-white/90 hover:text-white flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                <i id="soundToggleIcon" class="ph-fill ph-speaker-simple-slash text-xl"></i>
+            </button>
         </div>
 
         <!-- 설명 영역 -->

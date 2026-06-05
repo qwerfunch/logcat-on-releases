@@ -62,6 +62,7 @@ function applyLang() {
   for (const el of document.querySelectorAll('[data-i18n]')) {
     el.innerHTML = t(el.dataset.i18n); // 사전은 이 레포 코드 — 신뢰 경계 안
   }
+  syncSoundToggle();
   // 날짜·종류 라벨 등 언어 의존 동적 콘텐츠는 통째로 다시 렌더
   if (state.data) render();
 }
@@ -249,6 +250,8 @@ async function loadData() {
   return { releases: [] }; // 데이터 없음 → empty state
 }
 
+let syncSoundToggle = () => {}; // applyLang 에서 라벨 재적용용
+
 function setupVideo() {
   const video = document.getElementById('demoVideo');
   if (!video) return;
@@ -259,6 +262,26 @@ function setupVideo() {
     }, 3000);
   });
   video.play()?.catch(() => {/* 자동재생 차단 — poster 유지 */});
+
+  // 소리 토글 — 자동재생은 음소거 필수(브라우저 정책)이므로 기본 muted,
+  // 버튼은 영상 내 워터마크를 덮는 위치(index.html)에 항상 표시된다.
+  const btn = document.getElementById('soundToggle');
+  const icon = document.getElementById('soundToggleIcon');
+  if (!btn || !icon) return;
+  syncSoundToggle = () => {
+    icon.className = video.muted
+      ? 'ph-fill ph-speaker-simple-slash text-xl'
+      : 'ph-fill ph-speaker-simple-high text-xl';
+    const label = t(video.muted ? 'video.unmute' : 'video.mute');
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+  };
+  btn.addEventListener('click', () => {
+    video.muted = !video.muted;
+    if (!video.muted && video.paused) video.play()?.catch(() => {});
+    syncSoundToggle();
+  });
+  syncSoundToggle();
 }
 
 document.getElementById('langToggle').addEventListener('click', () => {
