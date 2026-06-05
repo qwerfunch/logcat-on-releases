@@ -255,11 +255,46 @@ let syncSoundToggle = () => {}; // applyLang 에서 라벨 재적용용
 function setupVideo() {
   const video = document.getElementById('demoVideo');
   if (!video) return;
+
+  // canvas 미러 — 화면에는 canvas 만 보이고 실제 video 는 display:none.
+  // 브라우저 자동 PiP(Arc 미니 플레이어)는 "보이는 비디오"만 낚아채므로
+  // 대상 자체가 사라진다. 이벤트 기반 PiP 방어(exit 재시도 등)는 브라우저
+  // 프로세스와의 레이스 + Arc 유령 창 버그를 피할 수 없어 이 방식으로 대체.
+  // (숨긴 video 도 재생·디코드·오디오는 정상 — WebGL 비디오 텍스처와 동일 패턴)
+  const canvas = document.getElementById('demoCanvas');
+  const ctx = canvas ? canvas.getContext('2d') : null;
+  let firstFrameDrawn = false;
+  const draw = () => {
+    if (!ctx) return;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    firstFrameDrawn = true;
+  };
+  if (ctx) {
+    // 첫 프레임이 나오기 전까지는 poster 를 canvas 에 그려둔다
+    const poster = new Image();
+    poster.onload = () => {
+      if (!firstFrameDrawn) ctx.drawImage(poster, 0, 0, canvas.width, canvas.height);
+    };
+    poster.src = 'assets/poster.jpg';
+    // 프레임 펌프: 새 비디오 프레임마다 canvas 로 복사
+    if (typeof video.requestVideoFrameCallback === 'function') {
+      const pump = () => {
+        draw();
+        video.requestVideoFrameCallback(pump);
+      };
+      video.requestVideoFrameCallback(pump);
+    } else {
+      const pump = () => {
+        if (!video.paused && !video.ended) draw();
+        requestAnimationFrame(pump);
+      };
+      requestAnimationFrame(pump);
+    }
+  }
+
   video.addEventListener('ended', () => {
     setTimeout(() => {
-      // 페이지가 안 보이거나 PiP 창이 떠 있으면 재시작하지 않는다 — 숨김
-      // 상태 재생이 자동 PiP 를 유발할 수 있음. 복귀 시 scheduleResume 담당.
-      if (document.hidden || document.pictureInPictureElement) return;
+      if (document.hidden) return; // 복귀 시 scheduleResume 이 재개 담당
       video.currentTime = 0;
       video.play();
     }, 3000);
@@ -267,55 +302,27 @@ function setupVideo() {
   video.play()?.catch(() => {/* 자동재생 차단 — poster 유지 */});
 
   // 정책: "보이면 재생, 안 보이면 정지" (포커스는 무관 — 같은 화면에서 다른
-  // 윈도우를 포커스해도 영상은 계속 돈다). 탭 전환·최소화·스페이스 이동으로
-  // 페이지가 가려질 때만 멈춰 자동 PiP(영상 따라오기)를 방지한다.
-  //
-  // 빠른 스페이스 전환 레이스 대응:
-  //   • 멈춤(halt)은 즉시, 재개(resume)는 300ms 디바운스 — 전환이 끝나기 전에
-  //     play() 가 다시 걸려 Arc 가 재차 PiP 를 잡는 악순환을 끊는다.
-  //   • Arc 의 PiP 결정은 브라우저 프로세스라 페이지가 100% 선제 차단할 수는
-  //     없음 — 뚫리면 exitPip 재시도 루프로 즉시 닫는다(아래).
+  // 윈도우를 포커스해도 영상은 계속 돈다). 백그라운드 디코드 절약 목적.
+  // 멈춤은 즉시, 재개는 300ms 디바운스로 빠른 탭/스페이스 전환에도 안정.
   let resumeTimer = 0;
   const scheduleResume = () => {
     clearTimeout(resumeTimer);
     resumeTimer = setTimeout(() => {
-      if (document.hidden || document.pictureInPictureElement) return;
+      if (document.hidden) return;
       if (video.ended) video.currentTime = 0;
       video.play()?.catch(() => {});
     }, 300);
   };
-  const halt = () => {
-    clearTimeout(resumeTimer);
-    video.pause();
-  };
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) halt();
-    else scheduleResume();
-  });
-  // Arc 가 스페이스 복귀를 visibilitychange 로 안 알리는 경우의 재개 경로
-  window.addEventListener('focus', scheduleResume);
-
-  // 자동 PiP 가 disablepictureinpicture 를 무시하고 뚫은 경우의 최후 방어.
-  // enterpictureinpicture 시점에 pictureInPictureElement 가 아직 미설정인
-  // 레이스가 있어 1회 exit 는 조용히 실패하고 좀비 PiP 창이 남는다 —
-  // 120ms 간격으로 닫힐 때까지 재시도(최대 6회).
-  const exitPip = (attempt = 0) => {
-    if (attempt > 6) return;
-    if (document.pictureInPictureElement) {
-      document.exitPictureInPicture().catch(() => {});
+    if (document.hidden) {
+      clearTimeout(resumeTimer);
+      video.pause();
+    } else {
+      scheduleResume();
     }
-    setTimeout(() => {
-      if (document.pictureInPictureElement) exitPip(attempt + 1);
-    }, 120);
-  };
-  video.addEventListener('enterpictureinpicture', () => {
-    // PiP 가 떴다는 건 페이지가 실제로 화면에서 사라졌다는 뜻 — 정지시켜
-    // 재낚아채기 루프를 끊고, 닫힐 때까지 exit 재시도.
-    halt();
-    exitPip();
   });
-  // PiP 가 닫힌 뒤 페이지가 보이는 상태면 정상 재생 복귀
-  video.addEventListener('leavepictureinpicture', scheduleResume);
+  // 가림 감지(visibilitychange)가 안 오는 브라우저의 복귀 경로
+  window.addEventListener('focus', scheduleResume);
 
   // 소리 토글 — 자동재생은 음소거 필수(브라우저 정책)이므로 기본 muted,
   // 버튼은 영상 내 워터마크를 덮는 위치(index.html)에 항상 표시된다.
