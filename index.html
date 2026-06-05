@@ -3,16 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogcatOn — 안드로이드 로그캣 뷰어</title>
-    <meta name="description" content="안드로이드 스튜디오 로그캣이 불편해서 직접 만든 데스크톱 로그 뷰어. 무료 다운로드.">
+    <title>LogcatOn — 안드로이드 로그캣 뷰어 · macOS/Windows/Linux 무료</title>
+    <meta name="description" content="초고속 멀티플랫폼 안드로이드 로그캣 뷰어. 패키지 선택만으로 PID/TID 자동 필터, 32+ 시그널 강조(Crash·ANR·메모리), 스마트 검색·북마크, 1M+ 라인에서도 60fps. macOS·Windows·Linux 무료 다운로드.">
+    <meta name="keywords" content="logcat, 로그캣, 안드로이드 로그캣 뷰어, android logcat viewer, adb, logcat gui, android log viewer, 안드로이드 개발, android debugging, tauri">
+    <meta name="author" content="qwerfunch">
+    <meta name="theme-color" content="#FEFBF0">
 
-    <!-- Open Graph / Twitter -->
-    <meta property="og:title" content="LogcatOn — Android Logcat Viewer">
-    <meta property="og:description" content="A fast desktop Android logcat viewer. Free download for macOS / Windows / Linux.">
+    <!-- 검색엔진: 표준 URL + 언어별 대체 URL (en 은 ?lang=en, app.js 가 파라미터 인식) -->
+    <link rel="canonical" href="https://qwerfunch.github.io/logcat-on-releases/">
+    <link rel="alternate" hreflang="ko" href="https://qwerfunch.github.io/logcat-on-releases/">
+    <link rel="alternate" hreflang="en" href="https://qwerfunch.github.io/logcat-on-releases/?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://qwerfunch.github.io/logcat-on-releases/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="LogcatOn — Android Logcat Viewer for macOS, Windows & Linux">
+    <meta property="og:description" content="Blazing-fast Android logcat viewer. Auto package/PID filtering, 32+ signal highlights (crash·ANR·memory), smart search & bookmarks, 60fps at 1M+ lines. Free download.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qwerfunch.github.io/logcat-on-releases/">
+    <meta property="og:site_name" content="LogcatOn">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale:alternate" content="en_US">
     <meta property="og:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="720">
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LogcatOn — Android Logcat Viewer (Free)">
+    <meta name="twitter:description" content="Blazing-fast Android logcat viewer for macOS/Windows/Linux. Auto PID filtering, 32+ signal highlights, 60fps at 1M+ lines.">
+    <meta name="twitter:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
+
+    <!-- 구조화 데이터 — 빌드(prerender.mjs)가 softwareVersion/dateModified 를 주입 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "LogcatOn",
+      "description": "Blazing-fast multi-platform Android logcat viewer. Auto package/PID filtering, 32+ built-in signal highlights (crash, ANR, native fault, memory), smart search, bookmarks, canvas-based rendering at 60fps with 1M+ lines.",
+      "url": "https://qwerfunch.github.io/logcat-on-releases/",
+      "image": "https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "macOS, Windows, Linux",
+      "inLanguage": ["ko", "en"],
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "qwerfunch", "url": "https://github.com/qwerfunch" },
+      "downloadUrl": "https://github.com/qwerfunch/logcat-on-releases/releases"
+    }
+    </script>
 
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">

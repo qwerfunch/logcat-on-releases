@@ -39,8 +39,13 @@ jobs:
 
       - name: Assemble dist
         run: |
-          cp index.html .nojekyll dist/
+          cp index.html .nojekyll robots.txt dist/
           cp -r assets video dist/
+
+      # SEO: 릴리즈 노트를 정적 HTML 로 베이크(JS 미실행 크롤러 대응) +
+      # JSON-LD 버전 주입 + sitemap.xml 생성
+      - name: Prerender for SEO
+        run: node scripts/prerender.mjs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

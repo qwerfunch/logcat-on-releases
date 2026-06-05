@@ -13,6 +13,9 @@ function t(key) {
 }
 
 function detectLang() {
+  // 우선순위: URL ?lang= (hreflang 검색 유입) → 저장된 선택 → OS 언어
+  const urlLang = new URLSearchParams(window.location.search).get('lang');
+  if (urlLang === 'ko' || urlLang === 'en') return urlLang;
   const saved = localStorage.getItem(LANG_KEY);
   if (saved === 'ko' || saved === 'en') return saved;
   return (navigator.language || 'en').toLowerCase().startsWith('ko') ? 'ko' : 'en';
@@ -54,11 +57,25 @@ function formatDate(iso) {
 
 // ----------------------------------------------------------------- i18n 적용
 
+const SITE_BASE = 'https://qwerfunch.github.io/logcat-on-releases/';
+
 function applyLang() {
   document.documentElement.lang = state.lang;
   document.title = t('meta.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'));
   document.getElementById('langToggleLabel').textContent = t('lang.toggle');
+  // SEO: 언어별 URL(?lang=en ↔ 기본) 및 canonical 을 현재 언어와 동기화
+  try {
+    const url = new URL(window.location.href);
+    if (state.lang === 'en') url.searchParams.set('lang', 'en');
+    else url.searchParams.delete('lang');
+    window.history.replaceState(null, '', url);
+    document
+      .querySelector('link[rel="canonical"]')
+      ?.setAttribute('href', state.lang === 'en' ? SITE_BASE + '?lang=en' : SITE_BASE);
+  } catch {
+    /* 일부 환경(file:// 등)에서 URL 조작 불가 — 무시 */
+  }
   for (const el of document.querySelectorAll('[data-i18n]')) {
     el.innerHTML = t(el.dataset.i18n); // 사전은 이 레포 코드 — 신뢰 경계 안
   }

@@ -5,9 +5,11 @@
 
 export const STRINGS = {
   ko: {
-    'meta.title': 'LogcatOn — 안드로이드 로그캣 뷰어',
+    'meta.title': 'LogcatOn — 안드로이드 로그캣 뷰어 · macOS/Windows/Linux 무료',
     'meta.description':
-      '안드로이드 스튜디오 로그캣이 불편해서 직접 만든 데스크톱 로그 뷰어. 무료 다운로드.',
+      '초고속 멀티플랫폼 안드로이드 로그캣 뷰어. 패키지 선택만으로 PID/TID 자동 필터, ' +
+      '32+ 시그널 강조(Crash·ANR·메모리), 스마트 검색·북마크, 1M+ 라인에서도 60fps. ' +
+      'macOS·Windows·Linux 무료 다운로드.',
     'lang.toggle': 'EN',
     'intro.heading': '안드로이드 스튜디오 로그캣,<br>너무 불편해서 직접 만들었어요 😹',
     'intro.body':
@@ -34,9 +36,10 @@ export const STRINGS = {
     'footer.role': 'LogcatOn 만든 사람',
   },
   en: {
-    'meta.title': 'LogcatOn — Android Logcat Viewer',
+    'meta.title': 'LogcatOn — Android Logcat Viewer for macOS, Windows & Linux (Free)',
     'meta.description':
-      "A desktop Android logcat viewer, built because Android Studio's logcat felt clunky. Free download.",
+      'Blazing-fast Android logcat viewer. Auto package/PID filtering, 32+ signal highlights ' +
+      '(crash, ANR, memory), smart search & bookmarks, 60fps at 1M+ lines. Free download.',
     'lang.toggle': '한국어',
     'intro.heading': "Android Studio's logcat was so painful,<br>I just built my own 😹",
     'intro.body':
