@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "repo": "qwerfunch/logcat-on-releases (sample fixture)",
+  "generatedAt": "2026-06-05T05:08:10.908Z",
+  "releases": [
+    {
+      "tag": "v0.4.2",
+      "name": "LogcatOn v0.4.2",
+      "publishedAt": "2026-06-04T15:40:32Z",
+      "htmlUrl": "https://github.com/qwerfunch/logcat-on/releases/tag/v0.4.2",
+      "prerelease": false,
+      "sections": [
+        {
+          "title": "Added",
+          "category": "added",
+          "items": [
+            "<strong>로그 행 우클릭 컨텍스트 메뉴</strong> (F-cb0224) — 행을 우클릭해 이 태그/PID/TID 필터 · 이 태그 제외 · 이 태그 강조 · 북마크 · 줄 복사를 한 번에. 태그/PID/TID 필터는 기존 값에 누적(중복 제거)되고, 값이 없는 항목은 비활성. 이미 북마크된 행에서는 &quot;여기 북마크 해제&quot;로 라벨이 전환된다(en/ko).",
+            "<strong>행 강조</strong> (F-cb0224) — 마우스를 올린 행과 우클릭 메뉴의 대상 행을 중립 회색 으로 은은히 표시(찾기/선택의 파란 강조와 구분). 스크롤 중에는 떨림 방지를 위해 hover 틴트를 잠시 끈다."
+          ],
+          "paragraphs": []
+        },
+        {
+          "title": "Fixed",
+          "category": "fixed",
+          "items": [
+            "<strong>드래그 선택을 화면 밖까지 확장</strong> (F-ddc09e) — 선택 드래그를 뷰포트 위/아래 가장자리로 끌면 자동 스크롤되어 화면 밖 행까지 선택할 수 있다.",
+            "<strong>자동 스크롤(tail) ON 중 드래그하면 뷰가 바닥으로 튀던 문제 근절</strong> (F-ddc09e) — 가장자리 자동 스크롤이 라이브 스트림으로 늘어나는 바닥을 계속 추격하던 것이 원인. 드래그 시작 시점에 존재하던 콘텐츠 바닥까지만 스크롤하도록 제한했다.",
+            "<strong>줄바꿈(wrap) 토글 시 어긋나던 드래그 선택을 자동 해제</strong> (F-ddc09e).",
+            "<strong>축약(…)되어 표시되는 긴 태그도 &quot;이 태그 강조&quot;가 적용되도록 수정</strong> (F-12d175) — 태그 칼럼이 잘려 보여도 전체 태그 텍스트로 매칭해 보이는 부분을 강조한다."
+          ],
+          "paragraphs": []
+        }
+      ],
+      "assets": {
+        "macos": [
+          {
+            "name": "LogcatOn_0.4.2_universal.dmg",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_universal.dmg",
+            "sizeBytes": 52409524,
+            "arch": "universal",
+            "platform": "macos",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.2-macos-universal-portable.tar.gz",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-macos-universal-portable.tar.gz",
+            "sizeBytes": 51120613,
+            "arch": "universal",
+            "platform": "macos",
+            "kind": "portable"
+          }
+        ],
+        "windows": [
+          {
+            "name": "LogcatOn_0.4.2_x64_en-US.msi",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_x64_en-US.msi",
+            "sizeBytes": 40583168,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn_0.4.2_x64-setup.exe",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_x64-setup.exe",
+            "sizeBytes": 37936640,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.2-windows-x64-portable.zip",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-windows-x64-portable.zip",
+            "sizeBytes": 40077390,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "portable"
+          }
+        ],
+        "linux": [
+          {
+            "name": "LogcatOn_0.4.2_amd64.AppImage",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_amd64.AppImage",
+            "sizeBytes": 118503928,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn_0.4.2_amd64.deb",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_amd64.deb",
+            "sizeBytes": 41805726,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.2-1.x86_64.rpm",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-1.x86_64.rpm",
+            "sizeBytes": 41801702,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.2-linux-x64-portable.tar.gz",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-linux-x64-portable.tar.gz",
+            "sizeBytes": 117785430,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "portable"
+          }
+        ],
+        "other": []
+      },
+      "primary": {
+        "macos": {
+          "name": "LogcatOn_0.4.2_universal.dmg",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_universal.dmg",
+          "sizeBytes": 52409524,
+          "arch": "universal",
+          "platform": "macos",
+          "kind": "installer"
+        },
+        "windows": {
+          "name": "LogcatOn_0.4.2_x64-setup.exe",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_x64-setup.exe",
+          "sizeBytes": 37936640,
+          "arch": "x64",
+          "platform": "windows",
+          "kind": "installer"
+        },
+        "linux": {
+          "name": "LogcatOn_0.4.2_amd64.AppImage",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_amd64.AppImage",
+          "sizeBytes": 118503928,
+          "arch": "x64",
+          "platform": "linux",
+          "kind": "installer"
+        }
+      },
+      "assetCount": 9
+    },
+    {
+      "tag": "v0.4.1",
+      "name": "LogcatOn v0.4.1",
+      "publishedAt": "2026-06-03T17:25:51Z",
+      "htmlUrl": "https://github.com/qwerfunch/logcat-on/releases/tag/v0.4.1",
+      "prerelease": false,
+      "sections": [
+        {
+          "title": "Fixed",
+          "category": "fixed",
+          "items": [
+            "<strong>성능 모니터 시그널 타임라인 마커를 실제 발생 시각에 배치</strong> (F-82797f) — 멈춤 후 재개하면 멈춤 동안의 시그널 마커가 시간축에서 엉뚱하게 퍼지거나 한 점에 몰리던 문제를 근본 해결. 마커 위치를 프로파일링 샘플 인덱스 보간이 아니라 각 로그 라인의 <strong>호스트 수신 시각</strong>(<code>host_ms</code>, 샘플 <code>ts_ms</code> 와 같은 시계)에 직접 배치한다 — 멈춤 중 도착한 라인도 진짜 시각을 유지해 재개 후 라이브와 동일하게(1초 내 버스트는 한 클러스터, 다른 시각은 따로) 찍히고 CPU/메모리 곡선과 정렬된다. 인덱스 보간은 폴백으로만 남는다. (device 로그 시각 파싱 0, 백엔드/IPC 변경 0.)",
+            "<strong>Windows 에서 설치·실행·강제종료·삭제·성능모니터가 무한 로딩 걸리던 문제 근본 해결</strong> (F-5d38df) — adb 는 장수명 fork-server 를 띄우는데, 그 서버가 우리가 <strong>캡처한 stdout/stderr 파이프의 쓰기 핸들을 상속</strong>받아 EOF 가 영영 오지 않아 출력 읽기가 무한 대기하던 것이 원인이었다(설치/앱 액션/프로파일링 공통, 그리고 &quot;logcat 인식은 되는데 한 줄도 안 들어오던&quot; 증상의 데몬 프로브 행도 같은 뿌리). 이제 모든 캡처 명령을 새 <code>adb::exec</code> 로 통일해 <strong>파이프 EOF 가 아니라 adb 클라이언트의 종료를 기준으로</strong> bounded 하게 읽고(이후 짧은 grace 동안 잔여만 회수), 시간 초과 시 자식을 정리하고 에러를 돌려준다 — fork-server 가 파이프를 쥐고 있어도 더는 멈추지 않는다. <code>run_adb</code>· <code>list_devices</code>·데몬 프로브·<code>exec_shell</code>·<code>pm</code>·<code>pidof</code>·<code>bundletool</code>·logcat pidof 폴·reconnect 프로브가 모두 이 경로를 탄다. 데몬-컨트롤 null-stdio (F-584435)·logcat 스트리밍·데몬 자동복구(F-235/F-9967a2)는 그대로 유지."
+          ],
+          "paragraphs": []
+        }
+      ],
+      "assets": {
+        "macos": [
+          {
+            "name": "LogcatOn_0.4.1_universal.dmg",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_universal.dmg",
+            "sizeBytes": 52407362,
+            "arch": "universal",
+            "platform": "macos",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.1-macos-universal-portable.tar.gz",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-macos-universal-portable.tar.gz",
+            "sizeBytes": 51118184,
+            "arch": "universal",
+            "platform": "macos",
+            "kind": "portable"
+          }
+        ],
+        "windows": [
+          {
+            "name": "LogcatOn_0.4.1_x64_en-US.msi",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_x64_en-US.msi",
+            "sizeBytes": 40583168,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn_0.4.1_x64-setup.exe",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_x64-setup.exe",
+            "sizeBytes": 37934034,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.1-windows-x64-portable.zip",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-windows-x64-portable.zip",
+            "sizeBytes": 40075607,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "portable"
+          }
+        ],
+        "linux": [
+          {
+            "name": "LogcatOn_0.4.1_amd64.AppImage",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_amd64.AppImage",
+            "sizeBytes": 118508024,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn_0.4.1_amd64.deb",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_amd64.deb",
+            "sizeBytes": 41805796,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.1-1.x86_64.rpm",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-1.x86_64.rpm",
+            "sizeBytes": 41801602,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.1-linux-x64-portable.tar.gz",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-linux-x64-portable.tar.gz",
+            "sizeBytes": 117790101,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "portable"
+          }
+        ],
+        "other": []
+      },
+      "primary": {
+        "macos": {
+          "name": "LogcatOn_0.4.1_universal.dmg",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_universal.dmg",
+          "sizeBytes": 52407362,
+          "arch": "universal",
+          "platform": "macos",
+          "kind": "installer"
+        },
+        "windows": {
+          "name": "LogcatOn_0.4.1_x64-setup.exe",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_x64-setup.exe",
+          "sizeBytes": 37934034,
+          "arch": "x64",
+          "platform": "windows",
+          "kind": "installer"
+        },
+        "linux": {
+          "name": "LogcatOn_0.4.1_amd64.AppImage",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_amd64.AppImage",
+          "sizeBytes": 118508024,
+          "arch": "x64",
+          "platform": "linux",
+          "kind": "installer"
+        }
+      },
+      "assetCount": 9
+    },
+    {
+      "tag": "v0.4.0",
+      "name": "LogcatOn v0.4.0",
+      "publishedAt": "2026-06-03T12:39:21Z",
+      "htmlUrl": "https://github.com/qwerfunch/logcat-on/releases/tag/v0.4.0",
+      "prerelease": false,
+      "sections": [
+        {
+          "title": "Added",
+          "category": "added",
+          "items": [
+            "<strong>디바이스 패널 앱 설치</strong> (F-a4a72f) — <code>.apk</code>·<code>.aab</code>·<code>.apks</code>·<code>.xapk</code> 파일을 드래그&amp;드롭(또는 클릭)으로 선택한 온라인 기기에 설치한다. xapk 는 분할 APK 를 풀어 <code>install-multiple</code> + OBB 푸시, aab/apks 는 동봉된 bundletool 로 처리. 설치 실패는 저장공간 부족 등 원인을 알기 쉬운 메시지로 분류해 보여준다.",
+            "<strong>앱 패키지 per-app 액션</strong> (F-71020b) — 설치된 앱 목록 행에서 실행 / 강제종료 / 삭제를 바로 할 수 있다.",
+            "<strong>사용자 추가(custom) 시그널도 성능 타임라인 마커로 표시</strong> (F-82797f) — 직접 만든 시그널이 타임라인에 보라색 ● 마커로 뜬다(이름은 hover)."
+          ],
+          "paragraphs": []
+        },
+        {
+          "title": "Changed",
+          "category": "changed",
+          "items": [
+            "<strong>성능 모니터가 기본 펼침</strong> — 첫 화면부터 차트가 보이고, 온라인 기기 선택 시 캡처가 바로 시작된다.",
+            "<strong>앱별 성능 history 를 최근 N 패키지로 bound</strong> (F-514da4) — 장시간 다중앱 세션에서의 메모리 누적 방지."
+          ],
+          "paragraphs": []
+        },
+        {
+          "title": "Fixed",
+          "category": "fixed",
+          "items": [
+            "<strong>jank(버벅임) 계산</strong> (F-514da4) — <code>gfxinfo</code> 가 앱 윈도마다 따로 출력하는 프레임 블록을 모두 합산하도록 고쳤다. 마지막 윈도가 idle 이면 jank 가 영영 계산되지 않던 버그 해소.",
+            "<strong>멈춤 해제 시 그동안의 라인에 시그널 거터 표시가 빠지던 문제</strong> (F-256/F-287) — resume flush 가 그 라인들도 시그널 스탬프하도록 보강(타임라인과 일치).",
+            "<strong>Windows 에서 adb 프로세스가 남아 설치 폴더가 안 지워지던 문제</strong> (F-584435) — 스트리밍 logcat 자식에 <code>kill_on_drop</code> 백스톱을 걸어 비정상 종료에도 고아 adb.exe 가 남지 않게 했다."
+          ],
+          "paragraphs": []
+        },
+        {
+          "title": "CI",
+          "category": "other",
+          "items": [
+            "<strong>bundletool.jar 내부 네이티브 바이너리 공증 서명</strong> — jar 안에 동봉된 Mach-O(JNA · aapt2)를 Developer ID 로 서명(hardened runtime + secure timestamp)해 macOS 공증을 통과시킨다."
+          ],
+          "paragraphs": []
+        }
+      ],
+      "assets": {
+        "macos": [
+          {
+            "name": "LogcatOn_0.4.0_universal.dmg",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_universal.dmg",
+            "sizeBytes": 52425089,
+            "arch": "universal",
+            "platform": "macos",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.0-macos-universal-portable.tar.gz",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-macos-universal-portable.tar.gz",
+            "sizeBytes": 51094622,
+            "arch": "universal",
+            "platform": "macos",
+            "kind": "portable"
+          }
+        ],
+        "windows": [
+          {
+            "name": "LogcatOn_0.4.0_x64_en-US.msi",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_x64_en-US.msi",
+            "sizeBytes": 40574976,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn_0.4.0_x64-setup.exe",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_x64-setup.exe",
+            "sizeBytes": 37934358,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.0-windows-x64-portable.zip",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-windows-x64-portable.zip",
+            "sizeBytes": 40074315,
+            "arch": "x64",
+            "platform": "windows",
+            "kind": "portable"
+          }
+        ],
+        "linux": [
+          {
+            "name": "LogcatOn_0.4.0_amd64.AppImage",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_amd64.AppImage",
+            "sizeBytes": 118495736,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn_0.4.0_amd64.deb",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_amd64.deb",
+            "sizeBytes": 41788334,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.0-1.x86_64.rpm",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-1.x86_64.rpm",
+            "sizeBytes": 41787889,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "installer"
+          },
+          {
+            "name": "LogcatOn-0.4.0-linux-x64-portable.tar.gz",
+            "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-linux-x64-portable.tar.gz",
+            "sizeBytes": 117776791,
+            "arch": "x64",
+            "platform": "linux",
+            "kind": "portable"
+          }
+        ],
+        "other": []
+      },
+      "primary": {
+        "macos": {
+          "name": "LogcatOn_0.4.0_universal.dmg",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_universal.dmg",
+          "sizeBytes": 52425089,
+          "arch": "universal",
+          "platform": "macos",
+          "kind": "installer"
+        },
+        "windows": {
+          "name": "LogcatOn_0.4.0_x64-setup.exe",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_x64-setup.exe",
+          "sizeBytes": 37934358,
+          "arch": "x64",
+          "platform": "windows",
+          "kind": "installer"
+        },
+        "linux": {
+          "name": "LogcatOn_0.4.0_amd64.AppImage",
+          "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_amd64.AppImage",
+          "sizeBytes": 118495736,
+          "arch": "x64",
+          "platform": "linux",
+          "kind": "installer"
+        }
+      },
+      "assetCount": 9
+    }
+  ]
+}

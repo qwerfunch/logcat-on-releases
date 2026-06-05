@@ -1,0 +1,11 @@
+{
+  "name": "logcat-on-releases",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build-releases.mjs"
+  }
+}

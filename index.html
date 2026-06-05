@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogcatOn — 안드로이드 로그캣 뷰어</title>
+    <meta name="description" content="안드로이드 스튜디오 로그캣이 불편해서 직접 만든 데스크톱 로그 뷰어. 무료 다운로드.">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content="LogcatOn — Android Logcat Viewer">
+    <meta property="og:description" content="A fast desktop Android logcat viewer. Free download for macOS / Windows / Linux.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qwerfunch.github.io/logcat-on-releases/">
+    <meta property="og:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            /* 노란/오렌지 빛이 은은하게 감도는 화사한 배경색 */
+            background-color: #FEFBF0;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #EADBC8; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #DBC8B0; }
+        /* 릴리즈 노트 본문(빌드 타임에 베이크된 inline html) 공통 스타일 */
+        .md strong { font-weight: 700; color: #1c1917; }
+        .md code { background: #f5f0e4; border: 1px solid #eadbc8; border-radius: 4px; padding: 0 4px; font-size: 0.9em; }
+        .md a { color: #E67E22; text-decoration: underline; text-underline-offset: 2px; }
+    </style>
+</head>
+<body class="text-stone-800 antialiased min-h-screen flex flex-col items-center">
+
+    <!-- 언어 토글 -->
+    <button id="langToggle"
+        class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur border border-stone-200 text-stone-600 hover:text-[#E67E22] hover:border-[#E67E22]/40 text-xs font-bold px-3.5 py-2 rounded-full shadow-sm transition-colors flex items-center gap-1.5">
+        <i class="ph-bold ph-translate text-sm"></i><span id="langToggleLabel">EN</span>
+    </button>
+
+    <main class="max-w-4xl mx-auto px-4 py-16 w-full flex flex-col items-center">
+
+        <!-- 타이틀 -->
+        <header class="text-center mb-12 w-full">
+            <h1 class="text-5xl md:text-6xl font-black text-stone-900 tracking-tight select-none">
+                Logcat<span class="text-[#E67E22]">On</span>
+            </h1>
+        </header>
+
+        <!-- 비디오 영역 -->
+        <div class="w-full rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(230,126,34,0.12)] border border-stone-200/50 mb-20 relative aspect-video flex items-center justify-center bg-slate-900">
+            <video id="demoVideo" src="video/logcat-on.mp4" poster="assets/poster.jpg" class="w-full h-full object-cover" autoplay muted playsinline></video>
+        </div>
+
+        <!-- 설명 영역 -->
+        <section class="w-full mb-24 text-center flex flex-col items-center">
+            <h2 data-i18n="intro.heading" class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6 leading-tight tracking-tight"></h2>
+            <div class="text-stone-600 leading-relaxed text-lg max-w-2xl mx-auto space-y-5">
+                <p data-i18n="intro.body"></p>
+                <p data-i18n="intro.free" class="font-bold text-[#E67E22] text-xl pt-2"></p>
+            </div>
+
+            <!-- 메인 다운로드 버튼 (OS 자동감지, 릴리즈 없으면 숨김) -->
+            <div id="downloadArea" class="hidden mt-12 flex-col items-center gap-3">
+                <a id="primaryDownload" href="#"
+                    class="inline-flex items-center gap-3 bg-[#E67E22] hover:bg-[#D35400] text-white font-bold text-lg px-9 py-4 rounded-xl shadow-lg shadow-[#E67E22]/25 transition-colors">
+                    <i class="ph-bold ph-download-simple text-2xl"></i>
+                    <span id="primaryDownloadLabel"></span>
+                </a>
+                <div class="flex items-center gap-2 text-sm text-stone-400">
+                    <span id="primaryDownloadMeta"></span>
+                </div>
+                <a id="otherPlatforms" href="#latest-assets"
+                    class="text-sm font-semibold text-stone-500 hover:text-[#E67E22] transition-colors mt-1"></a>
+            </div>
+        </section>
+
+        <!-- 릴리즈 영역 -->
+        <div class="w-full">
+
+            <div class="flex items-center justify-center mb-10">
+                <div class="h-px bg-stone-300 flex-1"></div>
+                <h2 class="text-sm font-bold text-stone-400 uppercase tracking-[0.2em] px-6">Release Notes</h2>
+                <div class="h-px bg-stone-300 flex-1"></div>
+            </div>
+
+            <!-- 릴리즈 0개일 때 (현재 기본 상태) -->
+            <div id="emptyState" class="hidden text-center py-16 px-6 rounded-2xl border border-dashed border-stone-300 bg-white/40">
+                <i class="ph ph-rocket-launch text-4xl text-[#E67E22] mb-4 inline-block"></i>
+                <h3 data-i18n="empty.title" class="text-xl font-bold text-stone-900 mb-2"></h3>
+                <p data-i18n="empty.body" class="text-stone-500"></p>
+            </div>
+
+            <!-- 릴리즈 목록 (app.js 가 채움: 최신 펼침 + 과거 접힘) -->
+            <div id="releases"></div>
+        </div>
+
+        <!-- 푸터 -->
+        <footer class="mt-24 text-center text-sm text-stone-400">
+            <a href="https://github.com/qwerfunch/logcat-on-releases/releases" target="_blank" rel="noopener"
+                class="hover:text-[#E67E22] transition-colors inline-flex items-center gap-1.5">
+                <i class="ph-bold ph-github-logo"></i> GitHub Releases
+            </a>
+        </footer>
+    </main>
+
+    <script type="module" src="assets/app.js"></script>
+</body>
+</html>

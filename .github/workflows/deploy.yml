@@ -1,0 +1,59 @@
+name: Deploy Pages
+
+# 릴리즈가 이 레포에 publish/edit/delete 될 때마다(logcat-on CI 가 등록) +
+# main push 시 페이지를 다시 빌드해 GitHub Pages 로 배포한다.
+# 사전 조건(1회): Settings → Pages → Source = "GitHub Actions".
+on:
+  release:
+    types: [published, unpublished, edited, deleted, released, prereleased]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read   # 자기 레포 릴리즈 조회 (기본 GITHUB_TOKEN 으로 충분)
+  pages: write     # deploy-pages
+  id-token: write  # deploy-pages OIDC
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 이 레포의 릴리즈를 dist/releases.json 으로 베이크 (npm 의존성 0)
+      - name: Build releases.json
+        run: node scripts/build-releases.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assemble dist
+        run: |
+          cp index.html .nojekyll dist/
+          cp -r assets video dist/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
