@@ -257,11 +257,23 @@ function setupVideo() {
   if (!video) return;
   video.addEventListener('ended', () => {
     setTimeout(() => {
+      if (document.hidden) return; // 복귀 시 visibilitychange 가 재개 담당
       video.currentTime = 0;
       video.play();
     }, 3000);
   });
   video.play()?.catch(() => {/* 자동재생 차단 — poster 유지 */});
+
+  // 페이지가 보일 때만 재생 — 탭/스페이스 이동 시 자동 PiP(영상 따라오기) 방지.
+  // disablepictureinpicture 속성(index.html)과 이중 방어 + 백그라운드 리소스 절약.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      video.pause();
+    } else {
+      if (video.ended) video.currentTime = 0;
+      video.play()?.catch(() => {});
+    }
+  });
 
   // 소리 토글 — 자동재생은 음소거 필수(브라우저 정책)이므로 기본 muted,
   // 버튼은 영상 내 워터마크를 덮는 위치(index.html)에 항상 표시된다.
