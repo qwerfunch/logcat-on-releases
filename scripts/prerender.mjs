@@ -22,9 +22,10 @@ const data = JSON.parse(await readFile(join(DIST, 'releases.json'), 'utf8'));
 const releases = data.releases ?? [];
 let html = await readFile(join(DIST, 'index.html'), 'utf8');
 
-// ---------------------------------------------------- 정적 렌더 (ko 라벨 고정)
-// 베이크된 페이지의 기본 언어는 ko — app.js 가 로드되면 사용자 언어로 재렌더.
-// 마크업 구조/클래스는 assets/app.js 의 render* 와 동일하게 유지할 것.
+// ---------------------------------------------------- 정적 렌더 (en 라벨 고정)
+// 베이크된 페이지의 기본 언어는 en(글로벌 x-default) — app.js 가 로드되면
+// 사용자 언어로 재렌더. 마크업 구조/클래스는 assets/app.js 의 render* 와
+// 동일하게 유지할 것. (릴리즈 노트 본문은 원문(한국어) 그대로 — 콘텐츠 언어)
 
 const DOT = {
   added: 'bg-emerald-500',
@@ -41,14 +42,14 @@ const PLATFORM_ICON = {
   linux: 'ph-fill ph-linux-logo',
   other: 'ph-bold ph-package',
 };
-const KO = { installer: '설치 파일', portable: '포터블', macos: 'macOS', windows: 'Windows', linux: 'Linux', other: '기타' };
+const LABEL = { installer: 'Installer', portable: 'Portable', macos: 'macOS', windows: 'Windows', linux: 'Linux', other: 'Other' };
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const humanSize = (b) =>
   b >= 1e9 ? (b / 1e9).toFixed(2) + ' GB' : b >= 1e6 ? (b / 1e6).toFixed(1) + ' MB' : (b / 1e3).toFixed(0) + ' KB';
 const fmtDate = (iso) =>
-  new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Seoul' }).format(
+  new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Seoul' }).format(
     new Date(iso),
   );
 
@@ -76,7 +77,7 @@ function renderAssets(release, { open, anchorId }) {
     .map(
       (p) => `
       <div>
-        <h5 class="flex items-center gap-2 text-sm font-bold text-stone-500 mb-1"><i class="${PLATFORM_ICON[p]}"></i> ${KO[p]}</h5>
+        <h5 class="flex items-center gap-2 text-sm font-bold text-stone-500 mb-1"><i class="${PLATFORM_ICON[p]}"></i> ${LABEL[p]}</h5>
         <div class="border-y border-stone-200">
           ${release.assets[p]
             .map(
@@ -84,7 +85,7 @@ function renderAssets(release, { open, anchorId }) {
           <a href="${esc(a.url)}" download class="py-3.5 border-b border-stone-200 last:border-0 hover:bg-stone-200/20 transition-colors flex justify-between items-center gap-3 px-2 group/row">
             <span class="text-stone-700 font-medium truncate">${esc(a.name)}</span>
             <span class="flex items-center gap-3 shrink-0">
-              ${a.kind !== 'other' ? `<span class="hidden sm:inline text-xs font-bold px-2 py-0.5 rounded bg-stone-200/70 text-stone-500">${KO[a.kind]}</span>` : ''}
+              ${a.kind !== 'other' ? `<span class="hidden sm:inline text-xs font-bold px-2 py-0.5 rounded bg-stone-200/70 text-stone-500">${LABEL[a.kind]}</span>` : ''}
               <span class="text-xs text-stone-400 w-16 text-right">${humanSize(a.sizeBytes)}</span>
               <i class="ph ph-download-simple text-lg text-stone-400 group-hover/row:text-[#E67E22]"></i>
             </span>
@@ -172,8 +173,8 @@ await writeFile(join(DIST, 'index.html'), html);
 
 const lastmod = (releases[0]?.publishedAt ?? data.generatedAt ?? new Date().toISOString()).slice(0, 10);
 const alternates = `
-    <xhtml:link rel="alternate" hreflang="ko" href="${BASE}"/>
-    <xhtml:link rel="alternate" hreflang="en" href="${BASE}?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${BASE}"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="${BASE}?lang=ko"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${BASE}"/>`;
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -182,7 +183,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <lastmod>${lastmod}</lastmod>${alternates}
   </url>
   <url>
-    <loc>${BASE}?lang=en</loc>
+    <loc>${BASE}?lang=ko</loc>
     <lastmod>${lastmod}</lastmod>${alternates}
   </url>
 </urlset>

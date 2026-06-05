@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogcatOn — 안드로이드 로그캣 뷰어 · macOS/Windows/Linux 무료</title>
-    <meta name="description" content="초고속 멀티플랫폼 안드로이드 로그캣 뷰어. 패키지 선택만으로 PID/TID 자동 필터, 32+ 시그널 강조(Crash·ANR·메모리), 스마트 검색·북마크, 1M+ 라인에서도 60fps. macOS·Windows·Linux 무료 다운로드.">
-    <meta name="keywords" content="logcat, 로그캣, 안드로이드 로그캣 뷰어, android logcat viewer, adb, logcat gui, android log viewer, 안드로이드 개발, android debugging, tauri">
+    <title>LogcatOn — Android Logcat Viewer for macOS, Windows & Linux (Free)</title>
+    <meta name="description" content="Blazing-fast Android logcat viewer. Auto package/PID filtering, 32+ signal highlights (crash, ANR, memory), smart search & bookmarks, 60fps at 1M+ lines. Free download.">
+    <meta name="keywords" content="logcat, android logcat viewer, adb, logcat gui, android log viewer, android debugging, logcat 뷰어, 안드로이드 로그캣, tauri">
     <meta name="author" content="qwerfunch">
     <meta name="theme-color" content="#FEFBF0">
 
-    <!-- 검색엔진: 표준 URL + 언어별 대체 URL (en 은 ?lang=en, app.js 가 파라미터 인식) -->
+    <!-- 검색엔진: 기본 URL = 영어(x-default), 한국어는 ?lang=ko (app.js 가 파라미터 인식) -->
     <link rel="canonical" href="https://qwerfunch.github.io/logcat-on-releases/">
-    <link rel="alternate" hreflang="ko" href="https://qwerfunch.github.io/logcat-on-releases/">
-    <link rel="alternate" hreflang="en" href="https://qwerfunch.github.io/logcat-on-releases/?lang=en">
+    <link rel="alternate" hreflang="en" href="https://qwerfunch.github.io/logcat-on-releases/">
+    <link rel="alternate" hreflang="ko" href="https://qwerfunch.github.io/logcat-on-releases/?lang=ko">
     <link rel="alternate" hreflang="x-default" href="https://qwerfunch.github.io/logcat-on-releases/">
 
     <!-- Open Graph -->
@@ -21,8 +21,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qwerfunch.github.io/logcat-on-releases/">
     <meta property="og:site_name" content="LogcatOn">
-    <meta property="og:locale" content="ko_KR">
-    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ko_KR">
     <meta property="og:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
     <meta property="og:image:width" content="1280">
     <meta property="og:image:height" content="720">
@@ -80,7 +80,7 @@
     <!-- 언어 토글 -->
     <button id="langToggle"
         class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur border border-stone-200 text-stone-600 hover:text-[#E67E22] hover:border-[#E67E22]/40 text-xs font-bold px-3.5 py-2 rounded-full shadow-sm transition-colors flex items-center gap-1.5">
-        <i class="ph-bold ph-translate text-sm"></i><span id="langToggleLabel">EN</span>
+        <i class="ph-bold ph-translate text-sm"></i><span id="langToggleLabel">한국어</span>
     </button>
 
     <main class="max-w-4xl mx-auto px-4 py-16 w-full flex flex-col items-center">
@@ -105,12 +105,13 @@
             </button>
         </div>
 
-        <!-- 설명 영역 -->
+        <!-- 설명 영역 — 영어 원문을 정적으로 베이크(JS 미실행 크롤러 대응),
+             app.js 가 로드되면 감지된 언어로 덮어쓴다 -->
         <section class="w-full mb-24 text-center flex flex-col items-center">
-            <h2 data-i18n="intro.heading" class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6 leading-tight tracking-tight"></h2>
+            <h2 data-i18n="intro.heading" class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6 leading-tight tracking-tight">Android Studio's logcat was so painful,<br>I just built my own 😹</h2>
             <div class="text-stone-600 leading-relaxed text-lg max-w-2xl mx-auto space-y-5">
-                <p data-i18n="intro.body"></p>
-                <p data-i18n="intro.free" class="font-bold text-[#E67E22] text-xl pt-2"></p>
+                <p data-i18n="intro.body">Tired of digging for the one line you need in a flood of logs?<br>So was I — so I built the logcat viewer I always wanted to use.<br>Experience intuitive log analysis that saves your eyes and your time, with LogcatOn!</p>
+                <p data-i18n="intro.free" class="font-bold text-[#E67E22] text-xl pt-2">It's free and open — grab it and enjoy!</p>
             </div>
 
             <!-- 메인 다운로드 버튼 (OS 자동감지, 릴리즈 없으면 숨김) -->
@@ -140,8 +141,8 @@
             <!-- 릴리즈 0개일 때 (현재 기본 상태) -->
             <div id="emptyState" class="hidden text-center py-16 px-6 rounded-2xl border border-dashed border-stone-300 bg-white/40">
                 <i class="ph ph-rocket-launch text-4xl text-[#E67E22] mb-4 inline-block"></i>
-                <h3 data-i18n="empty.title" class="text-xl font-bold text-stone-900 mb-2"></h3>
-                <p data-i18n="empty.body" class="text-stone-500"></p>
+                <h3 data-i18n="empty.title" class="text-xl font-bold text-stone-900 mb-2">Releases coming soon</h3>
+                <p data-i18n="empty.body" class="text-stone-500">We're preparing the first public release. Downloads will be here soon!</p>
             </div>
 
             <!-- 릴리즈 목록 (app.js 가 채움: 최신 펼침 + 과거 접힘) -->
@@ -161,7 +162,7 @@
                 <div class="text-left">
                     <div class="flex items-baseline gap-2">
                         <span class="font-black text-stone-900">qwerfunch</span>
-                        <span data-i18n="footer.role" class="text-xs text-stone-400"></span>
+                        <span data-i18n="footer.role" class="text-xs text-stone-400">Maker of LogcatOn</span>
                     </div>
                     <div class="flex items-center gap-4 mt-1.5 text-sm">
                         <!-- 연락 채널 추가 시 여기에 (이메일은 스팸 수집 우려로 보류) -->

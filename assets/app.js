@@ -64,15 +64,15 @@ function applyLang() {
   document.title = t('meta.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'));
   document.getElementById('langToggleLabel').textContent = t('lang.toggle');
-  // SEO: 언어별 URL(?lang=en ↔ 기본) 및 canonical 을 현재 언어와 동기화
+  // SEO: 언어별 URL(기본=en, ?lang=ko) 및 canonical 을 현재 언어와 동기화
   try {
     const url = new URL(window.location.href);
-    if (state.lang === 'en') url.searchParams.set('lang', 'en');
+    if (state.lang === 'ko') url.searchParams.set('lang', 'ko');
     else url.searchParams.delete('lang');
     window.history.replaceState(null, '', url);
     document
       .querySelector('link[rel="canonical"]')
-      ?.setAttribute('href', state.lang === 'en' ? SITE_BASE + '?lang=en' : SITE_BASE);
+      ?.setAttribute('href', state.lang === 'ko' ? SITE_BASE + '?lang=ko' : SITE_BASE);
   } catch {
     /* 일부 환경(file:// 등)에서 URL 조작 불가 — 무시 */
   }
