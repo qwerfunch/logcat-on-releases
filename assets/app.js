@@ -292,13 +292,20 @@ function setupVideo() {
     }
   }
 
+  // ended → 3초 휴지 → 처음부터 재생 루프. 휴지 중 focus/visibility 복귀로
+  // scheduleResume 이 먼저 재생을 재개하면 이 타이머는 스테일이 된다 —
+  // 그대로 발화하면 재생 중인 영상을 0초로 되감아 "중간 리플레이" 증상을
+  // 만들므로, ended 가드 + play 시 타이머 취소로 이중 차단한다.
+  let replayTimer = 0;
   video.addEventListener('ended', () => {
-    setTimeout(() => {
-      if (document.hidden) return; // 복귀 시 scheduleResume 이 재개 담당
+    clearTimeout(replayTimer);
+    replayTimer = setTimeout(() => {
+      if (document.hidden || !video.ended) return;
       video.currentTime = 0;
       video.play();
     }, 3000);
   });
+  video.addEventListener('play', () => clearTimeout(replayTimer));
   video.play()?.catch(() => {/* 자동재생 차단 — poster 유지 */});
 
   // 정책: "보이면 재생, 안 보이면 정지" (포커스는 무관 — 같은 화면에서 다른
