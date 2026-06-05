@@ -257,7 +257,9 @@ function setupVideo() {
   if (!video) return;
   video.addEventListener('ended', () => {
     setTimeout(() => {
-      if (document.hidden) return; // 복귀 시 visibilitychange 가 재개 담당
+      // 페이지가 안 보이거나 창 포커스가 없으면 재시작하지 않는다 — 숨김 상태
+      // 재생이 자동 PiP 를 유발할 수 있음. 복귀 시 resume 이 재개 담당.
+      if (document.hidden || !document.hasFocus()) return;
       video.currentTime = 0;
       video.play();
     }, 3000);
@@ -265,14 +267,25 @@ function setupVideo() {
   video.play()?.catch(() => {/* 자동재생 차단 — poster 유지 */});
 
   // 페이지가 보일 때만 재생 — 탭/스페이스 이동 시 자동 PiP(영상 따라오기) 방지.
-  // disablepictureinpicture 속성(index.html)과 이중 방어 + 백그라운드 리소스 절약.
+  // disablepictureinpicture 속성(index.html)과 다층 방어 + 백그라운드 리소스 절약.
+  const resume = () => {
+    if (document.hidden) return;
+    if (video.ended) video.currentTime = 0;
+    video.play()?.catch(() => {});
+  };
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      video.pause();
-    } else {
-      if (video.ended) video.currentTime = 0;
-      video.play()?.catch(() => {});
-    }
+    if (document.hidden) video.pause();
+    else resume();
+  });
+  // Arc 등 일부 브라우저는 macOS 스페이스 이동 시 창 가림(occlusion)을
+  // visibilitychange 로 안 알려준다 — 창 포커스 신호로도 멈춘다.
+  window.addEventListener('blur', () => video.pause());
+  window.addEventListener('focus', resume);
+  // 자동 PiP 가 disablepictureinpicture 를 무시하는 경우의 최후 방어:
+  // PiP 진입 즉시 탈출해 미니 플레이어를 닫는다.
+  video.addEventListener('enterpictureinpicture', () => {
+    video.pause();
+    document.exitPictureInPicture?.()?.catch(() => {});
   });
 
   // 소리 토글 — 자동재생은 음소거 필수(브라우저 정책)이므로 기본 muted,
