@@ -145,7 +145,13 @@ function classifyAsset(asset) {
       : /x64|x86_64|amd64/.test(n)
         ? 'x64'
         : '';
-  const base = { name: asset.name, url: asset.browser_download_url, sizeBytes: asset.size, arch };
+  const base = {
+    name: asset.name,
+    url: asset.browser_download_url,
+    sizeBytes: asset.size,
+    arch,
+    downloadCount: asset.download_count ?? 0,
+  };
 
   if (n.includes('portable')) {
     const platform = n.includes('macos')
@@ -218,10 +224,19 @@ const raw = (await fetchAllReleases())
 
 const releases = raw.map(transformRelease);
 
+// 전체 다운로드 수 — visible 자산만 합산. updater 파일(latest.json/*.sig/
+// *.app.tar.gz)은 classify 단계에서 제외되므로 인앱 업데이트 체크가 카운트를
+// 부풀리지 않는다.
+const totalDownloads = releases.reduce(
+  (n, r) => n + Object.values(r.assets).flat().reduce((m, a) => m + (a.downloadCount || 0), 0),
+  0,
+);
+
 const out = {
   schemaVersion: 1,
   repo: REPO,
   generatedAt: new Date().toISOString(),
+  stats: { totalDownloads },
   releases,
 };
 

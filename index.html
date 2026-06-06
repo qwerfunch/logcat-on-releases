@@ -124,6 +124,15 @@
                 <div class="flex items-center gap-2 text-sm text-stone-400">
                     <span id="primaryDownloadMeta"></span>
                 </div>
+                <!-- 누적 스탯 — 각 지표가 임계값(app.js STATS_MIN) 이상일 때만 표시 -->
+                <div id="statsLine" class="hidden items-center gap-4 text-xs text-stone-400">
+                    <span id="statDownloads" class="hidden items-center gap-1.5">
+                        <i class="ph-bold ph-download-simple"></i><span></span>
+                    </span>
+                    <span id="statVisits" class="hidden items-center gap-1.5">
+                        <i class="ph-bold ph-eye"></i><span></span>
+                    </span>
+                </div>
                 <a id="otherPlatforms" href="#latest-assets"
                     class="text-sm font-semibold text-stone-500 hover:text-[#E67E22] transition-colors mt-1"></a>
             </div>

@@ -1,7 +1,10 @@
 {
   "schemaVersion": 1,
   "repo": "qwerfunch/logcat-on-releases (sample fixture)",
-  "generatedAt": "2026-06-05T05:08:10.908Z",
+  "generatedAt": "2026-06-06T13:03:25.774Z",
+  "stats": {
+    "totalDownloads": 1234
+  },
   "releases": [
     {
       "tag": "v0.4.2",
@@ -38,6 +41,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_universal.dmg",
             "sizeBytes": 52409524,
             "arch": "universal",
+            "downloadCount": 2,
             "platform": "macos",
             "kind": "installer"
           },
@@ -46,6 +50,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-macos-universal-portable.tar.gz",
             "sizeBytes": 51120613,
             "arch": "universal",
+            "downloadCount": 0,
             "platform": "macos",
             "kind": "portable"
           }
@@ -56,6 +61,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_x64_en-US.msi",
             "sizeBytes": 40583168,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "installer"
           },
@@ -64,6 +70,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_x64-setup.exe",
             "sizeBytes": 37936640,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "installer"
           },
@@ -72,6 +79,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-windows-x64-portable.zip",
             "sizeBytes": 40077390,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "portable"
           }
@@ -82,6 +90,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_amd64.AppImage",
             "sizeBytes": 118503928,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -90,6 +99,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_amd64.deb",
             "sizeBytes": 41805726,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -98,6 +108,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-1.x86_64.rpm",
             "sizeBytes": 41801702,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -106,6 +117,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn-0.4.2-linux-x64-portable.tar.gz",
             "sizeBytes": 117785430,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "portable"
           }
@@ -118,6 +130,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_universal.dmg",
           "sizeBytes": 52409524,
           "arch": "universal",
+          "downloadCount": 2,
           "platform": "macos",
           "kind": "installer"
         },
@@ -126,6 +139,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_x64-setup.exe",
           "sizeBytes": 37936640,
           "arch": "x64",
+          "downloadCount": 0,
           "platform": "windows",
           "kind": "installer"
         },
@@ -134,6 +148,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.2/LogcatOn_0.4.2_amd64.AppImage",
           "sizeBytes": 118503928,
           "arch": "x64",
+          "downloadCount": 0,
           "platform": "linux",
           "kind": "installer"
         }
@@ -164,6 +179,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_universal.dmg",
             "sizeBytes": 52407362,
             "arch": "universal",
+            "downloadCount": 2,
             "platform": "macos",
             "kind": "installer"
           },
@@ -172,6 +188,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-macos-universal-portable.tar.gz",
             "sizeBytes": 51118184,
             "arch": "universal",
+            "downloadCount": 0,
             "platform": "macos",
             "kind": "portable"
           }
@@ -182,6 +199,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_x64_en-US.msi",
             "sizeBytes": 40583168,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "installer"
           },
@@ -190,6 +208,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_x64-setup.exe",
             "sizeBytes": 37934034,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "installer"
           },
@@ -198,6 +217,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-windows-x64-portable.zip",
             "sizeBytes": 40075607,
             "arch": "x64",
+            "downloadCount": 2,
             "platform": "windows",
             "kind": "portable"
           }
@@ -208,6 +228,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_amd64.AppImage",
             "sizeBytes": 118508024,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -216,6 +237,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_amd64.deb",
             "sizeBytes": 41805796,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -224,6 +246,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-1.x86_64.rpm",
             "sizeBytes": 41801602,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -232,6 +255,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn-0.4.1-linux-x64-portable.tar.gz",
             "sizeBytes": 117790101,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "portable"
           }
@@ -244,6 +268,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_universal.dmg",
           "sizeBytes": 52407362,
           "arch": "universal",
+          "downloadCount": 2,
           "platform": "macos",
           "kind": "installer"
         },
@@ -252,6 +277,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_x64-setup.exe",
           "sizeBytes": 37934034,
           "arch": "x64",
+          "downloadCount": 0,
           "platform": "windows",
           "kind": "installer"
         },
@@ -260,6 +286,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.1/LogcatOn_0.4.1_amd64.AppImage",
           "sizeBytes": 118508024,
           "arch": "x64",
+          "downloadCount": 0,
           "platform": "linux",
           "kind": "installer"
         }
@@ -318,6 +345,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_universal.dmg",
             "sizeBytes": 52425089,
             "arch": "universal",
+            "downloadCount": 1,
             "platform": "macos",
             "kind": "installer"
           },
@@ -326,6 +354,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-macos-universal-portable.tar.gz",
             "sizeBytes": 51094622,
             "arch": "universal",
+            "downloadCount": 0,
             "platform": "macos",
             "kind": "portable"
           }
@@ -336,6 +365,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_x64_en-US.msi",
             "sizeBytes": 40574976,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "installer"
           },
@@ -344,6 +374,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_x64-setup.exe",
             "sizeBytes": 37934358,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "windows",
             "kind": "installer"
           },
@@ -352,6 +383,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-windows-x64-portable.zip",
             "sizeBytes": 40074315,
             "arch": "x64",
+            "downloadCount": 1,
             "platform": "windows",
             "kind": "portable"
           }
@@ -362,6 +394,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_amd64.AppImage",
             "sizeBytes": 118495736,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -370,6 +403,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_amd64.deb",
             "sizeBytes": 41788334,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -378,6 +412,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-1.x86_64.rpm",
             "sizeBytes": 41787889,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "installer"
           },
@@ -386,6 +421,7 @@
             "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn-0.4.0-linux-x64-portable.tar.gz",
             "sizeBytes": 117776791,
             "arch": "x64",
+            "downloadCount": 0,
             "platform": "linux",
             "kind": "portable"
           }
@@ -398,6 +434,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_universal.dmg",
           "sizeBytes": 52425089,
           "arch": "universal",
+          "downloadCount": 1,
           "platform": "macos",
           "kind": "installer"
         },
@@ -406,6 +443,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_x64-setup.exe",
           "sizeBytes": 37934358,
           "arch": "x64",
+          "downloadCount": 0,
           "platform": "windows",
           "kind": "installer"
         },
@@ -414,6 +452,7 @@
           "url": "https://github.com/qwerfunch/logcat-on/releases/download/v0.4.0/LogcatOn_0.4.0_amd64.AppImage",
           "sizeBytes": 118495736,
           "arch": "x64",
+          "downloadCount": 0,
           "platform": "linux",
           "kind": "installer"
         }

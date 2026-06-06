@@ -8,6 +8,9 @@ on:
     types: [published, unpublished, edited, deleted, released, prereleased]
   push:
     branches: [main]
+  # 매일 1회 재빌드 — 릴리즈 자산 download_count(스탯 표시용) 최신화
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions:

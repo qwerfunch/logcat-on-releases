@@ -4,6 +4,11 @@
 import { STRINGS, OS_NAMES } from './i18n.js';
 
 const LANG_KEY = 'logcaton.lang';
+// GoatCounter 사이트 코드 — 가입 후 입력 (예: 'logcaton'). 비어 있으면
+// 방문 집계·표시 기능 전체가 비활성(스크립트 주입도 안 함).
+const GOATCOUNTER_CODE = '';
+// 콜드스타트 보호: 각 스탯이 이 값 이상일 때만 노출 ("다운로드 3회" 역효과 방지)
+const STATS_MIN = 100;
 const state = { lang: detectLang(), os: detectOS(), data: null };
 
 // ------------------------------------------------------------------ helpers
@@ -247,6 +252,68 @@ function renderDownloadButton(latest, downloadEl) {
   document.getElementById('otherPlatforms').innerHTML = t('download.otherPlatforms');
   downloadEl.classList.remove('hidden');
   downloadEl.classList.add('flex');
+  renderStats();
+}
+
+// ------------------------------------------------------- 누적 스탯 (다운로드·방문)
+
+let visitsCache = null; // GoatCounter TOTAL — 세션당 1회만 fetch
+let gcInjected = false;
+
+function fmtCompact(n) {
+  return new Intl.NumberFormat(state.lang === 'ko' ? 'ko-KR' : 'en-US', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(n);
+}
+
+function showStat(id, count, labelKey) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (typeof count === 'number' && count >= STATS_MIN) {
+    el.querySelector('span').textContent = `${fmtCompact(count)} ${t(labelKey)}`;
+    el.title = count.toLocaleString();
+    el.classList.remove('hidden');
+    el.classList.add('inline-flex');
+    const line = document.getElementById('statsLine');
+    line.classList.remove('hidden');
+    line.classList.add('flex');
+  } else {
+    el.classList.add('hidden');
+    el.classList.remove('inline-flex');
+  }
+}
+
+function renderStats() {
+  // 라인을 일단 접고, 임계값을 넘는 지표가 있을 때만 다시 펼친다
+  const line = document.getElementById('statsLine');
+  line.classList.add('hidden');
+  line.classList.remove('flex');
+
+  showStat('statDownloads', state.data?.stats?.totalDownloads, 'stats.downloads');
+
+  if (!GOATCOUNTER_CODE) return;
+  // 방문 카운트 스크립트 주입(1회) — 코드 미설정이면 아예 로드하지 않음
+  if (!gcInjected) {
+    gcInjected = true;
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://gc.zgo.at/count.js';
+    s.dataset.goatcounter = `https://${GOATCOUNTER_CODE}.goatcounter.com/count`;
+    document.body.appendChild(s);
+  }
+  if (visitsCache !== null) {
+    showStat('statVisits', visitsCache, 'stats.visits');
+  } else {
+    fetch(`https://${GOATCOUNTER_CODE}.goatcounter.com/counter/TOTAL.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!json) return;
+        visitsCache = parseInt(String(json.count).replace(/\D/g, ''), 10);
+        showStat('statVisits', visitsCache, 'stats.visits');
+      })
+      .catch(() => {/* 공개 카운터 미허용/네트워크 차단 — 표시 생략 */});
+  }
 }
 
 // ------------------------------------------------------------------- 부트랩

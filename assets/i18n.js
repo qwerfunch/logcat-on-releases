@@ -34,6 +34,8 @@ export const STRINGS = {
     'video.unmute': '소리 켜기',
     'video.mute': '소리 끄기',
     'footer.role': 'LogcatOn 만든 사람',
+    'stats.downloads': '다운로드',
+    'stats.visits': '방문',
   },
   en: {
     'meta.title': 'LogcatOn — Android Logcat Viewer for macOS, Windows & Linux (Free)',
@@ -64,6 +66,8 @@ export const STRINGS = {
     'video.unmute': 'Unmute',
     'video.mute': 'Mute',
     'footer.role': 'Maker of LogcatOn',
+    'stats.downloads': 'downloads',
+    'stats.visits': 'visits',
   },
 };
 
