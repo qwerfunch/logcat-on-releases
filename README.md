@@ -77,6 +77,10 @@ Free for personal and commercial use. Closed-source, distributed under a proprie
 
 Bundled third-party open-source components (Android platform-tools/adb · aapt2 · bundletool · fonts, …) are listed with their licenses in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
+## Built with
+
+LogcatOn is developed with [cladding](https://github.com/qwerfunch/cladding) — the integrity layer for AI-coded software: spec-driven, drift-aware, iron-clad.
+
 ---
 
 <details>
