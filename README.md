@@ -61,7 +61,8 @@ Grab the build for your OS from the **[release page](https://qwerfunch.github.io
 ### Requirements
 
 - An Android device with USB debugging enabled, or an emulator (Android Studio AVD, Genymotion, …)
-- ADB — your system install is used if present (`PATH` / `ANDROID_HOME`); otherwise the bundled platform-tools kick in automatically
+
+> No Android SDK required — ADB and platform-tools are bundled. (If you already have ADB installed, yours is used automatically.)
 
 ## Feedback & Issues
 
