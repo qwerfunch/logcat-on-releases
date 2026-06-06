@@ -22,8 +22,6 @@
   <a href="https://github.com/qwerfunch/logcat-on-releases/releases">All releases</a>
   ·
   <a href="https://github.com/qwerfunch/logcat-on-releases/issues/new/choose">Report an issue</a>
-  ·
-  <a href="https://qwerfunch.github.io/logcat-on-releases/?lang=ko">한국어</a>
 </p>
 
 ![LogcatOn main window](assets/screenshot-hero.jpg)
