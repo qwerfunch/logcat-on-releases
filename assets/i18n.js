@@ -71,14 +71,14 @@ export const STRINGS = {
   ja: {
     'meta.title': 'LogcatOn — Android Logcat ビューア · macOS/Windows/Linux 無料',
     'meta.description':
-      '超高速マルチプラットフォーム Android logcat ビューア。アプリを選ぶだけで PID/TID を自動フィルタ。' +
-      '32+ のシグナルハイライト(クラッシュ・ANR・メモリ)、スマート検索とブックマーク、100万行でも 60fps。' +
-      'macOS・Windows・Linux 無料ダウンロード。',
+      '超高速マルチプラットフォーム Android logcat ビューア。アプリを選ぶだけで PID/TID を自動フィルタリング。' +
+      '32種類以上のシグナルハイライト(クラッシュ・ANR・メモリ)、スマート検索、ブックマーク。' +
+      '100万行でも 60fps。macOS・Windows・Linux 向け無料ダウンロード。',
     'intro.heading': 'Android Studio の logcat が不便すぎて、<br>自分で作ってしまいました 😹',
     'intro.body':
-      '大量のログから目的の一行を探すのにうんざりしていませんか?<br>' +
-      '私も同じでした — だから、ずっと欲しかった logcat ビューアを自分で作りました。<br>' +
-      '目と時間を節約する直感的なログ分析を、LogcatOn でどうぞ!',
+      '大量のログから目的の一行を探すのに、うんざりしていませんか?<br>' +
+      '私も同じでした。だから、ずっと欲しかった logcat ビューアを自分で作りました。<br>' +
+      '目にも時間にもやさしい直感的なログ分析を、LogcatOn でぜひ体験してください!',
     'intro.free': '無料です。安心してお使いください!',
     'download.for': '{os} 版をダウンロード',
     'download.viewAll': 'すべてのダウンロードを見る',
@@ -87,30 +87,30 @@ export const STRINGS = {
     'releases.prerelease': 'Pre-release',
     'assets.title': 'Assets',
     'kind.installer': 'インストーラー',
-    'kind.portable': 'ポータブル',
+    'kind.portable': 'ポータブル版',
     'group.macos': 'macOS',
     'group.windows': 'Windows',
     'group.linux': 'Linux',
     'group.other': 'その他',
     'empty.title': 'リリース準備中',
-    'empty.body': '最初の公開リリースを準備しています。まもなくダウンロードできます!',
+    'empty.body': '初回リリースを準備中です。もうすぐダウンロードできるようになります!',
     'video.unmute': 'ミュート解除',
     'video.mute': 'ミュート',
     'footer.role': 'LogcatOn 開発者',
     'stats.downloads': 'ダウンロード',
-    'stats.visits': '訪問',
+    'stats.visits': 'アクセス',
   },
   zh: {
     'meta.title': 'LogcatOn — Android Logcat 查看器 · macOS/Windows/Linux 免费',
     'meta.description':
-      '极速多平台 Android logcat 查看器。选中应用即自动过滤 PID/TID,内置 32+ 信号高亮' +
-      '(崩溃·ANR·内存),智能搜索与书签,百万行日志依然 60fps。macOS·Windows·Linux 免费下载。',
+      '极速多平台 Android logcat 查看器。选择应用即自动过滤 PID/TID,内置 32+ 种信号高亮' +
+      '(崩溃、ANR、内存),智能搜索与书签,百万行日志依然 60fps。macOS、Windows、Linux 免费下载。',
     'intro.heading': 'Android Studio 的 logcat 实在太难用,<br>于是我自己写了一个 😹',
     'intro.body':
       '厌倦了在刷屏的日志里寻找那一行关键信息?<br>' +
-      '我也一样 — 所以我做出了自己一直想要的 logcat 查看器。<br>' +
-      '用 LogcatOn 体验省眼又省时的直观日志分析!',
-    'intro.free': '完全免费,放心取用!',
+      '我也一样——所以我做了一个自己一直想要的 logcat 查看器。<br>' +
+      '用 LogcatOn 体验护眼又省时的直观日志分析!',
+    'intro.free': '完全免费,放心使用!',
     'download.for': '下载 {os} 版',
     'download.viewAll': '查看全部下载',
     'download.otherPlatforms': '其他平台 ↓',
