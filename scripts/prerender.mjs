@@ -175,17 +175,16 @@ const lastmod = (releases[0]?.publishedAt ?? data.generatedAt ?? new Date().toIS
 const alternates = `
     <xhtml:link rel="alternate" hreflang="en" href="${BASE}"/>
     <xhtml:link rel="alternate" hreflang="ko" href="${BASE}?lang=ko"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="${BASE}?lang=ja"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="${BASE}?lang=zh"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${BASE}"/>`;
+const urlEntry = (loc) => `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>${alternates}
+  </url>`;
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>${BASE}</loc>
-    <lastmod>${lastmod}</lastmod>${alternates}
-  </url>
-  <url>
-    <loc>${BASE}?lang=ko</loc>
-    <lastmod>${lastmod}</lastmod>${alternates}
-  </url>
+${[BASE, `${BASE}?lang=ko`, `${BASE}?lang=ja`, `${BASE}?lang=zh`].map(urlEntry).join('\n')}
 </urlset>
 `;
 await writeFile(join(DIST, 'sitemap.xml'), sitemap);

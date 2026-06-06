@@ -9,10 +9,12 @@
     <meta name="author" content="qwerfunch">
     <meta name="theme-color" content="#FEFBF0">
 
-    <!-- 검색엔진: 기본 URL = 영어(x-default), 한국어는 ?lang=ko (app.js 가 파라미터 인식) -->
+    <!-- 검색엔진: 기본 URL = 영어(x-default), 그 외 언어는 ?lang=xx (app.js 가 파라미터 인식) -->
     <link rel="canonical" href="https://qwerfunch.github.io/logcat-on-releases/">
     <link rel="alternate" hreflang="en" href="https://qwerfunch.github.io/logcat-on-releases/">
     <link rel="alternate" hreflang="ko" href="https://qwerfunch.github.io/logcat-on-releases/?lang=ko">
+    <link rel="alternate" hreflang="ja" href="https://qwerfunch.github.io/logcat-on-releases/?lang=ja">
+    <link rel="alternate" hreflang="zh-CN" href="https://qwerfunch.github.io/logcat-on-releases/?lang=zh">
     <link rel="alternate" hreflang="x-default" href="https://qwerfunch.github.io/logcat-on-releases/">
 
     <!-- Open Graph -->
@@ -23,6 +25,8 @@
     <meta property="og:site_name" content="LogcatOn">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="ko_KR">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="zh_CN">
     <meta property="og:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
     <meta property="og:image:width" content="1280">
     <meta property="og:image:height" content="720">
@@ -44,7 +48,7 @@
       "image": "https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS, Windows, Linux",
-      "inLanguage": ["ko", "en"],
+      "inLanguage": ["en", "ko", "ja", "zh-CN"],
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "author": { "@type": "Person", "name": "qwerfunch", "url": "https://github.com/qwerfunch" },
       "downloadUrl": "https://github.com/qwerfunch/logcat-on-releases/releases"
@@ -77,11 +81,21 @@
 </head>
 <body class="text-stone-800 antialiased min-h-screen flex flex-col items-center">
 
-    <!-- 언어 토글 -->
-    <button id="langToggle"
-        class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur border border-stone-200 text-stone-600 hover:text-[#E67E22] hover:border-[#E67E22]/40 text-xs font-bold px-3.5 py-2 rounded-full shadow-sm transition-colors flex items-center gap-1.5">
-        <i class="ph-bold ph-globe text-sm"></i><span id="langToggleLabel">한국어</span>
-    </button>
+    <!-- 언어 선택 드롭다운 -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="langToggle"
+            class="bg-white/80 backdrop-blur border border-stone-200 text-stone-600 hover:text-[#E67E22] hover:border-[#E67E22]/40 text-xs font-bold px-3.5 py-2 rounded-full shadow-sm transition-colors flex items-center gap-1.5">
+            <i class="ph-bold ph-globe text-sm"></i><span id="langToggleLabel">English</span>
+            <i class="ph-bold ph-caret-down text-[10px] text-stone-400"></i>
+        </button>
+        <ul id="langMenu"
+            class="hidden absolute right-0 mt-2 min-w-[8.5rem] bg-white/95 backdrop-blur border border-stone-200 rounded-xl shadow-lg overflow-hidden text-sm font-semibold text-stone-600">
+            <li><button data-lang="en" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">English</button></li>
+            <li><button data-lang="ko" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">한국어</button></li>
+            <li><button data-lang="ja" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">日本語</button></li>
+            <li><button data-lang="zh" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">简体中文</button></li>
+        </ul>
+    </div>
 
     <main class="max-w-4xl mx-auto px-4 py-16 w-full flex flex-col items-center">
 

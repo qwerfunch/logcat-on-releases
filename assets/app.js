@@ -1,7 +1,11 @@
 // app.js — releases.json(빌드 타임 베이크)을 읽어 페이지를 렌더한다.
 // 책임: i18n(ko/en 자동감지+토글), OS 감지 메인 다운로드 버튼,
 //       최신 릴리즈 펼침 + 과거 릴리즈 접힘 렌더, 비디오 3초 휴지 후 재생 루프.
-import { STRINGS, OS_NAMES } from './i18n.js';
+import { STRINGS, LANG_NAMES, OS_NAMES } from './i18n.js';
+
+const LANGS = ['en', 'ko', 'ja', 'zh'];
+const HTML_LANG = { en: 'en', ko: 'ko', ja: 'ja', zh: 'zh-CN' };
+const DATE_LOCALE = { en: 'en-US', ko: 'ko-KR', ja: 'ja-JP', zh: 'zh-CN' };
 
 const LANG_KEY = 'logcaton.lang';
 // GoatCounter 사이트 코드 (https://logcaton.goatcounter.com). 비어 있으면
@@ -20,10 +24,14 @@ function t(key) {
 function detectLang() {
   // 우선순위: URL ?lang= (hreflang 검색 유입) → 저장된 선택 → OS 언어
   const urlLang = new URLSearchParams(window.location.search).get('lang');
-  if (urlLang === 'ko' || urlLang === 'en') return urlLang;
+  if (LANGS.includes(urlLang)) return urlLang;
   const saved = localStorage.getItem(LANG_KEY);
-  if (saved === 'ko' || saved === 'en') return saved;
-  return (navigator.language || 'en').toLowerCase().startsWith('ko') ? 'ko' : 'en';
+  if (LANGS.includes(saved)) return saved;
+  const nav = (navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('ko')) return 'ko';
+  if (nav.startsWith('ja')) return 'ja';
+  if (nav.startsWith('zh')) return 'zh'; // 번체 사용자도 간체로 폴백
+  return 'en';
 }
 
 function detectOS() {
@@ -53,7 +61,7 @@ function humanSize(b) {
 
 function formatDate(iso) {
   if (!iso) return '';
-  return new Intl.DateTimeFormat(state.lang === 'ko' ? 'ko-KR' : 'en-US', {
+  return new Intl.DateTimeFormat(DATE_LOCALE[state.lang], {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -65,19 +73,23 @@ function formatDate(iso) {
 const SITE_BASE = 'https://qwerfunch.github.io/logcat-on-releases/';
 
 function applyLang() {
-  document.documentElement.lang = state.lang;
+  document.documentElement.lang = HTML_LANG[state.lang];
   document.title = t('meta.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'));
-  document.getElementById('langToggleLabel').textContent = t('lang.toggle');
-  // SEO: 언어별 URL(기본=en, ?lang=ko) 및 canonical 을 현재 언어와 동기화
+  document.getElementById('langToggleLabel').textContent = LANG_NAMES[state.lang];
+  // 드롭다운에서 현재 언어 강조
+  for (const btn of document.querySelectorAll('#langMenu [data-lang]')) {
+    btn.classList.toggle('text-[#E67E22]', btn.dataset.lang === state.lang);
+  }
+  // SEO: 언어별 URL(기본=en, 그 외 ?lang=xx) 및 canonical 을 현재 언어와 동기화
   try {
     const url = new URL(window.location.href);
-    if (state.lang === 'ko') url.searchParams.set('lang', 'ko');
-    else url.searchParams.delete('lang');
+    if (state.lang === 'en') url.searchParams.delete('lang');
+    else url.searchParams.set('lang', state.lang);
     window.history.replaceState(null, '', url);
     document
       .querySelector('link[rel="canonical"]')
-      ?.setAttribute('href', state.lang === 'ko' ? SITE_BASE + '?lang=ko' : SITE_BASE);
+      ?.setAttribute('href', state.lang === 'en' ? SITE_BASE : `${SITE_BASE}?lang=${state.lang}`);
   } catch {
     /* 일부 환경(file:// 등)에서 URL 조작 불가 — 무시 */
   }
@@ -261,7 +273,7 @@ let visitsCache = null; // GoatCounter TOTAL — 세션당 1회만 fetch
 let gcInjected = false;
 
 function fmtCompact(n) {
-  return new Intl.NumberFormat(state.lang === 'ko' ? 'ko-KR' : 'en-US', {
+  return new Intl.NumberFormat(DATE_LOCALE[state.lang], {
     notation: 'compact',
     maximumFractionDigits: 1,
   }).format(n);
@@ -436,10 +448,23 @@ function setupVideo() {
   syncSoundToggle();
 }
 
-document.getElementById('langToggle').addEventListener('click', () => {
-  state.lang = state.lang === 'ko' ? 'en' : 'ko';
-  localStorage.setItem(LANG_KEY, state.lang);
-  applyLang();
+// 언어 드롭다운 — 버튼으로 펼치고, 항목 선택·바깥 클릭·ESC 로 닫는다
+const langMenu = document.getElementById('langMenu');
+document.getElementById('langToggle').addEventListener('click', (e) => {
+  e.stopPropagation();
+  langMenu.classList.toggle('hidden');
+});
+for (const btn of document.querySelectorAll('#langMenu [data-lang]')) {
+  btn.addEventListener('click', () => {
+    state.lang = btn.dataset.lang;
+    localStorage.setItem(LANG_KEY, state.lang);
+    langMenu.classList.add('hidden');
+    applyLang();
+  });
+}
+document.addEventListener('click', () => langMenu.classList.add('hidden'));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') langMenu.classList.add('hidden');
 });
 
 setupVideo();
