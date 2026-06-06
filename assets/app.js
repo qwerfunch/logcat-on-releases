@@ -272,6 +272,19 @@ function renderDownloadButton(latest, downloadEl) {
 let visitsCache = null; // GoatCounter TOTAL — 세션당 1회만 fetch
 let gcInjected = false;
 
+// 방문 카운트 스크립트 주입(멱등) — 집계는 릴리즈 유무·표시 임계값과 무관하게
+// 모든 방문에서 무조건 1회 실행돼야 한다. (이전엔 renderStats 안에만 있어서
+// 릴리즈 0개 empty state 에서는 비콘이 아예 안 나가던 버그가 있었음.)
+function ensureGoatCounter() {
+  if (!GOATCOUNTER_CODE || gcInjected) return;
+  gcInjected = true;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://gc.zgo.at/count.js';
+  s.dataset.goatcounter = `https://${GOATCOUNTER_CODE}.goatcounter.com/count`;
+  document.body.appendChild(s);
+}
+
 function fmtCompact(n) {
   return new Intl.NumberFormat(DATE_LOCALE[state.lang], {
     notation: 'compact',
@@ -305,15 +318,7 @@ function renderStats() {
   showStat('statDownloads', state.data?.stats?.totalDownloads, 'stats.downloads');
 
   if (!GOATCOUNTER_CODE) return;
-  // 방문 카운트 스크립트 주입(1회) — 코드 미설정이면 아예 로드하지 않음
-  if (!gcInjected) {
-    gcInjected = true;
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://gc.zgo.at/count.js';
-    s.dataset.goatcounter = `https://${GOATCOUNTER_CODE}.goatcounter.com/count`;
-    document.body.appendChild(s);
-  }
+  ensureGoatCounter();
   if (visitsCache !== null) {
     showStat('statVisits', visitsCache, 'stats.visits');
   } else {
@@ -468,6 +473,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 setupVideo();
+ensureGoatCounter(); // 방문 집계 — 릴리즈 유무와 무관하게 모든 방문에서
 applyLang();
 state.data = await loadData();
 render();
