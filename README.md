@@ -32,15 +32,18 @@
 
 Android Studio's logcat was so painful, I built my own. LogcatOn is a native desktop viewer (Rust + Tauri) that keeps up with 5,000+ lines/sec at a steady 60 fps — and makes the line you're looking for impossible to miss.
 
-- 📱 **Auto package filter** — pick an app and only its PID/TID lines pass; re-binds automatically when the app restarts
-- 🚨 **Signal catalog** — 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted non-destructively: gutter strip, inline pill, minimap dot, issues tray. Custom signals supported
-- 🔍 **Smart search & live filters** — 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, separate regex mode with logcat-friendly presets
-- 🎯 **Bookmarks & notes** — one-key toggle, color tags, jump cycling, persistent across sessions, export
-- 📊 **Canvas log table** — Rust ring buffer + visible-area-only painting keeps 1M+ line sessions smooth (the same pattern VS Code's editor uses)
-- 🖥️ **Device tools built in** — install APK/AAB/XAPK by drag & drop, launch/force-stop/uninstall per app, performance monitor (CPU · memory · jank) with a signal timeline
-- 📂 **File mode** — open `.log`/`.txt`, save filtered or raw
-- 🌐 **English & Korean UI** — follows your OS language
-- 🆓 **Free** for personal and commercial use
+| Feature | What it does |
+|---|---|
+| **Auto package filter** | Pick an app — only its PID/TID lines pass, re-binding automatically when the app restarts |
+| **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — custom signals supported |
+| **Smart search & live filters** | 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, regex mode with logcat-friendly presets |
+| **Bookmarks & notes** | One-key toggle, color tags, jump cycling, persistent across sessions, export |
+| **Canvas log table** | Rust ring buffer + visible-area-only painting keeps 1M+ line sessions smooth (the pattern VS Code's editor uses) |
+| **Device tools** | Install APK/AAB/XAPK by drag & drop, launch / force-stop / uninstall per app, performance monitor (CPU · memory · jank) with a signal timeline |
+| **File mode** | Open `.log`/`.txt`, save filtered or raw |
+| **English & Korean UI** | Follows your OS language, switchable in Settings |
+
+All of it free for personal and commercial use — see [License](#license).
 
 ## Install
 
