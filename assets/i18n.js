@@ -16,7 +16,7 @@ export const STRINGS = {
       '매번 쏟아지는 로그 속에서 원하는 정보를 찾기 답답하셨죠?<br>' +
       '저 역시 기존 로그캣의 아쉬움에 지쳐, 제가 편하게 쓰려고 직접 개발하게 되었습니다.<br>' +
       '개발자의 눈과 시간을 아껴주는 직관적인 로그 분석을 이제 LogcatOn과 함께 경험해 보세요!',
-    'intro.free': '무료로 열어두었으니 맘 편히 가져다 쓰세요!',
+    'intro.free': '무료입니다. 맘 편히 가져다 쓰세요!',
     'download.for': '{os}용 다운로드',
     'download.viewAll': '모든 다운로드 보기',
     'download.otherPlatforms': '다른 플랫폼 ↓',
@@ -46,7 +46,7 @@ export const STRINGS = {
       'Tired of digging for the one line you need in a flood of logs?<br>' +
       'So was I — so I built the logcat viewer I always wanted to use.<br>' +
       'Experience intuitive log analysis that saves your eyes and your time, with LogcatOn!',
-    'intro.free': "It's free and open — grab it and enjoy!",
+    'intro.free': "It's free — grab it and enjoy!",
     'download.for': 'Download for {os}',
     'download.viewAll': 'View all downloads',
     'download.otherPlatforms': 'Other platforms ↓',
