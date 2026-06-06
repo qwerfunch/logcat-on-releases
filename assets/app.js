@@ -4,9 +4,9 @@
 import { STRINGS, OS_NAMES } from './i18n.js';
 
 const LANG_KEY = 'logcaton.lang';
-// GoatCounter 사이트 코드 — 가입 후 입력 (예: 'logcaton'). 비어 있으면
+// GoatCounter 사이트 코드 (https://logcaton.goatcounter.com). 비어 있으면
 // 방문 집계·표시 기능 전체가 비활성(스크립트 주입도 안 함).
-const GOATCOUNTER_CODE = '';
+const GOATCOUNTER_CODE = 'logcaton';
 // 콜드스타트 보호: 각 스탯이 이 값 이상일 때만 노출 ("다운로드 3회" 역효과 방지)
 const STATS_MIN = 100;
 const state = { lang: detectLang(), os: detectOS(), data: null };
