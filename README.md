@@ -1,43 +1,90 @@
-# logcat-on-releases
+<p align="center">
+  <img src="assets/logcat-on-icon.png" width="96" alt="LogcatOn icon">
+</p>
 
-[LogcatOn](https://qwerfunch.github.io/logcat-on-releases/) — 안드로이드 로그캣 뷰어의 **공개 릴리즈 허브**.
+<h1 align="center">LogcatOn</h1>
 
-비공개 소스 레포(`qwerfunch/logcat-on`)의 CI 가 이 레포에 공개용 GitHub Release 를
-등록하면, 이 레포의 [Deploy Pages 워크플로](.github/workflows/deploy.yml)가 릴리즈
-데이터를 `releases.json` 으로 베이크해 GitHub Pages 로 자동 배포한다.
+<p align="center">
+  <strong>Blazing-fast Android logcat viewer for macOS · Windows · Linux</strong><br>
+  Pick your app — the noise disappears.
+</p>
 
-## 구조
+<p align="center">
+  <a href="https://qwerfunch.github.io/logcat-on-releases/"><img alt="Release" src="https://img.shields.io/github/v/release/qwerfunch/logcat-on-releases?display_name=tag&sort=semver"></a>
+  <img alt="Platforms" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-blue">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Free%20(Proprietary%20EULA)-blue"></a>
+  <a href="https://qwerfunch.github.io/logcat-on-releases/"><img alt="Website" src="https://img.shields.io/badge/website-logcaton-E67E22"></a>
+</p>
 
-```
-index.html                    # 릴리즈 페이지 (Tailwind Play CDN, 단일 페이지)
-assets/app.js                 # 렌더링: i18n(ko/en) · OS 감지 다운로드 버튼 · 릴리즈 목록
-assets/i18n.js                # UI 문자열 사전 (릴리즈 노트 본문은 원문 그대로)
-scripts/build-releases.mjs    # GitHub Releases → dist/releases.json (의존성 0)
-video/logcat-on.mp4           # 메인 데모 비디오
-data/releases.sample.json     # 로컬 프리뷰용 픽스처 (배포 아티팩트에 미포함)
-.github/workflows/deploy.yml  # release 이벤트/main push → Pages 빌드·배포
-```
+<p align="center">
+  <a href="https://qwerfunch.github.io/logcat-on-releases/"><strong>⬇️ Download</strong></a>
+  ·
+  <a href="https://github.com/qwerfunch/logcat-on-releases/releases">All releases</a>
+  ·
+  <a href="https://github.com/qwerfunch/logcat-on-releases/issues/new/choose">Report an issue</a>
+  ·
+  <a href="https://qwerfunch.github.io/logcat-on-releases/?lang=ko">한국어</a>
+</p>
 
-## 로컬 프리뷰
+![LogcatOn main window](assets/screenshot-hero.jpg)
 
-```sh
-# 레포 루트를 그대로 서빙 — releases.json 이 없으면 data/ 픽스처로 폴백
-python3 -m http.server 8000
-open http://localhost:8000/
+## Why LogcatOn?
 
-# 실데이터로 빌드해 보려면
-GITHUB_TOKEN=$(gh auth token) node scripts/build-releases.mjs
-```
+Android Studio's logcat was so painful, I built my own. LogcatOn is a native desktop viewer (Rust + Tauri) that keeps up with 5,000+ lines/sec at a steady 60 fps — and makes the line you're looking for impossible to miss.
 
-## 1회 설정
+- 📱 **Auto package filter** — pick an app and only its PID/TID lines pass; re-binds automatically when the app restarts
+- 🚨 **Signal catalog** — 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted non-destructively: gutter strip, inline pill, minimap dot, issues tray. Custom signals supported
+- 🔍 **Smart search & live filters** — 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, separate regex mode with logcat-friendly presets
+- 🎯 **Bookmarks & notes** — one-key toggle, color tags, jump cycling, persistent across sessions, export
+- 📊 **Canvas log table** — Rust ring buffer + visible-area-only painting keeps 1M+ line sessions smooth (the same pattern VS Code's editor uses)
+- 🖥️ **Device tools built in** — install APK/AAB/XAPK by drag & drop, launch/force-stop/uninstall per app, performance monitor (CPU · memory · jank) with a signal timeline
+- 📂 **File mode** — open `.log`/`.txt`, save filtered or raw
+- 🌐 **English & Korean UI** — follows your OS language
+- 🆓 **Free** for personal and commercial use
 
-- Settings → Pages → **Source = GitHub Actions**
-  (`gh api -X POST repos/qwerfunch/logcat-on-releases/pages -f build_type=workflow`)
+## Install
 
-## logcat-on 쪽 연동 (향후)
+Grab the build for your OS from the **[release page](https://qwerfunch.github.io/logcat-on-releases/)** (or the [Releases](https://github.com/qwerfunch/logcat-on-releases/releases) tab):
 
-`logcat-on/.github/workflows/release.yml` 의 릴리즈 생성/업로드 대상을
-`qwerfunch/logcat-on-releases` 로 변경해야 한다. 기본 `GITHUB_TOKEN` 은 타 레포에
-쓰기 불가 → 이 레포 `contents:write` 권한의 fine-grained PAT 를 `logcat-on` 의
-secret 으로 등록해 사용. 릴리즈가 여기 등록되면 `release: published` 이벤트로
-페이지가 자동 갱신된다.
+| Platform | Installer | Portable |
+|---|---|---|
+| macOS (Universal — Intel / Apple Silicon) | `LogcatOn_*.dmg` | `LogcatOn-*-macos-universal-portable.tar.gz` |
+| Windows (x64) | `LogcatOn_*_x64-setup.exe` · `LogcatOn_*_x64_en-US.msi` | `LogcatOn-*-windows-x64-portable.zip` |
+| Linux (x64) | `LogcatOn_*_amd64.AppImage` · `.deb` · `.rpm` | `LogcatOn-*-linux-x64-portable.tar.gz` |
+
+> **Unsigned builds** — releases are not yet code-signed, so your OS will warn on first launch:
+> **macOS**: right-click the app → *Open* (needed once) · **Windows**: SmartScreen → *More info* → *Run anyway*
+
+### Requirements
+
+- An Android device with USB debugging enabled, or an emulator (Android Studio AVD, Genymotion, …)
+- ADB — your system install is used if present (`PATH` / `ANDROID_HOME`); otherwise the bundled platform-tools kick in automatically
+
+## Feedback & Issues
+
+The source repository is private — **this repo is the official issue tracker** for LogcatOn.
+
+- 🐛 [Report a bug](https://github.com/qwerfunch/logcat-on-releases/issues/new?template=bug_report.yml)
+- 💡 [Request a feature](https://github.com/qwerfunch/logcat-on-releases/issues/new?template=feature_request.yml)
+
+When reporting a bug, please include your OS + version, the LogcatOn version (release tag), and steps to reproduce. Logs and screenshots help a lot.
+
+## License
+
+Free for personal and commercial use. Closed-source, distributed under a proprietary EULA — redistribution, resale, and reverse engineering are not permitted. Full text: [LICENSE](LICENSE).
+
+Bundled third-party open-source components (Android platform-tools/adb · aapt2 · bundletool · fonts, …) are listed with their licenses in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+---
+
+<details>
+<summary><strong>For maintainers — how this repo works</strong></summary>
+
+This repository is the public release hub + website for LogcatOn:
+
+- **Releases** are published here by the private source repo's CI (tag push → multi-platform build → draft release with assets → manual publish).
+- **Website** (GitHub Pages): every release event, push to `main`, and a daily cron run [`deploy.yml`](.github/workflows/deploy.yml) — it bakes this repo's releases into `releases.json` ([`scripts/build-releases.mjs`](scripts/build-releases.mjs)), prerenders release notes + sitemap for SEO ([`scripts/prerender.mjs`](scripts/prerender.mjs)), and deploys `dist/` to Pages.
+- **Local preview**: `python3 -m http.server 8000` from the repo root (the page falls back to `data/releases.sample.json`), or run the build scripts with `GITHUB_TOKEN=$(gh auth token)`.
+- `LICENSE` and `THIRD-PARTY-NOTICES.md` are mirrored from the source repo — re-sync when they change there.
+
+</details>

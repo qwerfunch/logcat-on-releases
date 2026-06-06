@@ -1,0 +1,133 @@
+END USER LICENSE AGREEMENT (EULA) — "Logcat On"
+
+Version: 1.0.0
+Effective date: the date you install or use the release this Agreement accompanies
+Applies to: Logcat On (binary/package name: logcat-on; application identifier: LogcatOn)
+Licensor: qwerfunch ("Licensor", "we", "us")
+Governing law: Republic of Korea
+
+Language: This Agreement is provided in English, which is the authoritative and governing version. A Korean translation may be provided separately for the convenience of Korean-speaking users; in the event of any conflict, the English version controls.
+
+Please read this first
+
+This Agreement is short and plain. The essentials — the Software is free and provided "AS IS," and you are responsible for the devices and apps you connect to and act on.
+
+1. Acceptance (installing/using = acceptance)
+
+1.1 This End User License Agreement ("Agreement") is a binding legal agreement between you ("you" or "User") and the Licensor, governing your use of the "Logcat On" desktop software, including its executables, bundled resources, documentation, and any updates delivered to you under these terms (collectively, the "Software").
+
+1.2 By installing, copying, accessing, or using the Software, you accept this Agreement. If you do not agree, do not install or use the Software, and delete any copies in your possession.
+
+1.3 (Authority to bind an organization.) If you accept this Agreement or install or use the Software on behalf of a company, organization, or other legal entity, you represent and warrant that you have authority to bind that entity, and "you" and "User" then mean that entity. No per-seat, per-organization, or per-device licensing applies to this free version.
+
+2. The Software
+
+Logcat On connects to Android devices and emulators through the Android Debug Bridge ("adb") to display logs and can perform actions that affect devices and apps, such as installing, launching, force-stopping, and uninstalling apps. All such actions are initiated by you; the Software performs them at your direction.
+
+3. License grant — version-scoped, free of charge, any purpose
+
+3.1 (Grant.) Subject to your compliance with this Agreement, the Licensor grants you a worldwide, royalty-free, non-exclusive, non-transferable, non-sublicensable, revocable (as set out in Section 9) license to install and use the specific version/release of the Software with which these terms are provided, for any lawful purpose — personal, educational, or commercial, including use inside a business or organization. There is no charge, no seat count, and no separate commercial license required for this version.
+
+3.2 (Multiple machines.) You may install and use the Software on multiple computers for your own use (or, where you accept on behalf of an entity, for that entity's internal use).
+
+3.3 (Internal distribution.) Distributing the unmodified installer internally to your own personnel for their use under this Agreement is permitted and is not a prohibited redistribution under Section 4.
+
+3.4 (Stability of the version you hold.) For so long as you comply with this Agreement, the license granted in this Section for the specific release you have installed remains in effect for that release, and is not retroactively revoked, repriced, or converted to paid terms by anything the Licensor does with respect to a later release (including charging for it). New terms apply only when you obtain or update to a release offered under those new terms (Section 9).
+
+4. Restrictions
+
+Except as expressly permitted in this Agreement, or to the extent a restriction is prohibited by applicable law, you must not:
+
+(a) sell, rent, lease, lend, sublicense, redistribute, publish, host for download, repackage, or otherwise make the Software available to any third party as a standalone product, whether for a fee or free of charge (the internal distribution in Section 3.3 is excepted);
+
+(b) remove, alter, or obscure any copyright, trademark, license, attribution, or other proprietary notices in or on the Software, including the third-party notices in Section 5;
+
+(c) reverse engineer, decompile, or disassemble the Software, or attempt to derive its source code, except and only to the extent that this restriction is prohibited by applicable mandatory law, and then only to the minimum extent so permitted (for example, where the law permits interoperability); or
+
+(d) circumvent or interfere with the Software's update-signature verification or security mechanisms, except to the extent applicable mandatory law permits interoperability or decompilation.
+
+The Software is proprietary and closed-source. No source code is disclosed under this Agreement, and nothing in this Agreement grants you any right to the Software's source code. Nothing in this Section restricts your rights in the third-party components described in Section 5.
+
+5. Third-party components
+
+5.1 The Software includes third-party tools and open-source components that are owned by third parties and licensed under their own terms — for example, the Android Platform Tools / adb, bundletool, and aapt2 (each Apache-2.0), and numerous open-source components under permissive licenses (MIT, BSD, ISC), Apache-2.0, the weak-copyleft MPL-2.0, and OFL-1.1 (for fonts).
+
+5.2 These components are licensed to you under their own respective licenses, not under this Agreement. To the extent of any conflict between this Agreement and a component's license as applied to that component, that component's license prevails for that component. A list of such components and their licenses is provided in the THIRD-PARTY NOTICES / credits file accompanying the Software, and you agree to comply with those licenses. The Licensor makes no warranty regarding, and assumes no liability for, the third-party components.
+
+6. Your responsibilities; connected devices
+
+The Software is a tool that, at your direction, performs actions that affect connected devices and the apps and data on them. You are solely responsible for:
+
+6.1 (Authorization.) ensuring that you own, or are authorized by the owner to access and operate, every device, emulator, and system you connect to or interact with using the Software, and that you have all necessary rights and consents to read its logs and data;
+
+6.2 (User-initiated actions.) every device-affecting action you initiate through the Software — including installing, launching, force-stopping, and uninstalling apps, and accessing logs or data — and all consequences of those actions, including loss, corruption, or unavailability of apps or data, device misconfiguration, and downtime;
+
+6.3 (Backups; compliance.) maintaining appropriate backups, and complying with all laws, organizational policies, and third-party terms applicable to the devices, apps, and data you handle. Some actions (e.g., uninstalling apps, overwriting installed packages) may be irreversible and may result in data loss; you assume full responsibility for such actions.
+
+7. Privacy and telemetry
+
+7.1 The Software's telemetry is optional and opt-in. By default it is privacy-preserving and does not transmit telemetry until you enable it.
+
+7.2 Where enabled, telemetry is limited to minimal crash-reporting data (via Sentry) from which personally identifiable information is scrubbed; you may select off or crash-reports-only, and may disable it at any time. Any processing of telemetry is limited to operating, maintaining, and improving the Software.
+
+7.3 We do not sell your data. Where a separate privacy notice is provided, it supplements this Section.
+
+8. Ownership; reservation of rights
+
+8.1 (Ownership.) The Software is licensed, not sold. The Licensor (and its licensors, as to third-party components) retains all right, title, and interest in and to the Software, including all intellectual property rights. The name "Logcat On," the application identifier LogcatOn, and any associated logos are the Licensor's property and are not licensed to you except as necessary to run the Software unmodified.
+
+8.2 (Reservation of rights.) All rights not expressly granted to you in this Agreement are reserved by the Licensor. No right or license is granted by implication, estoppel, or otherwise.
+
+9. Updates, version scope, and future terms
+
+9.1 (Updates.) The Software may include an in-app auto-updater (the Tauri updater, with cryptographically signed releases) that can download and install new versions. Updates may add, change, or remove functionality. Where the Software provides the option, you may decline or disable automatic updates.
+
+9.2 (Version-scoped grant.) The free license in Section 3 is granted only for the specific version/release of the Software with which these terms are provided. It is not a promise that any past or future version is or will be free, or that any particular version, feature, or service will remain available. The fact that this release is free does not entitle you to any other release free of charge.
+
+9.3 (Future versions may have different terms.) The Licensor may, at its sole discretion, offer future releases, editions, features, or services under different terms, including paid, subscription, or commercial terms (for example, a future "Pro" edition or paid features). Each release of the Software is governed by the terms accompanying that release. If you install, update to, or continue using a release accompanied by new or different terms, your continued use of that release constitutes acceptance of those terms. If you do not agree to a new release's terms, do not install, update to, or use that release; you may continue to use the release you already accepted under the terms that accompanied it (Section 3.4). Introducing such future terms does not affect, revoke, or reprice the license granted to you in Section 3 for the release you already hold. This Section reserves the right to introduce paid terms in the future; it does not itself impose any charge for this version.
+
+10. Disclaimer of warranties (AS IS)
+
+10.1 THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE," FREE OF CHARGE, WITH ALL FAULTS AND WITHOUT WARRANTY OF ANY KIND. To the maximum extent permitted by applicable law, the Licensor disclaims all warranties and conditions, whether express, implied, statutory, or otherwise, including any implied warranties of merchantability, fitness for a particular purpose, title, accuracy, and non-infringement, and any warranty arising from course of dealing or usage of trade.
+
+10.2 The Licensor does not warrant that the Software will be uninterrupted, error-free, secure, compatible with any particular environment (device, app, OS, or adb version), free of correctable defects, or fit for your requirements, or that any operation it performs will produce a particular result; you use it at your own risk.
+
+10.3 Some jurisdictions do not allow the exclusion of certain warranties; in that case the above exclusions apply to the maximum extent permitted, and where mandatory consumer-protection law grants you rights that cannot be waived, nothing here limits those rights.
+
+11. Limitation of liability
+
+To the maximum extent permitted by applicable law, and because the Software is provided free of charge:
+
+11.1 (Exclusion of damages.) The Licensor and its licensors will not be liable for any indirect, incidental, special, consequential, exemplary, or punitive damages, or for any loss of or damage to data, apps, devices, profits, revenue, goodwill, business, or use, or for any device operation performed at your direction (including installing, launching, force-stopping, or uninstalling apps) or any access to logs or data, arising out of or relating to the Software or this Agreement, even if advised of the possibility of such damages and regardless of the theory of liability.
+
+11.2 (Liability cap.) The Licensor's total aggregate liability arising out of or relating to the Software or this Agreement will not exceed the greater of (i) the amount you actually paid the Licensor for the Software in the twelve months before the claim (which, for this free version, is zero) or (ii) KRW 100,000.
+
+11.3 (Mandatory law.) Nothing in this Agreement excludes or limits liability that cannot be excluded or limited under applicable mandatory law. In particular, this Section does not limit liability for the Licensor's intentional misconduct or gross negligence, for death or personal injury caused by negligence, or for any other liability that cannot be limited under such law. Where such law applies, the above limitations apply to the maximum extent permitted, and the remainder remains in effect.
+
+11.4 (Allocation of risk.) You acknowledge that the disclaimers and limitations in Sections 10 and 11 reflect a reasonable allocation of risk, are an essential basis on which the Licensor provides the Software free of charge, and that the Licensor would not provide the Software without them.
+
+12. Term and termination
+
+12.1 This Agreement is effective on your acceptance (first installation or use) and continues until terminated.
+
+12.2 (Automatic termination on breach.) This Agreement and the license granted in Section 3 terminate automatically, without notice, if you breach any term of this Agreement.
+
+12.3 (Effect of termination.) On termination, you must immediately stop using the Software and delete all copies in your possession or control. Sections that by their nature should survive — including Section 4 (Restrictions), Section 5 (Third-Party Components), Section 6 (Your Responsibilities), Section 8 (Ownership; Reservation of Rights), Section 10 (Disclaimer), Section 11 (Limitation of Liability), and Section 13 (General) — survive termination.
+
+13. General
+
+13.1 (Governing law and jurisdiction.) This Agreement is governed by the laws of the Republic of Korea, without regard to its conflict-of-laws rules. The courts of the Republic of Korea shall have jurisdiction over disputes arising out of or relating to this Agreement, subject to any non-excludable rights you may have as a consumer under the law of your place of residence. The U.N. Convention on Contracts for the International Sale of Goods does not apply.
+
+13.2 (Export compliance.) You must comply with all applicable export-control and sanctions laws and regulations (including those of the Republic of Korea and any other applicable jurisdiction), and you represent that you are not located in, and will not use or export the Software in violation of, any embargo or restricted-party designation under such laws.
+
+13.3 (Severability.) If any provision is held invalid or unenforceable, it will be modified to the minimum extent necessary to make it enforceable (or, if it cannot be, severed), and the remaining provisions remain in full force and effect.
+
+13.4 (No waiver.) A failure or delay by the Licensor in enforcing any provision is not a waiver of it, and no waiver is effective unless in writing.
+
+13.5 (Assignment.) You may not assign or transfer this Agreement or any rights under it without the Licensor's prior written consent; any prohibited assignment is void. The Licensor may assign this Agreement in connection with a merger, acquisition, reorganization, or sale of assets, or to an affiliate.
+
+13.6 (Entire agreement.) This Agreement, together with the third-party NOTICES (as to the components they cover) and any terms accompanying a particular release, is the entire agreement between you and the Licensor regarding the Software, and supersedes all prior or contemporaneous understandings on that subject.
+
+13.7 (Contact.) Questions about this Agreement may be directed to GitHub Issues (github.com/qwerfunch/logcat-on-releases/issues).
+
+By installing or using Logcat On, you acknowledge that you have read and agree to this End User License Agreement.
