@@ -5,7 +5,11 @@ name: Deploy Pages
 # 사전 조건(1회): Settings → Pages → Source = "GitHub Actions".
 on:
   release:
-    types: [published, unpublished, edited, deleted, released, prereleased]
+    # `published` 하나로 일반·프리릴리즈 publish 모두 커버된다.
+    # `released`/`prereleased` 는 `published` 와 동시에 발사돼 run 이 2개
+    # 생기고, concurrency(pages) 충돌로 deploy 가 죽는 레이스를 만들었음
+    # (v1.0.0 첫 릴리즈에서 실제 발생) — 구독하지 않는다.
+    types: [published, unpublished, edited, deleted]
   push:
     branches: [main]
   # 매일 1회 재빌드 — 릴리즈 자산 download_count(스탯 표시용) 최신화
