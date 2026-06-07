@@ -46,7 +46,7 @@ jobs:
 
       - name: Assemble dist
         run: |
-          cp index.html .nojekyll robots.txt dist/
+          cp index.html .nojekyll robots.txt bd7f09c5510dff62fcf2a0addf3aa865.txt dist/
           cp -r assets video dist/
 
       # SEO: 릴리즈 노트를 정적 HTML 로 베이크(JS 미실행 크롤러 대응) +
@@ -69,3 +69,27 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # IndexNow — 배포 성공 시 참여 검색엔진(Bing·Naver·Yandex·Seznam 등)에
+  # 즉시 색인 핑. api.indexnow.org 한 곳에 보내면 컨소시엄 전체로 전파된다.
+  # (Google 은 IndexNow 미지원 — Search Console sitemap 경로로 커버.)
+  # 핑은 best-effort: 실패해도 배포 결과를 깨뜨리지 않는다(|| true).
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping IndexNow
+        run: |
+          curl -sS -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d '{
+              "host": "qwerfunch.github.io",
+              "key": "bd7f09c5510dff62fcf2a0addf3aa865",
+              "keyLocation": "https://qwerfunch.github.io/logcat-on-releases/bd7f09c5510dff62fcf2a0addf3aa865.txt",
+              "urlList": [
+                "https://qwerfunch.github.io/logcat-on-releases/",
+                "https://qwerfunch.github.io/logcat-on-releases/?lang=ko",
+                "https://qwerfunch.github.io/logcat-on-releases/?lang=ja",
+                "https://qwerfunch.github.io/logcat-on-releases/?lang=zh"
+              ]
+            }' -w "\nIndexNow HTTP %{http_code}\n" || true
