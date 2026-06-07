@@ -46,7 +46,7 @@ jobs:
 
       - name: Assemble dist
         run: |
-          cp index.html .nojekyll robots.txt bd7f09c5510dff62fcf2a0addf3aa865.txt dist/
+          cp index.html .nojekyll robots.txt bd7f09c5510dff62fcf2a0addf3aa865.txt google86229c58688d70fc.html dist/
           cp -r assets video dist/
 
       # SEO: 릴리즈 노트를 정적 HTML 로 베이크(JS 미실행 크롤러 대응) +
