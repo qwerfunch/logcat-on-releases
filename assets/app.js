@@ -21,17 +21,31 @@ function t(key) {
   return STRINGS[state.lang][key] ?? STRINGS.en[key] ?? key;
 }
 
+function detectOSLang() {
+  const nav = (navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('ko')) return 'ko';
+  if (nav.startsWith('ja')) return 'ja';
+  if (nav.startsWith('zh')) return 'zh'; // 번체 사용자도 간체로 폴백
+  return 'en';
+}
+
 function detectLang() {
   // 우선순위: URL ?lang= (hreflang 검색 유입) → 저장된 선택 → OS 언어
   const urlLang = new URLSearchParams(window.location.search).get('lang');
   if (LANGS.includes(urlLang)) return urlLang;
   const saved = localStorage.getItem(LANG_KEY);
   if (LANGS.includes(saved)) return saved;
-  const nav = (navigator.language || 'en').toLowerCase();
-  if (nav.startsWith('ko')) return 'ko';
-  if (nav.startsWith('ja')) return 'ja';
-  if (nav.startsWith('zh')) return 'zh'; // 번체 사용자도 간체로 폴백
-  return 'en';
+  return detectOSLang();
+}
+
+// 드롭다운 순서 개인화 — OS 언어를 맨 위로, 나머지는 표준 순서 유지.
+// 기준은 현재 선택이 아니라 OS 언어(1회 고정) — 선택할 때마다 항목이
+// 재배열되면 공간 기억이 깨지므로 정렬은 안정적으로 둔다.
+function personalizeLangMenu() {
+  const item = document
+    .querySelector(`#langMenu [data-lang="${detectOSLang()}"]`)
+    ?.closest('li');
+  item?.parentElement.prepend(item);
 }
 
 function detectOS() {
@@ -474,6 +488,7 @@ document.addEventListener('keydown', (e) => {
 
 setupVideo();
 ensureGoatCounter(); // 방문 집계 — 릴리즈 유무와 무관하게 모든 방문에서
+personalizeLangMenu();
 applyLang();
 state.data = await loadData();
 render();
