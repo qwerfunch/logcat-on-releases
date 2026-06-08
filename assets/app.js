@@ -486,7 +486,41 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') langMenu.classList.add('hidden');
 });
 
+// 기능 스크린샷 라이트박스 — 클릭하면 전체화면 확대, ESC·배경클릭으로 닫기.
+// 모바일·데스크톱 동일 동작(호버는 터치에서 안 됨). 오버레이는 1회만 생성.
+function setupLightbox() {
+  const imgs = document.querySelectorAll('#features img[data-zoom]');
+  if (!imgs.length) return;
+  const overlay = document.createElement('div');
+  overlay.className =
+    'fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-10 cursor-zoom-out';
+  overlay.innerHTML =
+    '<img class="max-w-full max-h-full rounded-xl shadow-2xl" alt="">';
+  document.body.appendChild(overlay);
+  const big = overlay.querySelector('img');
+  const close = () => {
+    overlay.classList.add('hidden');
+    overlay.classList.remove('flex');
+    document.body.style.overflow = '';
+    big.removeAttribute('src');
+  };
+  for (const img of imgs) {
+    img.addEventListener('click', () => {
+      big.src = img.currentSrc || img.src;
+      big.alt = img.alt;
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+      document.body.style.overflow = 'hidden'; // 확대 중 배경 스크롤 잠금
+    });
+  }
+  overlay.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+}
+
 setupVideo();
+setupLightbox();
 ensureGoatCounter(); // 방문 집계 — 릴리즈 유무와 무관하게 모든 방문에서
 personalizeLangMenu();
 applyLang();
