@@ -153,6 +153,95 @@
             </div>
         </section>
 
+        <!-- 핵심 기능 쇼케이스 — 지그재그(좌우 교차). 각 행의 비주얼은 지금은
+             기능 아이콘 카드이며, 스크린샷이 준비되면 그 카드 div 를
+             <img src="assets/features/<key>.jpg" loading="lazy" class="w-full h-full object-cover">
+             로 교체하면 된다(주석 SWAP 지점 참고). 정적 텍스트는 en 베이크. -->
+        <section id="features" class="w-full mb-24">
+            <h2 data-i18n="features.heading" class="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight text-center mb-16">Built for the way you actually debug</h2>
+            <div class="space-y-16 sm:space-y-24">
+
+                <!-- 1. 디자인 + 60fps -->
+                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: design.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-lightning text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.design.title" class="text-xl font-bold text-stone-900 mb-2.5">Beautiful by design, smooth at 60fps</h3>
+                        <p data-i18n="features.design.desc" class="text-stone-600 leading-relaxed">A million log lines, rendered on canvas — and it never drops a frame.</p>
+                    </div>
+                </div>
+
+                <!-- 2. 기기 연결 + 앱 필터 + 설치/제어 -->
+                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: filter.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-device-mobile text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.filter.title" class="text-xl font-bold text-stone-900 mb-2.5">Just your app's logs — nothing else</h3>
+                        <p data-i18n="features.filter.desc" class="text-stone-600 leading-relaxed">Connect a device, pick a package — install, launch, and force-stop apps right from here.</p>
+                    </div>
+                </div>
+
+                <!-- 3. 북마크 -->
+                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: bookmark.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-bookmark-simple text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.bookmark.title" class="text-xl font-bold text-stone-900 mb-2.5">Never lose the line that matters</h3>
+                        <p data-i18n="features.bookmark.desc" class="text-stone-600 leading-relaxed">Bookmark key lines, tag them by color, and jump back in an instant.</p>
+                    </div>
+                </div>
+
+                <!-- 4. 시그널 (에러·크래시 자동 포착) -->
+                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: signal.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-warning-octagon text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.signal.title" class="text-xl font-bold text-stone-900 mb-2.5">Crashes catch your eye, instantly</h3>
+                        <p data-i18n="features.signal.desc" class="text-stone-600 leading-relaxed">Errors and crashes surface on the minimap and issue alerts — jump straight to the moment on the performance timeline.</p>
+                    </div>
+                </div>
+
+                <!-- 5. 실시간 성능 모니터 -->
+                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: perf.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-pulse text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.perf.title" class="text-xl font-bold text-stone-900 mb-2.5">Watch performance as it happens</h3>
+                        <p data-i18n="features.perf.desc" class="text-stone-600 leading-relaxed">CPU, memory, jank, battery and temperature — live, while you read the logs.</p>
+                    </div>
+                </div>
+
+                <!-- 6. 테마 -->
+                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: theme.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-circle-half text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.theme.title" class="text-xl font-bold text-stone-900 mb-2.5">Dark or light — make it yours</h3>
+                        <p data-i18n="features.theme.desc" class="text-stone-600 leading-relaxed">Switch themes freely to match your setup and your mood.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- 릴리즈 영역 -->
         <div class="w-full">
 
