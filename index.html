@@ -161,7 +161,7 @@
             <h2 data-i18n="features.heading" class="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight text-center mb-16">Built for the way you actually debug</h2>
             <div class="space-y-16 sm:space-y-24">
 
-                <!-- 1. 디자인 + 60fps -->
+                <!-- 1. design -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
                     <div class="sm:w-[55%]"><!-- SWAP: design.jpg -->
                         <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
@@ -169,26 +169,65 @@
                         </div>
                     </div>
                     <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.design.title" class="text-xl font-bold text-stone-900 mb-2.5">Beautiful by design, smooth at 60fps</h3>
-                        <p data-i18n="features.design.desc" class="text-stone-600 leading-relaxed">A million log lines, rendered on canvas — and it never drops a frame.</p>
+                        <h3 data-i18n="features.design.title" class="text-xl font-bold text-stone-900 mb-2.5">Smooth to scroll, easy on the eyes</h3>
+                        <p data-i18n="features.design.desc" class="text-stone-600 leading-relaxed">Canvas rendering keeps even large logs scrolling smoothly.</p>
                     </div>
                 </div>
 
-                <!-- 2. 기기 연결 + 앱 필터 + 설치/제어 -->
+                <!-- 2. app -->
                 <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]"><!-- SWAP: filter.jpg -->
+                    <div class="sm:w-[55%]"><!-- SWAP: app.jpg -->
                         <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
                             <i class="ph-fill ph-device-mobile text-7xl text-[#E67E22]/35"></i>
                         </div>
                     </div>
                     <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.filter.title" class="text-xl font-bold text-stone-900 mb-2.5">Just your app's logs — nothing else</h3>
-                        <p data-i18n="features.filter.desc" class="text-stone-600 leading-relaxed">Connect a device, pick a package — install, launch, and force-stop apps right from here.</p>
+                        <h3 data-i18n="features.app.title" class="text-xl font-bold text-stone-900 mb-2.5">Only the app you care about</h3>
+                        <p data-i18n="features.app.desc" class="text-stone-600 leading-relaxed">Connect a device and pick an app to see just its logs. Install, launch, and force-stop, all in one place.</p>
                     </div>
                 </div>
 
-                <!-- 3. 북마크 -->
+                <!-- 3. filter -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: filter.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-funnel text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.filter.title" class="text-xl font-bold text-stone-900 mb-2.5">Narrow down to the lines you want</h3>
+                        <p data-i18n="features.filter.desc" class="text-stone-600 leading-relaxed">Find, exclude, tag, PID and level filters — plus regex and AND/OR search.</p>
+                    </div>
+                </div>
+
+                <!-- 4. signal -->
+                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: signal.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-warning-octagon text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.signal.title" class="text-xl font-bold text-stone-900 mb-2.5">Crashes catch your eye, instantly</h3>
+                        <p data-i18n="features.signal.desc" class="text-stone-600 leading-relaxed">Spot them on the minimap, issues, or timeline — and jump right to the spot.</p>
+                    </div>
+                </div>
+
+                <!-- 5. perf -->
+                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+                    <div class="sm:w-[55%]"><!-- SWAP: perf.jpg -->
+                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
+                            <i class="ph-fill ph-pulse text-7xl text-[#E67E22]/35"></i>
+                        </div>
+                    </div>
+                    <div class="sm:w-[45%]">
+                        <h3 data-i18n="features.perf.title" class="text-xl font-bold text-stone-900 mb-2.5">Performance, live at a glance</h3>
+                        <p data-i18n="features.perf.desc" class="text-stone-600 leading-relaxed">Monitor CPU, memory, jank, battery and temperature alongside your logs.</p>
+                    </div>
+                </div>
+
+                <!-- 6. bookmark -->
+                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
                     <div class="sm:w-[55%]"><!-- SWAP: bookmark.jpg -->
                         <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
                             <i class="ph-fill ph-bookmark-simple text-7xl text-[#E67E22]/35"></i>
@@ -200,34 +239,8 @@
                     </div>
                 </div>
 
-                <!-- 4. 시그널 (에러·크래시 자동 포착) -->
-                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]"><!-- SWAP: signal.jpg -->
-                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
-                            <i class="ph-fill ph-warning-octagon text-7xl text-[#E67E22]/35"></i>
-                        </div>
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.signal.title" class="text-xl font-bold text-stone-900 mb-2.5">Crashes catch your eye, instantly</h3>
-                        <p data-i18n="features.signal.desc" class="text-stone-600 leading-relaxed">Errors and crashes surface on the minimap and issue alerts — jump straight to the moment on the performance timeline.</p>
-                    </div>
-                </div>
-
-                <!-- 5. 실시간 성능 모니터 -->
+                <!-- 7. theme -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]"><!-- SWAP: perf.jpg -->
-                        <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
-                            <i class="ph-fill ph-pulse text-7xl text-[#E67E22]/35"></i>
-                        </div>
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.perf.title" class="text-xl font-bold text-stone-900 mb-2.5">Watch performance as it happens</h3>
-                        <p data-i18n="features.perf.desc" class="text-stone-600 leading-relaxed">CPU, memory, jank, battery and temperature — live, while you read the logs.</p>
-                    </div>
-                </div>
-
-                <!-- 6. 테마 -->
-                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
                     <div class="sm:w-[55%]"><!-- SWAP: theme.jpg -->
                         <div class="aspect-video rounded-2xl border border-stone-200/70 bg-gradient-to-br from-[#FFF7EC] to-[#F1E9D8] shadow-[0_14px_44px_rgba(230,126,34,0.08)] flex items-center justify-center">
                             <i class="ph-fill ph-circle-half text-7xl text-[#E67E22]/35"></i>
