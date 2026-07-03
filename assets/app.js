@@ -11,8 +11,6 @@ const LANG_KEY = 'logcaton.lang';
 // GoatCounter 사이트 코드 (https://logcaton.goatcounter.com). 비어 있으면
 // 방문 집계·표시 기능 전체가 비활성(스크립트 주입도 안 함).
 const GOATCOUNTER_CODE = 'logcaton';
-// 콜드스타트 보호: 각 스탯이 이 값 이상일 때만 노출 ("다운로드 3회" 역효과 방지)
-const STATS_MIN = 100;
 const state = { lang: detectLang(), os: detectOS(), data: null };
 
 // ------------------------------------------------------------------ helpers
@@ -306,21 +304,23 @@ function fmtCompact(n) {
   }).format(n);
 }
 
+// count 가 숫자로 확정되기 전(아직 로드 전/fetch 실패)에는 숨김 — 그 외에는
+// 0 이라도 항상 표시한다.
 function showStat(id, count, labelKey) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (typeof count === 'number' && count >= STATS_MIN) {
-    el.querySelector('span').textContent = `${fmtCompact(count)} ${t(labelKey)}`;
-    el.title = count.toLocaleString();
-    el.classList.remove('hidden');
-    el.classList.add('inline-flex');
-    const line = document.getElementById('statsLine');
-    line.classList.remove('hidden');
-    line.classList.add('flex');
-  } else {
+  if (typeof count !== 'number' || Number.isNaN(count)) {
     el.classList.add('hidden');
     el.classList.remove('inline-flex');
+    return;
   }
+  el.querySelector('span').textContent = `${fmtCompact(count)} ${t(labelKey)}`;
+  el.title = count.toLocaleString();
+  el.classList.remove('hidden');
+  el.classList.add('inline-flex');
+  const line = document.getElementById('statsLine');
+  line.classList.remove('hidden');
+  line.classList.add('flex');
 }
 
 function renderStats() {
