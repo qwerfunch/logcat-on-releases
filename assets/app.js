@@ -486,11 +486,11 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') langMenu.classList.add('hidden');
 });
 
-// 기능 스크린샷 라이트박스 — 클릭하면 전체화면 확대, ESC·배경클릭으로 닫기.
+// 스크린샷 라이트박스 — 클릭하면 전체화면 확대, ESC·배경클릭으로 닫기.
 // 모바일·데스크톱 동일 동작(호버는 터치에서 안 됨). 오버레이는 1회만 생성.
+// 릴리즈 노트 이미지는 releases.json 로드 후 비동기로 DOM 에 추가되므로
+// (querySelectorAll 시점엔 아직 없음) 개별 리스너 대신 document 위임 클릭으로 처리.
 function setupLightbox() {
-  const imgs = document.querySelectorAll('#features img[data-zoom]');
-  if (!imgs.length) return;
   const overlay = document.createElement('div');
   overlay.className =
     'fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-10 cursor-zoom-out';
@@ -504,15 +504,15 @@ function setupLightbox() {
     document.body.style.overflow = '';
     big.removeAttribute('src');
   };
-  for (const img of imgs) {
-    img.addEventListener('click', () => {
-      big.src = img.currentSrc || img.src;
-      big.alt = img.alt;
-      overlay.classList.remove('hidden');
-      overlay.classList.add('flex');
-      document.body.style.overflow = 'hidden'; // 확대 중 배경 스크롤 잠금
-    });
-  }
+  document.addEventListener('click', (e) => {
+    const img = e.target.closest('img[data-zoom]');
+    if (!img) return;
+    big.src = img.currentSrc || img.src;
+    big.alt = img.alt;
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    document.body.style.overflow = 'hidden'; // 확대 중 배경 스크롤 잠금
+  });
   overlay.addEventListener('click', close);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') close();

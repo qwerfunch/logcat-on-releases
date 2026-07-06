@@ -65,7 +65,7 @@ function inlineMd(text) {
   // 링크로 오매칭되어 앞의 `!`만 텍스트로 남는다).
   s = s.replace(
     /!\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g,
-    '<img src="$2" alt="$1" loading="lazy">',
+    '<img src="$2" alt="$1" loading="lazy" class="cursor-zoom-in" data-zoom>',
   );
   s = s.replace(
     /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
