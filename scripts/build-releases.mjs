@@ -61,6 +61,12 @@ function escapeHtml(s) {
 function inlineMd(text) {
   let s = escapeHtml(text);
   s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // 이미지는 링크 규칙보다 먼저 처리(안 그러면 `![alt](url)`의 `[alt](url)` 부분이
+  // 링크로 오매칭되어 앞의 `!`만 텍스트로 남는다).
+  s = s.replace(
+    /!\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g,
+    '<img src="$2" alt="$1" loading="lazy">',
+  );
   s = s.replace(
     /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
     '<a href="$2" target="_blank" rel="noopener">$1</a>',
