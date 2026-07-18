@@ -29,7 +29,7 @@
 
 ## Why LogcatOn?
 
-Android Studio's logcat was so painful, I built my own. LogcatOn is a native desktop viewer (Rust + Tauri) that keeps up with 5,000+ lines/sec at a steady 60 fps — and makes the line you're looking for impossible to miss.
+Android Studio's logcat was so painful, I built my own. LogcatOn is a native desktop viewer that keeps up with 5,000+ lines/sec at a steady 60 fps — and makes the line you're looking for impossible to miss.
 
 ![Signal highlighting in action](assets/record-signal.gif)
 
