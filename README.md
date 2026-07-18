@@ -11,6 +11,7 @@
 
 <p align="center">
   <a href="https://qwerfunch.github.io/logcat-on-releases/"><img alt="Release" src="https://img.shields.io/github/v/release/qwerfunch/logcat-on-releases?display_name=tag&sort=semver"></a>
+  <a href="https://github.com/qwerfunch/logcat-on-releases/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/qwerfunch/logcat-on-releases/total"></a>
   <img alt="Platforms" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-blue">
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Free%20(Proprietary%20EULA)-blue"></a>
   <a href="https://qwerfunch.github.io/logcat-on-releases/"><img alt="Website" src="https://img.shields.io/badge/website-logcaton-E67E22"></a>
@@ -26,6 +27,10 @@
 
 ![LogcatOn main window](assets/screenshot-hero.jpg)
 
+![Signal highlighting in action](assets/record-signal.gif)
+
+<p align="center"><em>A crash lands — gutter strip, inline pill, minimap dot, and the issues tray light up in real time.</em></p>
+
 ## Why LogcatOn?
 
 Android Studio's logcat was so painful, I built my own. LogcatOn is a native desktop viewer (Rust + Tauri) that keeps up with 5,000+ lines/sec at a steady 60 fps — and makes the line you're looking for impossible to miss.
@@ -36,12 +41,45 @@ Android Studio's logcat was so painful, I built my own. LogcatOn is a native des
 | **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — custom signals supported |
 | **Smart search & live filters** | 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, regex mode with logcat-friendly presets |
 | **Bookmarks & notes** | One-key toggle, color tags, jump cycling, persistent across sessions, export |
-| **Canvas log table** | Rust ring buffer + visible-area-only painting keeps 1M+ line sessions smooth (the pattern VS Code's editor uses) |
+| **1M-line sessions** | Rust ring buffer + virtualized rendering — only the visible rows are painted, the way VS Code's editor does it |
 | **Device tools** | Install APK/AAB/XAPK by drag & drop, launch / force-stop / uninstall per app, performance monitor (CPU · memory · jank) with a signal timeline |
 | **File mode** | Open `.log`/`.txt`, save filtered or raw |
 | **English & Korean UI** | Follows your OS language, switchable in Settings |
 
 All of it free for personal and commercial use — see [License](#license).
+
+<details>
+<summary><strong>📸 More screenshots</strong></summary>
+
+**Smooth to scroll, easy on the eyes**
+
+![LogcatOn — smooth, high-performance log view](assets/features/design.webp)
+
+**Only the app you care about**
+
+![LogcatOn — filtering logs down to a single app](assets/features/app.webp)
+
+**Narrow down to the lines you want**
+
+![LogcatOn — search and filter panel](assets/features/filter.webp)
+
+**Crashes catch your eye, instantly**
+
+![LogcatOn — crash and error signals on the minimap](assets/features/signal.webp)
+
+**Performance, live at a glance**
+
+![LogcatOn — real-time performance monitor](assets/features/perf.webp)
+
+**Never lose the line that matters**
+
+![LogcatOn — bookmarked log lines](assets/features/bookmark.webp)
+
+**Dark or light — make it yours**
+
+![LogcatOn — dark and light themes](assets/features/theme.webp)
+
+</details>
 
 ## Install
 
@@ -61,6 +99,12 @@ Grab the build for your OS from the **[release page](https://qwerfunch.github.io
 - An Android device with USB debugging enabled, or an emulator (Android Studio AVD, Genymotion, …)
 
 > No Android SDK required — ADB and platform-tools are bundled. (If you already have ADB installed, yours is used automatically.)
+
+### Getting started
+
+1. **Launch** LogcatOn and plug in your device (or start an emulator).
+2. **Pick your app** from the package picker — the noise disappears, and the filter re-binds automatically when the app restarts.
+3. **Follow the signals** — crashes, ANRs, and native faults are already highlighted in the gutter, minimap, and issues tray.
 
 ## Feedback & Issues
 
