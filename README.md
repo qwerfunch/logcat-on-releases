@@ -29,7 +29,7 @@
 
 ## Why LogcatOn?
 
-LogcatOn is a native desktop viewer built to make Android logs actually usable — keeping up with 5,000+ lines/sec at a steady 60 fps, and making the line you're looking for impossible to miss.
+LogcatOn is built to be fast and to get you to the crash immediately. It stays smooth even under heavy log volume, and every signal — gutter strip, minimap dot, issues tray — is one click from jumping straight to the line that caused it.
 
 ![Signal highlighting in action](assets/record-signal.gif)
 
@@ -38,7 +38,7 @@ LogcatOn is a native desktop viewer built to make Android logs actually usable �
 | Feature | What it does |
 |---|---|
 | **Auto package filter** | Pick an app — only its PID/TID lines pass, re-binding automatically when the app restarts |
-| **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — Crash Triage surfaces the likely cause, stack frame, and next steps automatically — custom signals supported |
+| **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — click any of them to jump straight to the line, and Crash Triage surfaces the likely cause, stack frame, and next steps automatically — custom signals supported |
 | **Smart search & live filters** | 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, regex mode with logcat-friendly presets |
 | **Bookmarks & notes** | One-key toggle, color tags, jump cycling, persistent across sessions, export |
 | **1M-line sessions** | A ring buffer + virtualized rendering — only the visible rows are painted, the way VS Code's editor does it |
