@@ -38,13 +38,17 @@ Android Studio's logcat was so painful, I built my own. LogcatOn is a native des
 | Feature | What it does |
 |---|---|
 | **Auto package filter** | Pick an app — only its PID/TID lines pass, re-binding automatically when the app restarts |
-| **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — custom signals supported |
+| **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — Crash Triage surfaces the likely cause, stack frame, and next steps automatically — custom signals supported |
 | **Smart search & live filters** | 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, regex mode with logcat-friendly presets |
 | **Bookmarks & notes** | One-key toggle, color tags, jump cycling, persistent across sessions, export |
 | **1M-line sessions** | A ring buffer + virtualized rendering — only the visible rows are painted, the way VS Code's editor does it |
 | **Device tools** | Install APK/AAB/XAPK by drag & drop, launch / force-stop / uninstall per app, performance monitor (CPU · memory · jank) with a signal timeline |
 | **File mode** | Open `.log`/`.txt`, save filtered or raw |
 | **English & Korean UI** | Follows your OS language, switchable in Settings |
+| **Log line detail** | Double-click any line for readable JSON, stack trace, XML, and URL formatting |
+| **Agent Port** | Connect an AI coding assistant to your live logs, crashes, and metrics over MCP — it jumps straight to the relevant line |
+| **Session Capsules** | Package logs, bookmarks, filters, signals, and device details into one shareable `.logcaton` file |
+| **Jump to time** | `⌘K` (`Ctrl+K`) → *Jump to time* to jump to a device timestamp or filter by a time range |
 
 All of it free for personal and commercial use — see [License](#license).
 
