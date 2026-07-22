@@ -41,7 +41,7 @@ Android Studio's logcat was so painful, I built my own. LogcatOn is a native des
 | **Signal catalog** | 32+ built-in patterns (crash · ANR · native fault · memory · lifecycle) highlighted via gutter strip, inline pill, minimap dot, and issues tray — custom signals supported |
 | **Smart search & live filters** | 7-field filter panel, log-level toggles, AND/OR/NOT queries, quoted phrases, `-exclusion`, regex mode with logcat-friendly presets |
 | **Bookmarks & notes** | One-key toggle, color tags, jump cycling, persistent across sessions, export |
-| **1M-line sessions** | Rust ring buffer + virtualized rendering — only the visible rows are painted, the way VS Code's editor does it |
+| **1M-line sessions** | A ring buffer + virtualized rendering — only the visible rows are painted, the way VS Code's editor does it |
 | **Device tools** | Install APK/AAB/XAPK by drag & drop, launch / force-stop / uninstall per app, performance monitor (CPU · memory · jank) with a signal timeline |
 | **File mode** | Open `.log`/`.txt`, save filtered or raw |
 | **English & Korean UI** | Follows your OS language, switchable in Settings |
