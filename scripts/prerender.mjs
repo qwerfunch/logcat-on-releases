@@ -4,11 +4,13 @@
 // 릴리즈 노트는 원래 app.js 가 releases.json 으로 클라이언트 렌더하므로
 // JS 를 실행하지 않는 크롤러(Bing 일부·소셜 봇 등)에겐 빈 섹션으로 보인다.
 // 여기서 최신 릴리즈 + 과거 릴리즈를 dist/index.html 에 정적 HTML 로 베이크해
-// 모든 크롤러가 전문을 수집하게 한다. app.js 는 로드 시 동일 구조로 다시
-// 그리므로 사용자 경험 변화는 없다 (마크업 클래스는 app.js 와 일치 유지).
+// 모든 크롤러가 전문을 수집하게 한다. app.js 는 로드 시 동일 구조로 다시 그린다.
 //
-// 추가로: JSON-LD 에 softwareVersion/dateModified 주입, dist/sitemap.xml 생성
-// (ko 기본 URL + ?lang=en, hreflang alternate 포함).
+// ★ 아래 render* 는 assets/app.js 의 render* 와 마크업/클래스가 1:1 이어야 한다.
+//   한쪽만 고치면 크롤러가 보는 화면과 사용자가 보는 화면이 갈라진다.
+//   (라벨은 여기서 영어 고정 — 베이크된 페이지의 기본 언어는 en/x-default)
+//
+// 추가로: JSON-LD 에 softwareVersion/dateModified 주입, dist/sitemap.xml 생성.
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -23,120 +25,98 @@ const releases = data.releases ?? [];
 let html = await readFile(join(DIST, 'index.html'), 'utf8');
 
 // ---------------------------------------------------- 정적 렌더 (en 라벨 고정)
-// 베이크된 페이지의 기본 언어는 en(글로벌 x-default) — app.js 가 로드되면
-// 사용자 언어로 재렌더. 마크업 구조/클래스는 assets/app.js 의 render* 와
-// 동일하게 유지할 것. (릴리즈 노트 본문은 원문(한국어) 그대로 — 콘텐츠 언어)
 
 const DOT = {
-  added: 'bg-emerald-500',
-  fixed: 'bg-amber-500',
-  changed: 'bg-blue-500',
-  removed: 'bg-red-400',
-  security: 'bg-purple-500',
-  deprecated: 'bg-stone-400',
-  other: 'bg-stone-400',
+  added: 'dot-added', fixed: 'dot-fixed', changed: 'dot-changed',
+  removed: 'dot-removed', security: 'dot-security', deprecated: 'dot-other', other: 'dot-other',
 };
-const PLATFORM_ICON = {
-  macos: 'ph-fill ph-apple-logo',
-  windows: 'ph-fill ph-windows-logo',
-  linux: 'ph-fill ph-linux-logo',
-  other: 'ph-bold ph-package',
+const LABEL = {
+  installer: 'Installer', portable: 'Portable',
+  macos: 'macOS', windows: 'Windows', linux: 'Linux', other: 'Other',
 };
-const LABEL = { installer: 'Installer', portable: 'Portable', macos: 'macOS', windows: 'Windows', linux: 'Linux', other: 'Other' };
+
+const CARET = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+const DL_ICON = '<svg class="adl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+const OS_ICON = {
+  macos: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.6.9s-1.9-.9-3.1-.8c-1.6 0-3.1.9-3.9 2.4-1.7 2.9-.4 7.1 1.2 9.5.8 1.1 1.7 2.4 3 2.4 1.2 0 1.6-.8 3.1-.8s1.9.8 3.1.7c1.3 0 2.1-1.2 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.6-1-2.6-3.8zM14 5.2c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.5z"/></svg>',
+  windows: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>',
+  linux: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-2 0-3 1.7-3 3.6 0 1.4-.3 2.2-1.1 3.3C6.6 10.6 6 12 6 13.8c0 1-.6 1.9-1 2.6-.6 1-.3 2.1 1 2.4 1 .2 2 .6 2.8 1.2.9.7 1.9 1 3.2 1s2.3-.3 3.2-1c.8-.6 1.8-1 2.8-1.2 1.3-.3 1.6-1.4 1-2.4-.4-.7-1-1.6-1-2.6 0-1.8-.6-3.2-1.9-4.9-.8-1.1-1.1-1.9-1.1-3.3C15 3.7 14 2 12 2z"/></svg>',
+  other: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+};
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const humanSize = (b) =>
   b >= 1e9 ? (b / 1e9).toFixed(2) + ' GB' : b >= 1e6 ? (b / 1e6).toFixed(1) + ' MB' : (b / 1e3).toFixed(0) + ' KB';
 const fmtDate = (iso) =>
-  new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Seoul' }).format(
-    new Date(iso),
-  );
+  new Intl.DateTimeFormat('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Seoul',
+  }).format(new Date(iso));
 
 function renderSections(sections) {
   return sections
     .map((s) => {
-      const header = s.title
-        ? `<h4 class="text-sm font-black text-stone-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-             <span class="w-2 h-2 rounded-full ${DOT[s.category] ?? DOT.other}"></span> ${esc(s.title)}
-           </h4>`
-        : '';
-      const paragraphs = s.paragraphs.map((p) => `<p class="mb-3">${p}</p>`).join('');
-      const items = s.items.length
-        ? `<ul class="list-none space-y-4">${s.items.map((it) => `<li class="relative pl-6">${it}</li>`).join('')}</ul>`
-        : '';
-      return `<div>${header}${paragraphs}${items}</div>`;
+      const header = s.title ? `<h4><u class="${DOT[s.category] ?? DOT.other}"></u>${esc(s.title)}</h4>` : '';
+      const paragraphs = s.paragraphs.map((p) => `<p>${p}</p>`).join('');
+      const items = s.items.length ? `<ul>${s.items.map((it) => `<li>${it}</li>`).join('')}</ul>` : '';
+      return `<div class="rel-sec">${header}${paragraphs}${items}</div>`;
     })
     .join('');
+}
+
+function renderAssetRow(a) {
+  return `<a class="arow" href="${esc(a.url)}" download>
+      <span class="an">${esc(a.name)}</span>
+      ${a.kind !== 'other' ? `<span class="ak">${LABEL[a.kind]}</span>` : ''}
+      <span class="as">${humanSize(a.sizeBytes)}</span>${DL_ICON}
+    </a>`;
 }
 
 function renderAssets(release, { open, anchorId }) {
   if (!release.assetCount) return '';
   const groups = ['macos', 'windows', 'linux', 'other']
     .filter((p) => release.assets[p].length)
-    .map(
-      (p) => `
-      <div>
-        <h5 class="flex items-center gap-2 text-sm font-bold text-stone-500 mb-1"><i class="${PLATFORM_ICON[p]}"></i> ${LABEL[p]}</h5>
-        <div class="border-y border-stone-200">
-          ${release.assets[p]
-            .map(
-              (a) => `
-          <a href="${esc(a.url)}" download class="py-3.5 border-b border-stone-200 last:border-0 hover:bg-stone-200/20 transition-colors flex justify-between items-center gap-3 px-2 group/row">
-            <span class="text-stone-700 font-medium truncate">${esc(a.name)}</span>
-            <span class="flex items-center gap-3 shrink-0">
-              ${a.kind !== 'other' ? `<span class="hidden sm:inline text-xs font-bold px-2 py-0.5 rounded bg-stone-200/70 text-stone-500">${LABEL[a.kind]}</span>` : ''}
-              <span class="text-xs text-stone-400 w-16 text-right">${humanSize(a.sizeBytes)}</span>
-              <i class="ph ph-download-simple text-lg text-stone-400 group-hover/row:text-[#E67E22]"></i>
-            </span>
-          </a>`,
-            )
-            .join('')}
-        </div>
-      </div>`,
-    )
+    .map((p) => `<div class="agroup"><h5>${OS_ICON[p]}${LABEL[p]}</h5>${release.assets[p].map(renderAssetRow).join('')}</div>`)
     .join('');
-  return `
-    <div class="pt-8 mt-12 border-t border-stone-300" ${anchorId ? `id="${anchorId}"` : ''}>
-      <details class="group" ${open ? 'open' : ''}>
-        <summary class="flex items-center cursor-pointer list-none select-none mb-6">
-          <i class="ph-bold ph-caret-right text-stone-400 mr-3 transition-transform group-open:rotate-90"></i>
-          <h4 class="text-lg font-bold text-stone-900">Assets</h4>
-          <span class="ml-3 bg-stone-200/70 text-stone-600 text-xs font-bold px-2.5 py-0.5 rounded-full">${release.assetCount}</span>
-        </summary>
-        <div class="space-y-6">${groups}</div>
+
+  return `<div class="rel-assets"${anchorId ? ` id="${anchorId}"` : ''}>
+      <details class="assets"${open ? ' open' : ''}>
+        <summary><span class="rel-cv">${CARET}</span>Assets<span class="assets-n">${release.assetCount}</span></summary>
+        <div>${groups}</div>
       </details>
     </div>`;
 }
 
-const latestBadge = `<span class="bg-[#E67E22]/10 text-[#E67E22] border border-[#E67E22]/20 text-xs px-2.5 py-1 rounded-md font-bold tracking-wide">Latest</span>`;
+function renderBadge(release, isLatest) {
+  if (release.prerelease) return '<span class="tag pre">Pre-release</span>';
+  if (isLatest) return '<span class="tag">Latest</span>';
+  return '';
+}
 
-function renderLatest(r) {
-  return `
-    <div class="pb-6 border-b border-stone-300 mb-8 flex flex-col sm:flex-row sm:items-center gap-4">
-      <div class="flex items-center gap-3">
-        <h3 class="text-2xl font-black text-stone-900 tracking-tight">${esc(r.name)}</h3>
-        ${latestBadge}
+function renderLatest(release) {
+  return `<div class="rel-latest">
+      <div class="rel-top">
+        ${renderBadge(release, true)}
+        <h3>${esc(release.name)}</h3>
+        <span class="rel-when">${fmtDate(release.publishedAt)}</span>
       </div>
-      <span class="text-sm text-stone-400 sm:ml-auto">${fmtDate(r.publishedAt)}</span>
-    </div>
-    <div class="md text-[15px] text-stone-700 space-y-10 pl-2">
-      ${renderSections(r.sections)}
-      ${renderAssets(r, { open: true, anchorId: 'latest-assets' })}
+      <div class="rel-body md">
+        ${renderSections(release.sections)}
+        ${renderAssets(release, { open: true, anchorId: 'latest-assets' })}
+      </div>
     </div>`;
 }
 
-function renderOlder(r) {
-  return `
-    <details class="group/old border-b border-stone-200">
-      <summary class="flex items-center gap-3 py-5 cursor-pointer list-none select-none">
-        <i class="ph-bold ph-caret-right text-stone-400 transition-transform group-open/old:rotate-90"></i>
-        <h3 class="text-lg font-black text-stone-900 tracking-tight">${esc(r.name)}</h3>
-        <span class="text-sm text-stone-400 ml-auto shrink-0">${fmtDate(r.publishedAt)}</span>
+function renderOlder(release) {
+  return `<details class="rel-old">
+      <summary>
+        <span class="rel-cv">${CARET}</span>${esc(release.name)}
+        ${renderBadge(release, false)}
+        <span class="rel-when">${fmtDate(release.publishedAt)}</span>
       </summary>
-      <div class="md text-[15px] text-stone-700 space-y-10 pl-8 pb-10">
-        ${renderSections(r.sections)}
-        ${renderAssets(r, { open: false })}
+      <div class="rel-body md">
+        ${renderSections(release.sections)}
+        ${renderAssets(release, { open: false })}
       </div>
     </details>`;
 }
@@ -146,9 +126,7 @@ function renderOlder(r) {
 // 1) 릴리즈 노트 베이크
 if (releases.length) {
   const [latest, ...older] = releases;
-  const baked =
-    renderLatest(latest) +
-    (older.length ? `<div class="mt-16">${older.map(renderOlder).join('')}</div>` : '');
+  const baked = renderLatest(latest) + older.map(renderOlder).join('');
   const marker = '<div id="releases"></div>';
   if (!html.includes(marker)) throw new Error('prerender: <div id="releases"></div> marker not found');
   html = html.replace(marker, `<div id="releases">${baked}</div>`);

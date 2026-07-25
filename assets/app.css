@@ -1,0 +1,807 @@
+/* ============================================================
+   시안 D — "SIGNAL+"  (추천안)
+   A(제품 네이티브 다크)를 본체로 하고, C의 테마 모핑을 단일 장치로 얹었다.
+
+   다크  = 제품(개발툴)과 같은 톤 — 사이트와 앱의 인상을 일치시킨다
+   라이트 = 기존 크림 아이덴티티(#FFFCF4) — 버리지 않고 라이트 모드로 승계한다
+   토글이 그 둘을 잇는 다리 역할을 하면서, 동시에 제품의 테마 기능을 시연한다
+   ============================================================ */
+
+@property --a     { syntax:'<angle>';      initial-value:0deg; inherits:false }
+@property --shine { syntax:'<percentage>'; initial-value:-40%; inherits:false }
+
+/* ---------- 다크: 제품 네이티브 ---------- */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#07080B; --bg-2:#0C0E13; --panel:#101319; --panel-2:#151922;
+  --line:#1C212B; --line-2:#262D3A;
+  --text:#EDEFF3; --muted:#8A93A6; --dim:#5A6376;
+  --brand-ink:#FF9A3C;                       /* 텍스트로 쓸 때의 오렌지 */
+  --crash:#F2555A; --warn:#E8B339; --info:#4FB0E8; --ok:#3FCF8E;
+  --grain:.035; --spot:rgba(230,126,34,.07);
+  --sh-lg:0 40px 90px -30px rgba(0,0,0,.9);
+  --sh-md:0 24px 60px -28px rgba(0,0,0,.85);
+  --cta-tx:#0A0B0E;
+  --chrome:#0A0C11;                          /* 창 타이틀바 */
+}
+/* ---------- 라이트: 기존 크림 아이덴티티 승계 ---------- */
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#FFFCF4; --bg-2:#FAF5E9; --panel:#FFFFFF; --panel-2:#FDFAF2;
+  --line:#EADFCB; --line-2:#DCCDB2;
+  --text:#1A1611; --muted:#6B6055; --dim:#98897A;
+  --brand-ink:#C2600F;
+  --crash:#D92D33; --warn:#B07C0A; --info:#1B7CB5; --ok:#0E8A58;
+  --grain:.05; --spot:rgba(230,126,34,.11);
+  --sh-lg:0 34px 74px -32px rgba(140,95,35,.34);
+  --sh-md:0 20px 50px -26px rgba(140,95,35,.28);
+  --cta-tx:#FFFFFF;
+  --chrome:#F3ECDD;
+}
+:root{
+  --brand:#E67E22; --brand-lit:#FF9A3C; --brand-dk:#C2600F;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+
+  /* ---- 실제 앱 UI 팔레트 (v1.3.0 스크린샷에서 픽셀 샘플링) ----
+     히어로 데모 패널은 사이트 테마와 무관하게 이 색을 쓴다 — 아래 데모 밴드의
+     실제 녹화 영상과 "같은 제품 표면"으로 읽혀야 하기 때문. */
+  --app-bg:#191922;        /* 로그 뷰 배경 */
+  --app-chrome:#1D1D2A;    /* 타이틀바 · 헤더 행 · 좌측 레일 · 상태바 */
+  --app-line:#262636;
+  --app-num:#66697D;       /* LINE / PID / TID */
+  --app-msg:#C3C7D4;
+  --app-elev:#212333;      /* Signal issues 같은 떠 있는 패널 */
+  --app-warn:#D9A65E;      /* W 행 메시지 */
+  --app-crash:#E97283;     /* 시그널 마커 · FATAL · 벨 배지 */
+  --app-orange:#F49A5F;    /* Process exited 계열 시그널 */
+  /* LV 칩 — 파스텔 배경 + 같은 색상의 어두운 글자 (앱과 동일) */
+  --lv-v:#9AA6D4; --lv-d:#7494F2; --lv-i:#9BC767;
+  --lv-w:#D6A963; --lv-e:#E97283; --lv-f:#E4606E;
+  /* 태그별 색상 — 앱의 "태그 색상" 기능 재현 */
+  --tg-1:#A78BFA; --tg-2:#8FD07A; --tg-3:#C9CF6B;
+  --tg-4:#6BC5D8; --tg-5:#E0A0C8; --tg-6:#9BB4F0;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0 }
+html{ scroll-behavior:smooth }
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans);
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  transition:background .35s ease, color .35s ease;
+  /* 한글은 어절 단위로 끊는다 */
+  word-break:keep-all; overflow-wrap:break-word;
+}
+.row,.chip,.track span,.mono,.tg{ word-break:normal }
+
+/* 필름 그레인 — 플랫한 면에 깊이를 준다 */
+body::after{
+  content:''; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:var(--grain);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.spot{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(620px circle at var(--mx,50%) var(--my,0%), var(--spot), transparent 66%);
+}
+::selection{ background:var(--brand); color:#fff }
+::-webkit-scrollbar{ width:8px } ::-webkit-scrollbar-track{ background:var(--bg) }
+::-webkit-scrollbar-thumb{ background:var(--line-2); border-radius:4px }
+
+/* ---- 테마 전환: 토글 위치에서 퍼지는 원형 와이프 ---- */
+::view-transition-old(root){ animation:none; z-index:0 }
+::view-transition-new(root){ animation:wipe .6s cubic-bezier(.4,0,.2,1); z-index:1 }
+@keyframes wipe{
+  from{ clip-path:circle(0% at var(--wx,95%) var(--wy,4%)) }
+  to  { clip-path:circle(150% at var(--wx,95%) var(--wy,4%)) }
+}
+
+.wrap{ max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,40px); position:relative; z-index:1 }
+
+/* ---------- 내비 ---------- */
+nav{
+  position:fixed; top:0; left:0; right:0; z-index:120;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px clamp(16px,4vw,40px);
+  background:color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter:blur(18px) saturate(165%);
+  border-bottom:1px solid transparent; transition:border-color .3s;
+}
+nav.stuck{ border-bottom-color:var(--line) }
+/* gap 은 아이콘과 워드마크 사이에만 걸려야 한다. 텍스트를 span 으로 묶지 않으면
+   "Logcat" 이 익명 flex 항목이 되어 "On" 과의 사이에도 gap 이 들어간다 */
+.wm{ font-weight:900; font-size:17.5px; letter-spacing:-.03em; display:flex; align-items:center; gap:9px }
+.wm span{ display:inline-flex }
+.wm i{ color:var(--brand); font-style:normal }
+.wm img{ width:25px; height:25px; border-radius:7px }
+.nav-r{ display:flex; align-items:center; gap:8px; position:relative }
+.pill{
+  display:flex; align-items:center; gap:7px; font-family:var(--sans);
+  font-size:12.5px; font-weight:600; color:var(--muted);
+  padding:8px 13px; border-radius:9px; border:1px solid var(--line); background:var(--panel);
+  cursor:pointer; transition:color .2s, border-color .2s, background .2s;
+}
+.pill:hover{ color:var(--text); border-color:var(--line-2) }
+.pill svg{ width:15px; height:15px }
+.pill.cta{ background:var(--brand); border-color:var(--brand); color:var(--cta-tx); font-weight:800 }
+.pill.cta:hover{ background:var(--brand-lit); border-color:var(--brand-lit); color:var(--cta-tx) }
+#themeBtn{ width:37px; padding:8px 0; justify-content:center }
+:root[data-theme="dark"]  #themeBtn .sun { display:block }
+:root[data-theme="dark"]  #themeBtn .moon{ display:none }
+:root[data-theme="light"] #themeBtn .sun { display:none }
+:root[data-theme="light"] #themeBtn .moon{ display:block }
+/* 언어 드롭다운 */
+#langMenu{
+  position:absolute; right:0; top:calc(100% + 8px); min-width:9rem; z-index:5;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px;
+  overflow:hidden; box-shadow:var(--sh-md); list-style:none;
+  opacity:0; transform:translateY(-6px) scale(.98); pointer-events:none; transition:.22s var(--ease);
+}
+#langMenu.on{ opacity:1; transform:none; pointer-events:auto }
+#langMenu button{
+  width:100%; text-align:left; padding:10px 15px; border:0; background:transparent;
+  font-family:var(--sans); font-size:13.5px; font-weight:600; color:var(--muted); cursor:pointer; transition:.18s;
+}
+#langMenu button:hover{ background:color-mix(in srgb, var(--brand) 12%, transparent); color:var(--brand-ink) }
+#langMenu button.sel{ color:var(--brand-ink) }
+
+/* ---------- HERO ---------- */
+.hero{ padding:148px 0 88px }
+.hero-grid{ display:grid; grid-template-columns:1.02fr .98fr; gap:56px; align-items:center }
+@media(max-width:960px){ .hero-grid{ grid-template-columns:1fr; gap:44px } }
+
+.badge{
+  display:inline-flex; align-items:center; gap:9px; font-size:12px; font-weight:600;
+  color:var(--muted); border:1px solid var(--line); background:var(--panel);
+  padding:6px 13px 6px 9px; border-radius:100px; margin-bottom:26px; animation:fade .8s both;
+}
+.badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--ok); animation:ping 2.4s infinite }
+@keyframes ping{ 0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 50%,transparent)} 70%{box-shadow:0 0 0 7px transparent} 100%{box-shadow:0 0 0 0 transparent} }
+
+h1{
+  font-size:clamp(34px,4.1vw,54px); font-weight:900; line-height:1.14;
+  letter-spacing:-.035em; margin-bottom:22px;
+}
+h1 .ln{ display:block; overflow:hidden; padding-bottom:.06em }
+h1 .ln>span{ display:block; animation:rise .95s var(--ease) both }
+h1 .ln:nth-child(2)>span{ animation-delay:.09s }
+h1 .ln:nth-child(3)>span{ animation-delay:.18s }
+@keyframes rise{ from{ transform:translateY(106%) } to{ transform:none } }
+/* 사전 값(hero.heading)이 <em> 으로 강조어를 표시한다 — 클래스 없이 태그로 잡는다 */
+h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--brand-lit),var(--brand) 44%,var(--brand-dk));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.lede{ font-size:17px; line-height:1.75; color:var(--muted); max-width:29em; margin-bottom:34px; animation:fade .85s .35s both }
+@keyframes fade{ from{opacity:0; transform:translateY(11px)} to{opacity:1; transform:none} }
+
+.cta-row{ display:flex; align-items:center; gap:13px; flex-wrap:wrap; animation:fade .85s .48s both }
+.btn-dl{
+  display:inline-flex; align-items:center; gap:11px; padding:15px 26px; border-radius:12px; border:0;
+  background:var(--brand); color:var(--cta-tx); font-family:var(--sans);
+  font-size:15px; font-weight:800; letter-spacing:-.01em; cursor:pointer;
+  box-shadow:0 8px 28px -6px color-mix(in srgb,var(--brand) 45%,transparent);
+  transition:transform .18s var(--ease), box-shadow .28s, background .25s;
+  transform:translate(var(--tx,0),var(--ty,0));
+}
+.btn-dl:hover{ box-shadow:0 14px 42px -8px color-mix(in srgb,var(--brand) 62%,transparent) }
+.btn-dl svg{ width:17px; height:17px }
+.btn-ghost{
+  display:inline-flex; align-items:center; gap:8px; padding:15px 20px; border-radius:12px;
+  border:1px solid var(--line-2); background:transparent; color:var(--muted);
+  font-family:var(--sans); font-size:14px; font-weight:600; cursor:pointer; transition:.22s;
+}
+.btn-ghost:hover{ color:var(--text); border-color:var(--brand); background:var(--panel) }
+.meta{ margin-top:16px; font-size:12.5px; color:var(--dim); animation:fade .85s .6s both }
+.meta b{ color:var(--muted); font-weight:600 }
+
+/* ---------- 히어로 라이브 로그 데모 ---------- */
+.demo{
+  position:relative; border-radius:14px; overflow:hidden;
+  border:1px solid var(--line); background:var(--bg-2);
+  box-shadow:var(--sh-lg); animation:fade 1s .3s both;
+}
+.demo::before{                                  /* 회전하는 테두리 글로우 */
+  content:''; position:absolute; inset:-1px; border-radius:15px; padding:1px; z-index:4; pointer-events:none;
+  background:conic-gradient(from var(--a), transparent 0 62%, color-mix(in srgb,var(--brand) 55%,transparent) 76%, transparent 88%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  animation:spin 7s linear infinite;
+}
+@keyframes spin{ to{ --a:360deg } }
+.demo-bar{ display:flex; align-items:center; gap:8px; padding:11px 14px; border-bottom:1px solid var(--app-line); background:var(--app-chrome) }
+.tl{ display:flex; gap:6px } .tl i{ width:10px; height:10px; border-radius:50%; display:block }
+.tl i:nth-child(1){background:#FF5F57} .tl i:nth-child(2){background:#FEBC2E} .tl i:nth-child(3){background:#28C840}
+.demo-title{ font-family:var(--mono); font-size:11px; color:#7B8091; margin-left:6px }
+.demo-stat{ margin-left:auto; font-family:var(--mono); font-size:10.5px; color:#7B8091 }
+.demo-stat b{ color:var(--brand-lit); font-weight:500 }
+
+/* 앱과 동일한 컬럼 구성: LINE · LV · PID · TID · TAG · MSG
+   (시그널 마커는 행 안이 아니라 왼쪽 미니맵이 담당한다) */
+.demo{ --cols:42px 22px 34px 34px 70px minmax(0,1fr) }
+/* 왼쪽 미니맵 폭(20px + 경계 1px)만큼 들여써야 아래 행들과 컬럼이 맞는다 */
+.log-head{
+  display:grid; grid-template-columns:var(--cols); gap:8px; align-items:center;
+  padding:6px 12px 6px 33px; background:var(--app-chrome); border-bottom:1px solid var(--app-line);
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.1em; color:#6B7080;
+}
+.log-head .n{ text-align:right }
+
+.stream-wrap{ position:relative; display:flex; height:322px; background:var(--app-bg) }
+/* 뷰포트. 내용(.stream-inner)을 translateY 로 밀어 실제로 스크롤시킨다 —
+   시그널로 "이동"하는 게 눈에 보이려면 목록이 실제로 움직여야 한다. */
+.stream{ flex:1; overflow:hidden; position:relative }
+.stream-inner{ position:absolute; left:0; right:0; top:0; will-change:transform }
+.row{
+  position:relative;
+  display:grid; grid-template-columns:var(--cols); gap:8px; align-items:center;
+  padding:2px 12px; font-family:var(--mono); font-size:10.5px; line-height:1.5; white-space:nowrap;
+  animation:slidein .34s var(--ease) both;
+}
+@keyframes slidein{ from{ opacity:0; transform:translateY(7px) } to{ opacity:1; transform:none } }
+/* 크래시 구간 가드레일 — 왼쪽 세로 레일(.fatal)에 더해 블록 위아래를 가로선으로 닫는다 */
+.row.blk-top::before, .row.blk-bot::after{
+  content:''; position:absolute; left:0; right:0; height:1px;
+  background:var(--app-crash); opacity:.65; z-index:1;
+}
+.row.blk-top::before{ top:0 }
+.row.blk-bot::after{ bottom:0 }
+
+/* 점프해서 도착한 행 — 잠깐 밝게 짚어준다 */
+.row.landed{ animation:landed 1.5s ease-out }
+@keyframes landed{
+  0%{ box-shadow:inset 0 0 0 1px var(--app-crash), inset 3px 0 0 var(--app-crash);
+      background:color-mix(in srgb,var(--app-crash) 30%,transparent) }
+  100%{ box-shadow:inset 3px 0 0 transparent; background:transparent }
+}
+/* 크래시 행 우측에 붙는 인라인 시그널 배지 (앱의 SECURITYEXCEPTION 배지와 동일한 형태) */
+.row .badge{
+  position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index:2;
+  display:flex; align-items:center; gap:5px; padding:2px 8px; border-radius:100px;
+  background:#3A1D26; border:1px solid color-mix(in srgb, var(--app-crash) 45%, transparent);
+  font-size:8.5px; font-weight:700; letter-spacing:.06em; color:var(--app-crash);
+}
+.row .badge::before{ content:''; width:5px; height:5px; border-radius:50%; background:var(--app-crash) }
+.row .n  { color:var(--app-num); text-align:right }
+.row .pid,.row .tid{ color:var(--app-num); overflow:hidden }
+/* TAG 는 레벨과 무관하게 태그별 고유색 — JS 가 --tgc 를 넣는다 */
+.row .tg { color:var(--tgc,var(--tg-6)); overflow:hidden; text-overflow:ellipsis }
+.row .ms { color:var(--app-msg); overflow:hidden; text-overflow:ellipsis }
+/* LV = 파스텔 배경 + 같은 색상 계열의 어두운 글자 (앱의 가장 알아보기 쉬운 시각 서명) */
+.row .lv{
+  display:block; height:13px; line-height:13px; border-radius:3px;
+  font-size:9px; font-weight:700; text-align:center;
+  background:var(--lv); color:color-mix(in srgb, var(--lv) 42%, #0F0F17);
+}
+.row.v .lv{ --lv:var(--lv-v) }  .row.d .lv{ --lv:var(--lv-d) }
+.row.i .lv{ --lv:var(--lv-i) }  .row.w .lv{ --lv:var(--lv-w) }
+.row.e .lv{ --lv:var(--lv-e) }
+.row.w .ms{ color:var(--app-warn) }
+.row.e .ms{ color:#E8798A }
+/* .rail 은 가드레일만 (레벨 칩 색은 건드리지 않는다 — 블록 첫 행의 D 는 파란색 그대로) */
+.row.rail,
+.row.fatal{ background:linear-gradient(90deg,rgba(233,114,131,.15),transparent); box-shadow:inset 2px 0 0 var(--app-crash) }
+.row.fatal .lv{ --lv:var(--lv-f) }
+.row.fatal .ms{ color:#FF8E9D; font-weight:500 }
+.row.flash{ animation:slidein .34s var(--ease) both, ignite 1.1s .1s ease-out }
+@keyframes ignite{ from{ background:rgba(231,121,142,.5) } to{ background:linear-gradient(90deg,rgba(231,121,142,.15),transparent) } }
+/* 좁은 폭에서는 앱처럼 컬럼을 접는다. 안 접으면 PID/TID 가 폭을 다 먹고
+   MSG 가 60px 도 못 받아 로그가 읽히지 않는다 (모바일 358px 에서 실측). */
+/* display:none 된 그리드 아이템은 트랙에서 빠지고 뒤 아이템이 앞 트랙으로 당겨진다.
+   따라서 자리를 0px 로 남겨두면 안 되고, 숨긴 개수만큼 트랙도 줄여야 한다. */
+@media(min-width:961px) and (max-width:1150px){          /* LINE LV PID TAG MSG */
+  .demo{ --cols:36px 22px 32px 62px minmax(0,1fr) }
+  .row .tid,.log-head .tid{ display:none }
+}
+@media(max-width:640px){                                  /* LINE LV TAG MSG */
+  .demo{ --cols:38px 20px 62px minmax(0,1fr) }
+  .row .pid,.row .tid,.log-head .pid,.log-head .tid{ display:none }
+}
+
+/* ---- 왼쪽 미니맵 (앱과 같은 위치) ----
+   시그널이 로그 전체 어디에 있는지 점으로 보여주고, 누르면 그 지점으로 이동한다.
+   점은 "돋보이는" 정도이고 이름표로 펼쳐지지는 않는다. */
+.minimap{ width:20px; border-right:1px solid var(--app-line); background:#17171F; position:relative; flex:none; cursor:pointer }
+.tick{
+  position:absolute; left:5px; right:5px; height:3px; border-radius:2px; opacity:.85;
+  transition:left .2s var(--ease), right .2s var(--ease), height .2s var(--ease),
+             box-shadow .2s var(--ease), opacity .2s, transform .12s var(--ease);
+}
+/* 호버 시 과녁 모양으로 커진다 — 채워진 점 → 어두운 간격 링 → 바깥 색 링.
+   미니맵 폭 20px 안에 딱 맞도록 12px + 링 4px×2 로 잡았다. */
+.tick.hot{
+  left:4px; right:4px; height:10px; border-radius:3px; opacity:1;
+  box-shadow:
+    0 0 0 2px var(--app-bg),
+    0 0 0 4px color-mix(in srgb, var(--app-crash) 70%, transparent);
+}
+.tick.press{ transform:scale(.8) }
+/* 현재 보고 있는 구간 */
+.mm-view{
+  position:absolute; left:0; right:0; border-radius:2px; pointer-events:none;
+  border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.05);
+  transition:top .5s var(--ease), height .3s;
+}
+
+/* ---- 오른쪽 스크롤바 — 앱 아이콘의 흰 바 그대로 ---- */
+.sbar{ width:12px; flex:none; position:relative; background:var(--app-bg); border-left:1px solid var(--app-line) }
+.sthumb{
+  position:absolute; left:3px; right:3px; border-radius:100px;
+  background:linear-gradient(180deg,#FFFFFF,#EFFAFD);
+  box-shadow:0 0 10px rgba(224,244,253,.45), 0 0 3px rgba(255,255,255,.7);
+  transition:top .5s var(--ease), height .3s;
+}
+/* ---- 시그널 알림: 앱의 실제 경로 그대로 ----
+   벨 배지 → Signal issues 패널 → ‹ › 로 발생 지점 이동.
+   전부 앱에 실존하는 컨트롤이고, 연출은 "자동으로 열어 보여주는 타이밍"만 담당한다. */
+.bell{
+  position:absolute; top:9px; right:31px; z-index:8;
+  width:22px; height:22px; display:grid; place-items:center;
+  color:#8A8FA3; cursor:pointer;
+}
+.bell svg{ width:15px; height:15px }
+.bell .cnt{
+  position:absolute; top:-4px; right:-5px; min-width:13px; height:13px; padding:0 3px;
+  border-radius:7px; background:var(--app-crash); color:#191922;
+  font-family:var(--mono); font-size:8px; font-weight:800; line-height:13px; text-align:center;
+  box-shadow:0 0 0 2px var(--app-bg);
+}
+.bell.ring{ animation:bellshake .55s ease-out }
+@keyframes bellshake{ 0%,100%{transform:rotate(0)} 18%{transform:rotate(-14deg)} 38%{transform:rotate(11deg)} 60%{transform:rotate(-7deg)} 80%{transform:rotate(4deg)} }
+.bell .cnt.pop{ animation:cntpop .45s var(--ease) }
+@keyframes cntpop{ 0%{transform:scale(1)} 40%{transform:scale(1.55)} 100%{transform:scale(1)} }
+
+.sigpanel{
+  position:absolute; top:37px; right:31px; width:198px; z-index:7;
+  background:var(--app-elev); border:1px solid #2E3145; border-radius:9px; overflow:hidden;
+  box-shadow:0 14px 34px -10px rgba(0,0,0,.75);
+  opacity:0; transform:translateY(-7px) scale(.97); pointer-events:none;
+  transition:opacity .3s var(--ease), transform .3s var(--ease);
+}
+.sigpanel.on{ opacity:1; transform:none }
+.sp-h{
+  display:flex; align-items:center; justify-content:space-between; padding:8px 10px;
+  border-bottom:1px solid #2A2D3E; font-size:10px; font-weight:600; color:#C3C7D4;
+}
+.sp-h svg{ width:11px; height:11px; color:#6B6E80 }
+/* 행 전체가 클릭 대상 — 앱에서도 시그널 이름을 누르면 순차 이동한다 */
+.sp-r{
+  display:grid; grid-template-columns:7px minmax(0,1fr) auto auto auto auto auto; gap:6px;
+  align-items:center; padding:5.5px 10px; font-size:9.5px; color:#A8ADBE; cursor:pointer;
+  border-radius:5px; transition:background .2s;
+}
+.sp-r i{ width:7px; height:7px; border-radius:50%; display:block }
+.sp-r .nm{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.sp-r .ct{ font-family:var(--mono); font-size:9px; color:#6B6E80 }
+.sp-r .loc{ width:10px; height:10px; color:#6B6E80 }
+.sp-r u{ text-decoration:none; color:#6B6E80; font-size:10px; padding:0 1px }
+.sp-r.hot{ background:color-mix(in srgb, var(--app-crash) 11%, transparent) }
+.sp-r.hot .nm{ color:#E3E6EE; font-weight:600 }
+.sp-r.hot .loc{ color:var(--app-crash) }
+/* 경로 ② — 시그널 이름을 누르면 다음 발생 지점으로. 행이 눌리는 것을 보여준다 */
+.sp-r.tap{ animation:rowtap .55s var(--ease) }
+@keyframes rowtap{
+  0%{ background:color-mix(in srgb,var(--app-crash) 11%,transparent) }
+  30%{ background:color-mix(in srgb,var(--app-crash) 34%,transparent) }
+  100%{ background:color-mix(in srgb,var(--app-crash) 11%,transparent) }
+}
+.sp-r.hot .nx{ position:relative; color:var(--app-crash) }
+
+/* 상태바 — 앱 하단 바 구성 그대로 */
+.demo-foot{
+  display:flex; align-items:center; gap:12px; padding:8px 13px; border-top:1px solid var(--app-line);
+  background:var(--app-chrome); font-family:var(--mono); font-size:9.5px; color:#6B6E80;
+}
+.demo-foot .ready{ color:#7E8294 }
+.demo-foot .lines{ color:#6B6E80 }
+.sig{ display:flex; align-items:center; gap:5px } .sig i{ width:6px;height:6px;border-radius:50%;display:block }
+.fps{ margin-left:auto; color:#7E8294 }
+.ver{ color:#585B6B }
+
+/* ---------- 마퀴 ---------- */
+.strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2); overflow:hidden; padding:16px 0; position:relative; z-index:1 }
+.strip::before,.strip::after{ content:''; position:absolute; top:0; bottom:0; width:130px; z-index:2 }
+.strip::before{ left:0;  background:linear-gradient(90deg,var(--bg-2),transparent) }
+.strip::after { right:0; background:linear-gradient(270deg,var(--bg-2),transparent) }
+.track{ display:flex; gap:44px; width:max-content; animation:march 34s linear infinite }
+@keyframes march{ to{ transform:translateX(-50%) } }
+.track span{ font-family:var(--mono); font-size:11.5px; color:var(--dim); white-space:nowrap }
+.track span u{ color:var(--brand); text-decoration:none }
+
+/* ---------- 실제 화면 녹화 데모 밴드 ----------
+   C 의 "영상 크게 띄우기"를 여기로 옮겼다. 단, 띄우는 영상은 브랜드 인트로가 아니라
+   실제 제품 녹화(record-signal.mp4)다. 콘텐츠 컬럼보다 넓게 잡아 강조한다. */
+.band{ padding:112px 0 34px }
+.band-head{ text-align:center; max-width:44em; margin:0 auto 46px }
+.band-head .sub{ margin-left:auto; margin-right:auto }
+.band-stage{ max-width:1340px; margin:0 auto; padding:0 clamp(16px,4vw,40px); perspective:2000px; position:relative; z-index:1 }
+.band-win{
+  position:relative; border-radius:16px; overflow:hidden;
+  border:1px solid var(--line); background:var(--chrome);
+  box-shadow:var(--sh-lg); transform-origin:50% 0%;
+}
+/* 지원 브라우저에선 살짝 눕힌 상태에서 정면으로 세워진다 */
+@supports (animation-timeline: view()){
+  .band-win{ animation:stand linear both; animation-timeline:view(); animation-range:entry 2% cover 38% }
+  @keyframes stand{
+    from{ transform:perspective(2000px) rotateX(15deg) scale(.93); opacity:.62 }
+    to  { transform:perspective(2000px) rotateX(0deg)  scale(1);   opacity:1 }
+  }
+}
+.band-win .win-bar{
+  display:flex; align-items:center; gap:8px; padding:11px 15px;
+  background:var(--chrome); border-bottom:1px solid var(--line);
+}
+.band-win .win-t{ font-family:var(--mono); font-size:11px; color:var(--dim); margin-left:6px }
+.band-win .live{
+  margin-left:auto; display:flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:10px; color:var(--dim);
+}
+.band-win .live u{ width:6px; height:6px; border-radius:50%; background:var(--crash); text-decoration:none; animation:ping 2s infinite }
+.band-media{ position:relative; aspect-ratio:1512/950; background:#0C0E13 }
+.band-media video, .band-media img.poster{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+}
+.band-media img.poster{ transition:opacity .5s ease; z-index:1 }
+.band-media.playing img.poster{ opacity:0 }
+/* 영상 위에 떠 있는 유리 카드 — 컨테이너 안쪽에 둬서 잘리지 않게 */
+.fl{
+  position:absolute; z-index:3; display:flex; align-items:center; gap:9px;
+  padding:9px 13px; border-radius:11px; font-family:var(--mono); font-size:11px; font-weight:500;
+  background:color-mix(in srgb, var(--panel) 84%, transparent);
+  border:1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  backdrop-filter:blur(14px) saturate(150%); color:var(--text);
+  box-shadow:var(--sh-md); animation:bob 5.5s ease-in-out infinite;
+}
+.fl u{ width:7px; height:7px; border-radius:50%; text-decoration:none; display:block; flex:none }
+.fl s{ text-decoration:none; color:var(--dim) }
+.fl.a{ left:3%;  top:12%;    animation-delay:0s }
+.fl.b{ right:3%; top:44%;    animation-delay:1.2s }
+.fl.c{ left:3%;  bottom:12%; animation-delay:2.4s }
+@media(max-width:820px){ .fl{ display:none } }
+@keyframes bob{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-8px) } }
+.band-cap{
+  max-width:1340px; margin:16px auto 0; padding:0 clamp(16px,4vw,40px);
+  display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+  font-family:var(--mono); font-size:11px; color:var(--dim); position:relative; z-index:1;
+}
+
+/* ---------- 섹션 공통 ---------- */
+section{ position:relative; z-index:1 }
+.eyebrow{
+  display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--brand-ink); margin-bottom:18px;
+}
+.eyebrow::before{ content:''; width:26px; height:1px; background:var(--brand); opacity:.55 }
+.eyebrow.mid{ justify-content:center }
+h2{ font-size:clamp(27px,3.5vw,42px); font-weight:800; letter-spacing:-.035em; line-height:1.16 }
+.sub{ color:var(--muted); font-size:16px; line-height:1.72; margin-top:16px; max-width:34em }
+.rv{ opacity:0; transform:translateY(26px); transition:opacity .85s var(--ease), transform .85s var(--ease) }
+.rv.in{ opacity:1; transform:none }
+
+/* ---------- 스티키 기능 쇼케이스 ---------- */
+.showcase{ padding:118px 0 126px }
+.sc-grid{ display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr); gap:62px; align-items:start; margin-top:58px }
+@media(max-width:960px){ .sc-grid{ grid-template-columns:1fr; gap:28px } }
+.sc-list{ display:flex; flex-direction:column; gap:5px; position:sticky; top:96px }
+@media(max-width:960px){ .sc-list{ position:static } }
+.sc-item{ border-left:2px solid var(--line); padding:16px 0 16px 20px; cursor:pointer; opacity:.42; transition:border-color .35s, opacity .35s }
+.sc-item.on{ border-left-color:var(--brand); opacity:1 }
+.sc-item h3{ font-size:17px; font-weight:700; letter-spacing:-.02em }
+.sc-item p{ font-size:13.5px; line-height:1.68; color:var(--muted);
+  max-height:0; opacity:0; overflow:hidden; transition:max-height .45s var(--ease), opacity .3s, margin-top .45s }
+.sc-item.on p{ max-height:100px; opacity:1; margin-top:8px }
+.sc-stage{
+  position:sticky; top:96px; border-radius:14px; overflow:hidden;
+  border:1px solid var(--line); background:var(--chrome); aspect-ratio:1600/1005; box-shadow:var(--sh-lg);
+}
+@media(max-width:960px){ .sc-stage{ position:static } }
+.sc-stage img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; transform:scale(1.04); transition:opacity .6s ease, transform .95s var(--ease);
+}
+.sc-stage img.on{ opacity:1; transform:none }
+.sc-prog{ position:absolute; left:0; bottom:0; height:2px; background:var(--brand); width:0; z-index:3 }
+
+/* ---------- 벤토 ---------- */
+.bento{ padding:0 0 126px }
+.bg{ display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-top:52px }
+@media(max-width:960px){ .bg{ grid-template-columns:repeat(2,1fr) } }
+@media(max-width:600px){ .bg{ grid-template-columns:1fr } }
+.card{
+  position:relative; border:1px solid var(--line); background:var(--panel);
+  border-radius:14px; padding:24px; overflow:hidden;
+  transition:border-color .3s, transform .4s var(--ease), box-shadow .4s;
+}
+.card:hover{ border-color:var(--line-2); transform:translateY(-3px); box-shadow:var(--sh-md) }
+.card::before{
+  content:''; position:absolute; inset:0; opacity:0; transition:opacity .3s; pointer-events:none;
+  background:radial-gradient(320px circle at var(--cx,50%) var(--cy,50%), color-mix(in srgb,var(--brand) 11%,transparent), transparent 62%);
+}
+.card:hover::before{ opacity:1 }
+.c3{ grid-column:span 3 } .c2{ grid-column:span 2 } .c6{ grid-column:span 6 }
+@media(max-width:960px){ .c3,.c2{ grid-column:span 1 } .c6{ grid-column:1 / -1 } }
+.card h3{ font-size:16.5px; font-weight:700; letter-spacing:-.02em; margin-bottom:8px }
+.card p{ font-size:13.5px; line-height:1.68; color:var(--muted) }
+.ic{
+  width:34px; height:34px; border-radius:9px; display:grid; place-items:center; margin-bottom:14px;
+  background:color-mix(in srgb,var(--brand) 11%,transparent);
+  border:1px solid color-mix(in srgb,var(--brand) 24%,transparent); color:var(--brand);
+}
+.ic svg{ width:17px; height:17px }
+.chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px }
+.chip{
+  font-family:var(--mono); font-size:10.5px; padding:4px 9px; border-radius:6px;
+  border:1px solid var(--line-2); color:var(--muted); background:var(--panel-2);
+  animation:pop .5s var(--ease) both;
+}
+@keyframes pop{ from{opacity:0; transform:scale(.85)} to{opacity:1; transform:none} }
+.chip.hot{ border-color:color-mix(in srgb,var(--brand) 42%,transparent); color:var(--brand-ink); background:color-mix(in srgb,var(--brand) 9%,transparent) }
+/* ---- 벤토 미니 데모: 전부 실제 앱 UI 를 저해상도로 재현 ----
+   색은 앱 팔레트 토큰 그대로 (키 --lv-d, 문자열 --lv-i, 숫자 --app-orange …) */
+
+/* ① 더블클릭 상세보기 — JSON 프리티 프린트 */
+.dv{ margin-top:16px; border:1px solid #2E3145; border-radius:9px; background:var(--app-elev); overflow:hidden }
+.dv-h{ display:flex; align-items:center; gap:7px; padding:7px 10px; border-bottom:1px solid #2A2D3E; font-family:var(--mono); font-size:9px; color:var(--app-num) }
+.dv-h .lvc{ background:var(--lv-d); color:color-mix(in srgb,var(--lv-d) 42%,#0F0F17); border-radius:3px; padding:0 4px; font-weight:700 }
+.dv-h .tgn{ color:var(--tg-1) }
+.dv-h .seg{ margin-left:auto; display:flex; gap:3px }
+.dv-h .seg b{ padding:2px 6px; border-radius:4px; background:#2A2D40; color:#8A8FA3; font-weight:500 }
+.dv-h .seg b.on{ background:var(--lv-d); color:#141625 }
+.dv-b{ padding:9px 11px; font-family:var(--mono); font-size:9.5px; line-height:1.62; white-space:pre; overflow:hidden }
+.dv-b .k{ color:var(--lv-d) } .dv-b .s{ color:var(--lv-i) }
+.dv-b .nm{ color:var(--app-orange) } .dv-b .p{ color:#6B6E80 }
+
+/* ② Retrace — 난독화 → 복원 */
+.rt{ margin-top:16px; display:grid; gap:6px; font-family:var(--mono); font-size:9.5px }
+.rt div{ padding:7px 9px; border-radius:7px; border:1px solid var(--line); background:var(--panel-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.rt .before{ color:var(--app-num) }
+.rt .after{ color:var(--lv-i); border-color:color-mix(in srgb,var(--lv-i) 32%,transparent); background:color-mix(in srgb,var(--lv-i) 8%,transparent) }
+.rt .arrow{ border:0; background:none; padding:0; color:var(--brand); font-size:11px; text-align:center }
+
+/* ③ 크래시 리포트 복사 — 우클릭 메뉴 → 기기·OS 정보까지 함께 담긴 리포트 */
+.ccx{ margin-top:16px; display:grid; gap:8px }
+.ccx-menu{
+  border:1px solid #2E3145; border-radius:7px; background:var(--app-elev); overflow:hidden;
+  font-size:10px; color:#7D8095;
+}
+.ccx-menu div{ padding:5px 10px }
+.ccx-menu div.on{ background:#33364A; color:#E3E6EE; font-weight:600 }
+/* 클립보드에 담긴 내용. 왼쪽 빨간 가드레일로 크래시 구간에서 떠 왔음을 표시한다 */
+.ccx-rep{
+  border:1px solid var(--line); border-left:2px solid var(--app-crash);
+  border-radius:0 7px 7px 0; background:var(--panel-2); padding:8px 10px;
+  font-family:var(--mono); font-size:9px; line-height:1.7; color:var(--app-num);
+  overflow:hidden; text-overflow:ellipsis;
+}
+.ccx-rep b{ display:block; color:var(--app-msg); font-weight:700; margin-bottom:3px }
+.ccx-rep i{ color:var(--lv-i); font-style:normal }
+.ccx-rep s{ display:block; margin-top:4px; color:var(--app-crash); text-decoration:none;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+/* ④ 북마크 — 실제 BOOKMARKS 패널 형태 */
+.bmk{ margin-top:16px; display:grid; gap:6px }
+.bmk-row{ border:1px solid #33364A; border-radius:7px; background:#292B3C; padding:7px 9px }
+.bmk-t{ display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:9px; color:#A8ADBE }
+.bmk-t .box{ width:9px; height:9px; border-radius:2px; border:1px solid #4A4E66; flex:none }
+.bmk-t .dot{ width:7px; height:7px; border-radius:50%; flex:none }
+.bmk-t .lvc{ border-radius:3px; padding:0 4px; font-weight:700; background:var(--lv-d); color:color-mix(in srgb,var(--lv-d) 42%,#0F0F17) }
+.bmk-t .rm{ margin-left:auto; color:#6B6E80 }
+.bmk-s{ display:flex; align-items:center; gap:5px; margin-top:6px }
+.bmk-s span{ font-family:var(--mono); font-size:8.5px; color:#6B6E80; margin-right:auto; font-style:italic }
+.bmk-s i{ width:10px; height:10px; border-radius:50%; display:block }
+.bmk-s i.sel{ box-shadow:0 0 0 2px #292B3C, 0 0 0 3.5px var(--lv-d) }
+
+/* ⑤ 태그 색상 */
+.tagrow{ margin-top:16px; display:flex; flex-wrap:wrap; gap:5px; font-family:var(--mono); font-size:9.5px }
+
+/* ⑥ 32종 시그널 — 전면 폭, 그룹별로 부각 */
+.siggrid{ margin-top:20px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
+@media(max-width:820px){ .siggrid{ grid-template-columns:repeat(2,1fr) } }
+@media(max-width:520px){ .siggrid{ grid-template-columns:1fr } }
+.sgroup{ border:1px solid var(--line); border-radius:10px; background:var(--panel-2); padding:13px }
+.sgroup h4{
+  display:flex; align-items:center; gap:7px; font-family:var(--mono); font-size:9.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:9px;
+}
+.sgroup h4 u{ width:7px; height:7px; border-radius:50%; text-decoration:none; display:block; flex:none }
+.sgroup h4 s{ margin-left:auto; text-decoration:none; color:var(--dim) }
+.sgroup li{ list-style:none; font-family:var(--mono); font-size:10px; color:var(--muted); padding:2.5px 0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+
+/* ---------- 릴리즈 노트 ---------- */
+.rel{ padding:0 0 126px }
+.rel-head{ display:flex; align-items:center; gap:0; margin-bottom:34px }
+.rel-head .rule{ height:1px; background:var(--line); flex:1 }
+.rel-head h2{ font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); padding:0 22px }
+.rel-card{ border:1px solid var(--line); border-radius:16px; background:var(--panel); overflow:hidden; margin-bottom:12px }
+.rel-h{ display:flex; align-items:center; gap:13px; padding:20px 24px }
+.tag{ font-family:var(--mono); font-size:10.5px; font-weight:500; padding:4px 10px; border-radius:100px;
+  background:color-mix(in srgb,var(--brand) 14%,transparent); color:var(--brand-ink) }
+.rel-h b{ font-size:17px; letter-spacing:-.02em }
+.rel-h .when{ margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--dim) }
+.rel-b{ padding:0 24px 22px; display:grid; gap:10px }
+.li{ display:flex; gap:11px; align-items:baseline; font-size:14px; color:var(--muted); line-height:1.65 }
+.li i{ width:7px; height:7px; border-radius:50%; flex:none; transform:translateY(-1px) }
+details.rel-card summary{
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:13px; padding:18px 24px;
+  font-size:15px; font-weight:700; letter-spacing:-.015em;
+}
+details.rel-card summary::-webkit-details-marker{ display:none }
+details.rel-card summary .cv{ transition:transform .3s var(--ease); color:var(--dim); display:flex }
+details[open].rel-card summary .cv{ transform:rotate(90deg) }
+details.rel-card summary .when{ margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--dim); font-weight:400 }
+
+/* ---------- 다운로드 ---------- */
+.dl{ padding:0 0 126px }
+.dl-box{
+  border:1px solid var(--line); border-radius:20px; overflow:hidden; text-align:center;
+  padding:clamp(40px,6vw,72px) clamp(24px,5vw,60px);
+  background:radial-gradient(880px 330px at 50% -30%, color-mix(in srgb,var(--brand) 15%,transparent), transparent 70%), var(--bg-2);
+}
+.os-row{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:34px }
+.os{
+  display:flex; align-items:center; gap:10px; padding:14px 20px; border-radius:12px;
+  border:1px solid var(--line-2); background:var(--panel); color:var(--muted);
+  font-family:var(--sans); font-size:14px; font-weight:600; cursor:pointer;
+  transition:transform .3s var(--ease), border-color .3s, color .3s;
+}
+.os:hover{ transform:translateY(-3px); border-color:var(--brand); color:var(--text) }
+.os svg{ width:18px; height:18px }
+.os small{ display:block; font-size:11px; color:var(--dim); font-weight:400; font-family:var(--mono) }
+.nums{ display:flex; justify-content:center; gap:46px; margin-top:44px; flex-wrap:wrap }
+.num b{ display:block; font-size:30px; font-weight:800; letter-spacing:-.035em; font-variant-numeric:tabular-nums }
+.num span{ font-size:11px; color:var(--dim); font-family:var(--mono); letter-spacing:.1em; text-transform:uppercase }
+
+/* ---------- 푸터 ---------- */
+footer{ border-top:1px solid var(--line); padding:42px 0; position:relative; z-index:1 }
+.f-in{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap }
+.f-l{ display:flex; align-items:center; gap:12px }
+.f-l img{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line-2) }
+.f-l b{ font-size:14px } .f-l span{ display:block; font-size:12px; color:var(--dim) }
+.f-r{ display:flex; gap:6px 22px; font-size:13px; flex-wrap:wrap }
+/* 세로 패딩으로 탭 타깃을 확보한다 — 텍스트만이면 17px 라 WCAG 2.5.8 최소(24px) 미달 */
+.f-r a{ color:var(--muted); text-decoration:none; transition:.2s; padding:6px 0; display:inline-block }
+.f-r a:hover{ color:var(--brand-ink) }
+.copy{ margin-top:24px; font-size:11.5px; color:var(--dim) }
+
+@media(prefers-reduced-motion:reduce){ *{ animation-duration:.01ms !important; transition-duration:.01ms !important } }
+
+/* ============================================================
+   상태 토글 유틸리티
+   app.js 가 20곳 넘게 classList 로 켜고 끄는 이름들이다(원래 Tailwind 제공).
+   Tailwind 를 걷어냈으므로 여기서 직접 정의한다 — 이름을 바꾸면 app.js 를
+   그만큼 고쳐야 하므로 그대로 둔다.
+   ============================================================ */
+.hidden{ display:none !important }
+.flex{ display:flex }
+.inline-flex{ display:inline-flex }
+
+/* ============================================================
+   목업에서 <button> 이던 것들이 실제로는 링크(<a>)다 — 링크 기본 스타일 제거
+   ============================================================ */
+a.pill, a.btn-dl, a.btn-ghost, a.os, a.arow{ text-decoration:none }
+a.pill.cta{ color:var(--cta-tx) }
+/* 릴리즈가 없으면 app.js 가 통째로 숨기므로 기본 표시 상태를 여기서 정의 */
+.dl-area{ flex-direction:column; align-items:flex-start; gap:0 }
+.dl-area .cta-row{ animation:none }
+.dl-area .meta{ animation:none }
+.copy a{ color:inherit; text-decoration:underline; text-underline-offset:2px; text-decoration-color:var(--line-2) }
+.copy a:hover{ color:var(--brand-ink) }
+
+/* ============================================================
+   릴리즈 노트 — app.js / prerender.mjs 가 찍는 마크업의 스타일.
+   두 파일의 render* 는 이 클래스 이름에 1:1 로 묶여 있으므로 함께 고칠 것.
+   ============================================================ */
+.rel{ padding:0 0 126px }
+.rel-head{ display:flex; align-items:center; margin-bottom:34px }
+.rel-head .rule{ height:1px; background:var(--line); flex:1 }
+.rel-head h2{
+  font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--dim); padding:0 22px;
+}
+
+/* 최신 릴리즈 */
+.rel-latest{ border:1px solid var(--line); border-radius:16px; background:var(--panel); overflow:hidden; margin-bottom:12px }
+.rel-top{ display:flex; align-items:center; gap:13px; flex-wrap:wrap; padding:20px 24px; border-bottom:1px solid var(--line) }
+.rel-top h3{ font-size:19px; font-weight:800; letter-spacing:-.025em }
+.rel-when{ margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--dim) }
+.rel-body{ padding:22px 24px 24px }
+
+/* 과거 릴리즈 — <details> */
+details.rel-old{ border:1px solid var(--line); border-radius:16px; background:var(--panel); overflow:hidden; margin-bottom:12px }
+details.rel-old summary{
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:13px;
+  padding:18px 24px; font-size:16px; font-weight:700; letter-spacing:-.02em;
+}
+details.rel-old summary::-webkit-details-marker{ display:none }
+.rel-cv{ display:flex; color:var(--dim); transition:transform .3s var(--ease) }
+details.rel-old[open] .rel-cv{ transform:rotate(90deg) }
+details.rel-old .rel-body{ padding:0 24px 24px }
+
+/* 배지 */
+.tag{
+  font-family:var(--mono); font-size:10.5px; font-weight:500; padding:4px 10px; border-radius:100px;
+  background:color-mix(in srgb, var(--brand) 14%, transparent); color:var(--brand-ink); flex:none;
+}
+.tag.pre{ background:color-mix(in srgb, var(--muted) 16%, transparent); color:var(--muted) }
+
+/* 섹션(Added/Fixed/…) */
+.rel-sec + .rel-sec{ margin-top:22px }
+.rel-sec h4{
+  display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:10.5px;
+  font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:11px;
+}
+.rel-sec h4 u{ width:7px; height:7px; border-radius:50%; text-decoration:none; display:block; flex:none }
+.rel-sec ul{ list-style:none; display:grid; gap:9px }
+.rel-sec li{ position:relative; padding-left:15px; font-size:14px; line-height:1.7; color:var(--muted) }
+.rel-sec li::before{ content:''; position:absolute; left:2px; top:.72em; width:4px; height:4px; border-radius:50%; background:var(--line-2) }
+.rel-sec p{ font-size:14px; line-height:1.7; color:var(--muted); margin-bottom:9px }
+
+/* 카테고리 점 색 — app.js 의 DOT 맵과 같은 순서 */
+.dot-added{ background:var(--ok) }      .dot-fixed{ background:var(--warn) }
+.dot-changed{ background:var(--info) }  .dot-removed{ background:var(--crash) }
+.dot-security{ background:#A78BFA }     .dot-other{ background:var(--dim) }
+
+/* 릴리즈 노트 본문 inline HTML (GitHub 릴리즈 마크다운에서 옴) */
+.md strong{ font-weight:700; color:var(--text) }
+.md code{
+  font-family:var(--mono); font-size:.9em; padding:1px 5px; border-radius:4px;
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+}
+.md a{ color:var(--brand-ink); text-decoration:underline; text-underline-offset:2px }
+.md img{
+  display:block; width:100%; margin-top:10px; border-radius:12px;
+  border:1px solid var(--line-2); background:#fff;   /* 밝은 스크린샷을 다크에서 감싸준다 */
+}
+
+/* 에셋 목록 */
+.rel-assets{ margin-top:26px; padding-top:22px; border-top:1px solid var(--line) }
+details.assets summary{
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:11px;
+  font-size:15px; font-weight:700; margin-bottom:14px;
+}
+details.assets summary::-webkit-details-marker{ display:none }
+details.assets[open] .rel-cv{ transform:rotate(90deg) }
+.assets-n{
+  font-family:var(--mono); font-size:11px; padding:2px 9px; border-radius:100px;
+  background:var(--panel-2); border:1px solid var(--line); color:var(--muted);
+}
+.agroup + .agroup{ margin-top:18px }
+.agroup h5{
+  display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700;
+  color:var(--muted); margin-bottom:7px;
+}
+.agroup h5 svg{ width:14px; height:14px }
+.arow{
+  display:flex; align-items:center; gap:12px; padding:11px 12px; text-decoration:none;
+  border:1px solid var(--line); border-radius:10px; background:var(--panel-2); margin-bottom:6px;
+  transition:border-color .25s, transform .25s var(--ease);
+}
+.arow:hover{ border-color:var(--brand); transform:translateX(2px) }
+/* .ak 는 kind 가 other 면 렌더되지 않으므로, 오른쪽 정렬은 .an 의 flex 로 잡는다 */
+.arow .an{ flex:1; min-width:0; font-size:13px; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.arow .ak{
+  flex:none; font-family:var(--mono); font-size:10px; padding:2px 8px;
+  border-radius:5px; background:var(--panel); border:1px solid var(--line); color:var(--dim);
+}
+.arow .as{ flex:none; font-family:var(--mono); font-size:11px; color:var(--dim); width:64px; text-align:right }
+.arow .adl{ flex:none; width:15px; height:15px; color:var(--dim) }
+.arow:hover .adl{ color:var(--brand) }
+
+/* 릴리즈 0건 */
+.empty{
+  text-align:center; padding:56px 24px; border:1px dashed var(--line-2);
+  border-radius:16px; background:var(--panel-2);
+}
+.empty svg{ width:34px; height:34px; color:var(--brand); margin-bottom:14px }
+.empty h3{ font-size:18px; font-weight:700; margin-bottom:8px }
+.empty p{ color:var(--muted); font-size:14.5px }
+
+/* 라이트박스 — app.js 가 생성 */
+.lightbox{
+  position:fixed; inset:0; z-index:200; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.82); backdrop-filter:blur(6px); padding:clamp(16px,5vw,60px);
+  cursor:zoom-out;
+}
+.lightbox img{ max-width:100%; max-height:100%; border-radius:14px; box-shadow:0 30px 80px -20px rgba(0,0,0,.8) }

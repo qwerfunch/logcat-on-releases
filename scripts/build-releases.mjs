@@ -9,7 +9,12 @@
 //   GITHUB_TOKEN      — API 인증 (Actions 의 기본 토큰이면 충분; 로컬은 `gh auth token`)
 //   GITHUB_REPOSITORY — "owner/repo" (Actions 자동 주입; 로컬 fallback 아래 상수)
 //
-// 출력: dist/releases.json  { schemaVersion, repo, generatedAt, releases: [...] }
+// 출력: dist/releases.json  { schemaVersion, repo, generatedAt, stats, releases: [...] }
+//
+// 방문 수도 여기서 굽는다. 클라이언트에서 goatcounter.com 을 직접 fetch 하면
+// 광고 차단기(애널리틱스 도메인은 대부분의 차단 목록에 있다)에 막혀 다수 방문자에게
+// 숫자가 아예 안 보인다. 빌드 타임 스냅샷이면 차단 여부와 무관하게 항상 표시된다.
+// 신선도는 워크플로의 일일 cron 과 릴리즈 이벤트로 유지된다.
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -18,6 +23,22 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = process.env.GITHUB_REPOSITORY || 'qwerfunch/logcat-on-releases';
 const TOKEN = process.env.GITHUB_TOKEN || '';
+// GoatCounter 사이트 코드. assets/app.js 의 GOATCOUNTER_CODE 와 같아야 한다.
+const GOATCOUNTER_CODE = 'logcaton';
+
+// 방문 누적 수 — 실패해도 빌드는 계속한다(숫자만 빠진다).
+async function fetchVisits() {
+  if (!GOATCOUNTER_CODE) return null;
+  try {
+    const res = await fetch(`https://${GOATCOUNTER_CODE}.goatcounter.com/counter/TOTAL.json`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    const n = parseInt(String(json.count).replace(/\D/g, ''), 10);
+    return Number.isNaN(n) ? null : n;
+  } catch {
+    return null;
+  }
+}
 
 // ---------------------------------------------------------------- GitHub API
 
@@ -238,11 +259,13 @@ const totalDownloads = releases.reduce(
   0,
 );
 
+const visits = await fetchVisits();
+
 const out = {
   schemaVersion: 1,
   repo: REPO,
   generatedAt: new Date().toISOString(),
-  stats: { totalDownloads },
+  stats: { totalDownloads, ...(visits === null ? {} : { visits }) },
   releases,
 };
 

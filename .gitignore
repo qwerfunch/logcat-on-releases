@@ -1,3 +1,5 @@
 .DS_Store
 node_modules/
 dist/
+# 리디자인 시안 목업 — index.html 로 이관 완료. 로컬 참고용으로만 둔다.
+mockups/

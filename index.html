@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LogcatOn — Android Logcat Viewer for macOS, Windows & Linux (Free)</title>
-    <meta name="description" content="Blazing-fast Android logcat viewer. Auto package/PID filtering, 32+ signal highlights (crash, ANR, memory), smart search & bookmarks, 60fps at 1M+ lines. Free download.">
+    <meta name="description" content="Fast multi-platform Android logcat viewer. Pick an app and PID/TID filter themselves, 32 built-in signal highlights (crash, ANR, native fault, memory), regex search and bookmarks. Free download for macOS, Windows and Linux.">
     <meta name="keywords" content="logcat, android logcat viewer, adb, logcat gui, android log viewer, android debugging, logcat 뷰어, 안드로이드 로그캣, tauri">
     <meta name="author" content="qwerfunch">
-    <meta name="theme-color" content="#FFFCF4">
+    <meta name="theme-color" content="#07080B">
     <meta name="google-site-verification" content="M3woYzIROSjI-a-LhkR99qHuXj2c0xG2J0uJ0sCGMqw">
 
     <!-- 검색엔진: 기본 URL = 영어(x-default), 그 외 언어는 ?lang=xx (app.js 가 파라미터 인식) -->
@@ -20,7 +20,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="LogcatOn — Android Logcat Viewer for macOS, Windows & Linux">
-    <meta property="og:description" content="Blazing-fast Android logcat viewer. Auto package/PID filtering, 32+ signal highlights (crash·ANR·memory), smart search & bookmarks, 60fps at 1M+ lines. Free download.">
+    <meta property="og:description" content="Jump straight to the one line that matters. Crashes, ANRs and native faults land on the minimap the moment they happen. Free for macOS, Windows and Linux.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qwerfunch.github.io/logcat-on-releases/">
     <meta property="og:site_name" content="LogcatOn">
@@ -28,15 +28,15 @@
     <meta property="og:locale:alternate" content="ko_KR">
     <meta property="og:locale:alternate" content="ja_JP">
     <meta property="og:locale:alternate" content="zh_CN">
-    <meta property="og:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
+    <meta property="og:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/og.jpg">
     <meta property="og:image:width" content="1280">
     <meta property="og:image:height" content="720">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="LogcatOn — Android Logcat Viewer (Free)">
-    <meta name="twitter:description" content="Blazing-fast Android logcat viewer for macOS/Windows/Linux. Auto PID filtering, 32+ signal highlights, 60fps at 1M+ lines.">
-    <meta name="twitter:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg">
+    <meta name="twitter:description" content="Jump straight to the one line that matters. Free Android logcat viewer for macOS, Windows and Linux.">
+    <meta name="twitter:image" content="https://qwerfunch.github.io/logcat-on-releases/assets/og.jpg">
 
     <!-- 구조화 데이터 — 빌드(prerender.mjs)가 softwareVersion/dateModified 를 주입 -->
     <script type="application/ld+json">
@@ -44,9 +44,9 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "LogcatOn",
-      "description": "Blazing-fast multi-platform Android logcat viewer. Auto package/PID filtering, 32+ built-in signal highlights (crash, ANR, native fault, memory), smart search, bookmarks, canvas-based rendering at 60fps with 1M+ lines.",
+      "description": "Fast multi-platform Android logcat viewer. Auto package/PID filtering, 32 built-in signal highlights (crash, ANR, native fault, memory), regex search, bookmarks and crash report copy.",
       "url": "https://qwerfunch.github.io/logcat-on-releases/",
-      "image": "https://qwerfunch.github.io/logcat-on-releases/assets/poster.jpg",
+      "image": "https://qwerfunch.github.io/logcat-on-releases/assets/og.jpg",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS, Windows, Linux",
       "inLanguage": ["en", "ko", "ja", "zh-CN"],
@@ -61,256 +61,414 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            /* 노란/오렌지 빛이 은은하게 감도는 화사한 배경색 */
-            background-color: #FFFCF4;
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #EADBC8; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #DBC8B0; }
-        /* 릴리즈 노트 본문(빌드 타임에 베이크된 inline html) 공통 스타일 */
-        .md strong { font-weight: 700; color: #1c1917; }
-        .md code { background: #f5f0e4; border: 1px solid #eadbc8; border-radius: 4px; padding: 0 4px; font-size: 0.9em; }
-        .md a { color: #E67E22; text-decoration: underline; text-underline-offset: 2px; }
-        .md img { display: block; width: 100%; margin-top: 0.75rem; border-radius: 1rem; border: 1px solid rgba(214,211,209,0.7); box-shadow: 0 14px 44px rgba(230,126,34,0.10); }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/app.css">
+    <script>
+      // FOUC 방지 — 렌더 전에 테마를 확정한다. 모듈 스크립트(app.js)는 defer 라 늦다.
+      // 기본은 다크. 사용자가 토글하면 localStorage 선택이 우선한다.
+      (function () {
+        try {
+          var s = localStorage.getItem('logcaton.theme');
+          document.documentElement.setAttribute('data-theme', s === 'light' ? 'light' : 'dark');
+        } catch (e) { /* 프라이빗 모드 등 — 기본 다크 유지 */ }
+      })();
+    </script>
 </head>
-<body class="text-stone-800 antialiased min-h-screen flex flex-col items-center">
+<body>
+<div class="spot" id="spot"></div>
 
-    <!-- 언어 선택 드롭다운 -->
-    <div class="fixed top-4 right-4 z-50">
-        <button id="langToggle"
-            class="bg-white/80 backdrop-blur border border-stone-200 text-stone-600 hover:text-[#E67E22] hover:border-[#E67E22]/40 text-xs font-bold px-3.5 py-2 rounded-full shadow-sm transition-colors flex items-center gap-1.5">
-            <i class="ph-bold ph-globe text-sm"></i><span id="langToggleLabel">English</span>
-            <i class="ph-bold ph-caret-down text-[10px] text-stone-400"></i>
-        </button>
-        <ul id="langMenu"
-            class="hidden absolute right-0 mt-2 min-w-[8.5rem] bg-white/95 backdrop-blur border border-stone-200 rounded-xl shadow-lg overflow-hidden text-sm font-semibold text-stone-600">
-            <li><button data-lang="en" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">English</button></li>
-            <li><button data-lang="ko" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">한국어</button></li>
-            <li><button data-lang="ja" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">日本語</button></li>
-            <li><button data-lang="zh" class="w-full text-left px-4 py-2.5 hover:bg-[#E67E22]/10 hover:text-[#E67E22] transition-colors">简体中文</button></li>
-        </ul>
+<nav id="nav">
+  <div class="wm"><img src="assets/favicon-192.png" alt=""><span>Logcat<i>On</i></span></div>
+  <div class="nav-r">
+    <button class="pill" id="themeBtn" data-i18n-title="theme.toggle" title="Toggle theme" aria-label="Toggle theme">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.8v2M12 20.2v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1.8 12h2M20.2 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <button class="pill" id="langToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5a15 15 0 0 1 0 19a15 15 0 0 1 0-19z"/></svg>
+      <span id="langToggleLabel">English</span>
+    </button>
+    <ul id="langMenu">
+      <li><button data-lang="en">English</button></li>
+      <li><button data-lang="ko">한국어</button></li>
+      <li><button data-lang="ja">日本語</button></li>
+      <li><button data-lang="zh">简体中文</button></li>
+    </ul>
+    <a class="pill cta" href="#download" data-i18n="nav.download">Download</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="badge"><span class="dot"></span> <span id="heroBadge" data-i18n="hero.badge">macOS · Windows · Linux</span></div>
+      <!-- app.js 가 <br> 기준으로 각 줄을 .ln > span 으로 감싸 마스크 리빌을 건다 -->
+      <h1 id="heroHeading" data-i18n="hero.heading">Jump straight to<br><em>the one line</em><br>that matters.</h1>
+      <p class="lede" data-i18n="hero.lede">Crashes, ANRs and native faults land on the minimap and timeline the moment they happen. One click takes you there. Large logs keep flowing without a stutter.</p>
+
+      <!-- 릴리즈가 없으면 app.js 가 통째로 숨긴다 -->
+      <div id="downloadArea" class="dl-area hidden">
+        <div class="cta-row">
+          <a class="btn-dl" id="primaryDownload" href="#latest-assets">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span id="primaryDownloadLabel"></span>
+          </a>
+          <a class="btn-ghost" id="otherPlatforms" href="#latest-assets"></a>
+        </div>
+        <div class="meta"><span id="primaryDownloadMeta"></span></div>
+      </div>
     </div>
 
-    <main class="max-w-4xl mx-auto px-4 py-16 w-full flex flex-col items-center">
+    <div class="demo">
+      <div class="demo-bar">
+        <div class="tl"><i></i><i></i><i></i></div>
+        <span class="demo-title">emulator-5554 · com.qwerfunch.testcrash</span>
+        <span class="demo-stat"><b id="cnt">0</b> lines</span>
+      </div>
+      <div class="log-head">
+        <span class="n">LINE</span><span>LV</span>
+        <span class="pid">PID</span><span class="tid">TID</span><span>TAG</span><span>MSG</span>
+      </div>
+      <div class="stream-wrap">
+        <!-- 왼쪽: 미니맵(시그널 마커) — 앱과 같은 위치 -->
+        <div class="minimap" id="mm"><div class="mm-view" id="mmView"></div></div>
+        <!-- 가운데: 로그 뷰포트 -->
+        <div class="stream" id="stream"><div class="stream-inner" id="streamInner"></div></div>
+        <!-- 오른쪽: 스크롤바만 (앱 아이콘의 흰 바) -->
+        <div class="sbar"><div class="sthumb" id="sThumb"></div></div>
 
-        <!-- 타이틀 -->
-        <header class="text-center mb-12 w-full">
-            <h1 class="text-5xl md:text-6xl font-black text-[#172554] tracking-tight select-none">
-                Logcat<span class="text-[#E67E22]">On</span>
-            </h1>
-        </header>
-
-        <!-- 비디오 영역 — 화면에는 canvas 만 보이고 실제 video 는 숨김(아래).
-             브라우저 자동 PiP(Arc 미니 플레이어)는 "보이는 비디오"만 낚아채므로
-             canvas 미러링이면 PiP 대상 자체가 사라진다. -->
-        <div class="w-full rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(230,126,34,0.12)] border border-stone-200/50 mb-20 relative aspect-video flex items-center justify-center bg-slate-900">
-            <canvas id="demoCanvas" width="1280" height="720" class="w-full h-full object-cover"></canvas>
-            <video id="demoVideo" src="video/logcat-on.mp4" preload="auto" class="hidden" autoplay muted playsinline disablepictureinpicture></video>
-            <!-- 소리 토글 — 영상 워터마크(✦, 중심 92.7%/86.8%) 위를 정확히 덮는 위치 -->
-            <button id="soundToggle" style="left: 92.7%; top: 86.8%;"
-                class="absolute -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-slate-900/80 backdrop-blur-sm border border-white/20 text-white/90 hover:text-white flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
-                <i id="soundToggleIcon" class="ph-fill ph-speaker-simple-slash text-xl"></i>
-            </button>
+        <!-- 시그널 알림 벨 (앱과 동일) -->
+        <div class="bell" id="bell">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+          </svg>
+          <span class="cnt" id="bellCnt">3</span>
         </div>
 
-        <!-- 설명 영역 — 영어 원문을 정적으로 베이크(JS 미실행 크롤러 대응),
-             app.js 가 로드되면 감지된 언어로 덮어쓴다 -->
-        <section class="w-full mb-24 text-center flex flex-col items-center">
-            <h2 data-i18n="intro.heading" class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6 leading-tight tracking-tight">Android Studio's logcat was so painful,<br>I just built my own 😹</h2>
-            <div class="text-stone-600 leading-relaxed text-lg max-w-2xl mx-auto space-y-5">
-                <p data-i18n="intro.body">Tired of digging for the one line you need in a flood of logs?<br>So was I — so I built the logcat viewer I always wanted to use.<br>Experience intuitive log analysis that saves your eyes and your time, with LogcatOn!</p>
-                <p data-i18n="intro.free" class="font-bold text-[#E67E22] text-xl pt-2">It's free — grab it and enjoy!</p>
-            </div>
-
-            <!-- 메인 다운로드 버튼 (OS 자동감지, 릴리즈 없으면 숨김) -->
-            <div id="downloadArea" class="hidden mt-12 flex-col items-center gap-3">
-                <a id="primaryDownload" href="#"
-                    class="inline-flex items-center gap-3 bg-[#E67E22] hover:bg-[#D35400] text-white font-bold text-lg px-9 py-4 rounded-xl shadow-lg shadow-[#E67E22]/25 transition-colors">
-                    <i class="ph-bold ph-download-simple text-2xl"></i>
-                    <span id="primaryDownloadLabel"></span>
-                </a>
-                <div class="flex items-center gap-2 text-sm text-stone-400">
-                    <span id="primaryDownloadMeta"></span>
-                </div>
-                <!-- 누적 스탯 — 조회수·다운로드 수 항시 표시(로드 전에만 숨김) -->
-                <div id="statsLine" class="hidden items-center gap-4 text-xs text-stone-400">
-                    <span id="statDownloads" class="hidden items-center gap-1.5">
-                        <i class="ph-bold ph-download-simple"></i><span></span>
-                    </span>
-                    <span id="statVisits" class="hidden items-center gap-1.5">
-                        <i class="ph-bold ph-eye"></i><span></span>
-                    </span>
-                </div>
-                <a id="otherPlatforms" href="#latest-assets"
-                    class="text-sm font-semibold text-stone-500 hover:text-[#E67E22] transition-colors mt-1"></a>
-            </div>
-        </section>
-
-        <!-- 핵심 기능 쇼케이스 — 지그재그(좌우 교차). 각 행의 비주얼은 지금은
-             기능 아이콘 카드이며, 스크린샷이 준비되면 그 카드 div 를
-             <img src="assets/features/<key>.jpg" loading="lazy" class="w-full h-full object-cover">
-             로 교체하면 된다(주석 SWAP 지점 참고). 정적 텍스트는 en 베이크. -->
-        <section id="features" class="w-full mb-24">
-            <h2 data-i18n="features.heading" class="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight text-center mb-16">Built for the way you actually debug</h2>
-            <div class="space-y-16 sm:space-y-24">
-                <!-- 1. design -->
-                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/design.webp" alt="LogcatOn — smooth, high-performance log view" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.design.title" class="text-xl font-bold text-stone-900 mb-2.5">Smooth to scroll, easy on the eyes</h3>
-                        <p data-i18n="features.design.desc" class="text-stone-600 leading-relaxed">A Rust core and virtualized rendering keep large logs buttery smooth.</p>
-                    </div>
-                </div>
-
-                <!-- 2. app -->
-                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/app.webp" alt="LogcatOn — filtering logs down to a single app" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.app.title" class="text-xl font-bold text-stone-900 mb-2.5">Only the app you care about</h3>
-                        <p data-i18n="features.app.desc" class="text-stone-600 leading-relaxed">Connect a device and pick an app to see just its logs. Install, launch, and force-stop, all in one place.</p>
-                    </div>
-                </div>
-
-                <!-- 3. filter -->
-                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/filter.webp" alt="LogcatOn — search and filter panel" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.filter.title" class="text-xl font-bold text-stone-900 mb-2.5">Narrow down to the lines you want</h3>
-                        <p data-i18n="features.filter.desc" class="text-stone-600 leading-relaxed">Find, exclude, tag, PID and level filters — plus regex and AND/OR search.</p>
-                    </div>
-                </div>
-
-                <!-- 4. signal -->
-                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/signal.webp" alt="LogcatOn — crash and error signals on the minimap" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.signal.title" class="text-xl font-bold text-stone-900 mb-2.5">Crashes catch your eye, instantly</h3>
-                        <p data-i18n="features.signal.desc" class="text-stone-600 leading-relaxed">Shown on the minimap, signal issues, and timeline — click to jump straight there.</p>
-                    </div>
-                </div>
-
-                <!-- 5. perf -->
-                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/perf.webp" alt="LogcatOn — real-time performance monitor" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.perf.title" class="text-xl font-bold text-stone-900 mb-2.5">Performance, live at a glance</h3>
-                        <p data-i18n="features.perf.desc" class="text-stone-600 leading-relaxed">Monitor CPU, memory, jank, battery and temperature alongside your logs.</p>
-                    </div>
-                </div>
-
-                <!-- 6. bookmark -->
-                <div class="flex flex-col sm:flex-row-reverse sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/bookmark.webp" alt="LogcatOn — bookmarked log lines" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.bookmark.title" class="text-xl font-bold text-stone-900 mb-2.5">Never lose the line that matters</h3>
-                        <p data-i18n="features.bookmark.desc" class="text-stone-600 leading-relaxed">Bookmark key lines, tag them by color, and jump back in an instant.</p>
-                    </div>
-                </div>
-
-                <!-- 7. theme -->
-                <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
-                    <div class="sm:w-[55%]">
-                        <img src="assets/features/theme.webp" alt="LogcatOn — dark and light themes" loading="lazy" width="1600" height="1004" data-zoom
-                            class="w-full rounded-2xl border border-stone-200/70 shadow-[0_14px_44px_rgba(230,126,34,0.10)] cursor-zoom-in transition hover:shadow-[0_18px_52px_rgba(230,126,34,0.18)]">
-                    </div>
-                    <div class="sm:w-[45%]">
-                        <h3 data-i18n="features.theme.title" class="text-xl font-bold text-stone-900 mb-2.5">Dark or light — make it yours</h3>
-                        <p data-i18n="features.theme.desc" class="text-stone-600 leading-relaxed">Switch themes freely to match your setup and your mood.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 릴리즈 영역 -->
-        <div class="w-full">
-
-            <div class="flex items-center justify-center mb-10">
-                <div class="h-px bg-stone-300 flex-1"></div>
-                <h2 class="text-sm font-bold text-stone-400 uppercase tracking-[0.2em] px-6">Release Notes</h2>
-                <div class="h-px bg-stone-300 flex-1"></div>
-            </div>
-
-            <!-- 릴리즈 0개일 때 (현재 기본 상태) -->
-            <div id="emptyState" class="hidden text-center py-16 px-6 rounded-2xl border border-dashed border-stone-300 bg-white/40">
-                <i class="ph ph-rocket-launch text-4xl text-[#E67E22] mb-4 inline-block"></i>
-                <h3 data-i18n="empty.title" class="text-xl font-bold text-stone-900 mb-2">Releases coming soon</h3>
-                <p data-i18n="empty.body" class="text-stone-500">We're preparing the first public release. Downloads will be here soon!</p>
-            </div>
-
-            <!-- 릴리즈 목록 (app.js 가 채움: 최신 펼침 + 과거 접힘) -->
-            <div id="releases"></div>
+        <!-- Signal issues 패널 (앱과 동일) — 제품 UI 라 4개 언어 모두 영문 고정 -->
+        <div class="sigpanel" id="sigPanel">
+          <div class="sp-h">Signal issues
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="sp-r hot" id="spFatal">
+            <i style="background:var(--app-crash)"></i><span class="nm">FATAL EXCEPTION</span>
+            <span class="ct" id="spCnt">1</span>
+            <svg class="loc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <u>‹</u><u class="nx">›</u><u>×</u>
+          </div>
+          <div class="sp-r">
+            <i style="background:var(--app-orange)"></i><span class="nm">Process N exited du…</span>
+            <span class="ct">1</span>
+            <svg class="loc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <u>‹</u><u>›</u><u>×</u>
+          </div>
+          <div class="sp-r">
+            <i style="background:var(--lv-d)"></i><span class="nm">Activity START</span>
+            <span class="ct">4</span>
+            <svg class="loc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <u>‹</u><u>›</u><u>×</u>
+          </div>
+          <div class="sp-r">
+            <i style="background:var(--lv-d)"></i><span class="nm">Displayed (first fr…</span>
+            <span class="ct">3</span>
+            <svg class="loc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <u>‹</u><u>›</u><u>×</u>
+          </div>
+          <div class="sp-r">
+            <i style="background:var(--lv-d)"></i><span class="nm">Process … has died</span>
+            <span class="ct">1</span>
+            <svg class="loc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <u>‹</u><u>›</u><u>×</u>
+          </div>
         </div>
+      </div>
+      <div class="demo-foot">
+        <span class="ready" id="statText">ready</span>
+        <span class="lines"><span id="cnt2">1,647</span> lines · emulator-5554</span>
+        <span class="sig">signals:
+          <i style="background:var(--app-crash)"></i> 4
+          <i style="background:var(--app-warn)"></i> 2
+        </span>
+        <span class="fps">60 fps</span>
+        <span class="ver" id="demoVer">v1.3.0</span>
+      </div>
+    </div>
+  </div>
+</header>
 
-        <!-- 푸터 — 개발자 정보 -->
-        <footer class="mt-24 w-full flex flex-col items-center">
-            <div class="flex items-center w-full mb-10">
-                <div class="h-px bg-stone-200 flex-1"></div>
-                <i class="ph-fill ph-paw-print text-stone-300 px-4 text-lg"></i>
-                <div class="h-px bg-stone-200 flex-1"></div>
-            </div>
-            <div class="flex items-center gap-4 bg-white/70 border border-stone-200/70 rounded-2xl pl-5 pr-7 py-4 shadow-[0_4px_20px_rgba(230,126,34,0.06)]">
-                <img src="https://github.com/qwerfunch.png?size=96" alt="qwerfunch" loading="lazy"
-                    class="w-12 h-12 rounded-full border-2 border-[#E67E22]/30">
-                <div class="text-left">
-                    <div class="flex items-baseline gap-2">
-                        <span class="font-black text-stone-900">qwerfunch</span>
-                        <span data-i18n="footer.role" class="text-xs text-stone-400">Maker of LogcatOn</span>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1.5 text-sm">
-                        <a href="https://github.com/qwerfunch" target="_blank" rel="noopener"
-                            class="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#E67E22] transition-colors">
-                            <i class="ph-bold ph-github-logo"></i>github.com/qwerfunch
-                        </a>
-                        <a href="https://github.com/qwerfunch/logcat-on-releases/issues/new?template=bug_report.yml"
-                            target="_blank" rel="noopener"
-                            class="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#E67E22] transition-colors">
-                            <i class="ph-bold ph-bug"></i><span data-i18n="footer.reportBug">Report a bug</span>
-                        </a>
-                        <a href="https://github.com/qwerfunch/logcat-on-releases/issues/new?template=feature_request.yml"
-                            target="_blank" rel="noopener"
-                            class="inline-flex items-center gap-1.5 text-stone-500 hover:text-[#E67E22] transition-colors">
-                            <i class="ph-bold ph-lightbulb"></i><span data-i18n="footer.requestFeature">Request a feature</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <p class="mt-6 text-xs text-stone-400">
-                © 2026 qwerfunch ·
-                <a href="https://github.com/qwerfunch/logcat-on-releases/releases" target="_blank" rel="noopener"
-                    class="hover:text-[#E67E22] transition-colors">GitHub Releases</a>
-                ·
-                Built with <a href="https://github.com/qwerfunch/cladding" target="_blank" rel="noopener"
-                    class="hover:text-[#E67E22] transition-colors underline decoration-stone-300 underline-offset-2">cladding</a>
-            </p>
-        </footer>
-    </main>
+<div class="strip"><div class="track" id="track"></div></div>
 
-    <script type="module" src="assets/app.js"></script>
+<!-- ============ 실제 화면 녹화 데모 밴드 ============ -->
+<section class="band">
+  <div class="wrap band-head rv">
+    <div class="eyebrow mid">See it work</div>
+    <h2 data-i18n="band.heading">Real screen, no edits</h2>
+    <p class="sub" data-i18n="band.sub">A crash lands mid-flood, marks the minimap, and we jump right to it. Recorded in one take.</p>
+  </div>
+
+  <div class="band-stage rv">
+    <div class="band-win">
+      <div class="win-bar">
+        <div class="tl"><i></i><i></i><i></i></div>
+        <span class="win-t">LogcatOn — emulator-5554 · com.qwerfunch.testcrash</span>
+        <span class="live"><u></u> REC</span>
+      </div>
+      <div class="band-media" id="bandMedia">
+        <img class="poster" src="assets/features/signal.webp" alt="LogcatOn — crash signals on the minimap">
+        <video id="bandVideo" src="video/record-signal.mp4"
+               muted loop playsinline disablepictureinpicture preload="none"
+               width="1512" height="950"></video>
+      </div>
+    </div>
+  </div>
+  <!-- 요약 칩은 두지 않는다 — 영상 속 앱이 이미 상태바에 같은 숫자를 표시 중이라 중복이다 -->
+  <div class="band-cap">
+    <span data-i18n="band.caption">Screen recording · 23s · silent · unedited</span>
+  </div>
+</section>
+
+<!-- ============ 스티키 쇼케이스 ============ -->
+<section class="showcase">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Features</div>
+      <h2 data-i18n="features.heading">Built for the way<br>you actually debug</h2>
+      <p class="sub" data-i18n="features.sub">We didn't list features. We laid out the screen in the order you read logs.</p>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-list" id="scList">
+        <div class="sc-item on" data-i="0">
+          <h3 data-i18n="features.app.title">Only the app you care about</h3>
+          <p data-i18n="features.app.desc">Connect a device and pick an app to see just its logs. Install, launch, and force-stop, all in one place.</p>
+        </div>
+        <div class="sc-item" data-i="1">
+          <h3 data-i18n="features.filter.title">Narrow down to the lines you want</h3>
+          <p data-i18n="features.filter.desc">Find, exclude, tag, PID and level filters — plus regex and AND/OR search.</p>
+        </div>
+        <div class="sc-item" data-i="2">
+          <h3 data-i18n="features.signal.title">Crashes catch your eye, instantly</h3>
+          <p data-i18n="features.signal.desc">Shown on the minimap, signal issues, and timeline — click to jump straight there.</p>
+        </div>
+        <div class="sc-item" data-i="3">
+          <h3 data-i18n="features.perf.title">Performance, live at a glance</h3>
+          <p data-i18n="features.perf.desc">Monitor CPU, memory, jank, battery and temperature alongside your logs.</p>
+        </div>
+        <div class="sc-item" data-i="4">
+          <h3 data-i18n="features.bookmark.title">Never lose the line that matters</h3>
+          <p data-i18n="features.bookmark.desc">Bookmark key lines, tag them by color, and jump back in an instant.</p>
+        </div>
+      </div>
+      <div class="sc-stage" id="stage">
+        <img class="on" src="assets/features/app.webp" alt="LogcatOn — filtering logs down to a single app" loading="lazy" width="1600" height="1005" data-zoom>
+        <img src="assets/features/filter.webp" alt="LogcatOn — search and filter panel" loading="lazy" width="1600" height="1005" data-zoom>
+        <img src="assets/features/signal.webp" alt="LogcatOn — crash and error signals on the minimap" loading="lazy" width="1600" height="1005" data-zoom>
+        <img src="assets/features/perf.webp" alt="LogcatOn — real-time performance monitor" loading="lazy" width="1600" height="1005" data-zoom>
+        <img src="assets/features/bookmark.webp" alt="LogcatOn — bookmarked log lines" loading="lazy" width="1600" height="1005" data-zoom>
+        <div class="sc-prog" id="scProg"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 벤토 ============ -->
+<section class="bento">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Details</div>
+      <h2 data-i18n="details.heading">The small things, handled</h2>
+    </div>
+    <div class="bg">
+      <!-- ① 더블클릭 상세보기 -->
+      <div class="card c3 rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polyline points="9 4 4 4 4 9"/><polyline points="15 20 20 20 20 15"/><path d="M20 9V4h-5M4 15v5h5"/></svg></div>
+        <h3 data-i18n="details.inspect.title">Double-click a line and it all unfolds</h3>
+        <p data-i18n="details.inspect.desc">JSON buried in a log line folds and unfolds. Switch between Pretty and Raw, then copy it as is.</p>
+        <div class="dv">
+          <div class="dv-h">
+            22:55:56 <span class="lvc">D</span> <span class="tgn">TestCrash</span>
+            <span class="seg"><b class="on">Pretty JSON</b><b>Raw</b></span>
+          </div>
+<div class="dv-b"><span class="p">▾ {</span>
+  <span class="k">"event"</span><span class="p">:</span> <span class="s">"test_json_log"</span><span class="p">,</span>
+  <span class="k">"timestamp"</span><span class="p">:</span> <span class="nm">1784987756546</span><span class="p">,</span>
+  <span class="p">▾</span> <span class="k">"user"</span><span class="p">: {</span>
+      <span class="k">"id"</span><span class="p">:</span> <span class="nm">42</span><span class="p">,</span>
+      <span class="k">"name"</span><span class="p">:</span> <span class="s">"qwerfunch"</span>
+  <span class="p">  }</span>
+<span class="p">}</span></div>
+        </div>
+      </div>
+
+      <!-- ② Retrace -->
+      <div class="card c3 rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 4 3 9 8 9"/></svg></div>
+        <h3 data-i18n="details.retrace.title">Obfuscated stacks, back in plain names</h3>
+        <p data-i18n="details.retrace.desc">Point Retrace at your mapping file and unreadable stack traces come back with their original names.</p>
+        <div class="rt">
+          <div class="before">at a.b.c(Unknown Source:3)</div>
+          <div class="arrow">↓</div>
+          <div class="after">at com.qwerfunch.MainActivity.onCreate(MainActivity.kt:23)</div>
+        </div>
+      </div>
+
+      <!-- ③ 크래시 리포트 복사 -->
+      <div class="card c2 rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
+        <h3 data-i18n="details.report.title">Copy a crash report in one go</h3>
+        <p data-i18n="details.report.desc">The crash region is detected for you. One right-click copies it with device and OS info attached.</p>
+        <div class="ccx">
+          <div class="ccx-menu">
+            <div>Bookmark here</div>
+            <div>Copy line</div>
+            <div class="on">Copy crash report</div>
+          </div>
+          <div class="ccx-rep">
+            <b>LogcatOn Crash Report</b>
+            Device: <i>Emulator 5554</i><br>
+            Android: <i>17 (SDK 37)</i>
+            <s>E AndroidRuntime: FATAL EXCEPTION: main …</s>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ 북마크 -->
+      <div class="card c2 rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+        <h3 data-i18n="details.bookmark.title">Bookmarks, sorted by color</h3>
+        <p data-i18n="details.bookmark.desc">Mark the lines that matter, group them by color, and come back anytime.</p>
+        <div class="bmk">
+          <div class="bmk-row">
+            <div class="bmk-t">
+              <span class="box"></span><span class="dot" style="background:var(--app-crash)"></span>
+              07-25 21:52:13.170 <span class="lvc">D</span><span class="rm">Remove</span>
+            </div>
+            <div class="bmk-s"><span>Untitled</span>
+              <i style="background:#7E8494"></i><i style="background:#EA9A27"></i>
+              <i style="background:#7A4DEF"></i><i style="background:#40AE79"></i>
+              <i class="sel" style="background:#7494F2"></i>
+            </div>
+          </div>
+          <div class="bmk-row">
+            <div class="bmk-t">
+              <span class="box"></span><span class="dot" style="background:#7A4DEF"></span>
+              07-25 21:52:13.198 <span class="lvc">D</span><span class="rm">Remove</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ 태그 색상 -->
+      <div class="card c2 rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.6 13.4L12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.3"/></svg></div>
+        <h3 data-i18n="details.tagcolor.title">A different color per tag</h3>
+        <p data-i18n="details.tagcolor.desc">Give the tags you watch their own colors and your eye finds them mid-scroll.</p>
+        <div class="tagrow">
+          <b style="color:var(--tg-1)">Pay</b><b style="color:var(--tg-2)">BugleDataModel</b>
+          <b style="color:var(--tg-3)">BugleRestore</b><b style="color:var(--tg-4)">Choreographer</b>
+          <b style="color:var(--tg-5)">OkHttp</b><b style="color:var(--tg-6)">SatelliteControll</b>
+        </div>
+      </div>
+
+      <!-- ⑥ 32종 시그널 — 그룹 이름/항목은 앱 표기 그대로(영문 고정) -->
+      <div class="card c6 rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3 data-i18n="details.signals.title">32 signals, built in from the start</h3>
+        <p data-i18n="details.signals.desc">Crashes, ANRs, native faults and memory are caught by rule. You can add your own rules too.</p>
+        <div class="siggrid">
+          <div class="sgroup">
+            <h4><u style="background:var(--app-crash)"></u>Crash<s>4</s></h4>
+            <li>FATAL EXCEPTION</li><li>SecurityException</li>
+            <li>SQLiteException</li><li>SSLHandshakeException</li>
+          </div>
+          <div class="sgroup">
+            <h4><u style="background:var(--app-orange)"></u>ANR<s>3</s></h4>
+            <li>ANR in {package}</li><li>Input dispatching timed out</li>
+            <li>Skipped frames (Choreographer)</li>
+          </div>
+          <div class="sgroup">
+            <h4><u style="background:var(--lv-f)"></u>Native crash<s>6</s></h4>
+            <li>Fatal signal</li><li>SIGABRT</li><li>SIGBUS</li><li>SIGILL</li>
+          </div>
+          <div class="sgroup">
+            <h4><u style="background:var(--lv-d)"></u>Lifecycle<s>5</s></h4>
+            <li>Activity START</li><li>Displayed (first frame)</li>
+            <li>Process … has died</li><li>Force stopping</li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 릴리즈 노트 ============ -->
+<section class="rel">
+  <div class="wrap">
+    <div class="rel-head"><span class="rule"></span><h2>Release Notes</h2><span class="rule"></span></div>
+
+    <!-- 릴리즈 0개일 때 -->
+    <div id="emptyState" class="empty hidden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2 2 0 0 0-2.9-.1z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.5-2.8 2-4c1.7-1.3 5 0 5 0"/></svg>
+      <h3 data-i18n="empty.title">Releases coming soon</h3>
+      <p data-i18n="empty.body">We're preparing the first public release. Downloads will be here soon!</p>
+    </div>
+
+    <!-- prerender.mjs 가 이 마커를 문자열로 찾아 릴리즈 HTML 을 베이크한다.
+         형태를 바꾸면 빌드가 throw 하므로 그대로 둘 것. -->
+    <div id="releases"></div>
+  </div>
+</section>
+
+<!-- ============ 다운로드 ============ -->
+<section class="dl" id="download">
+  <div class="wrap">
+    <div class="dl-box rv">
+      <div class="eyebrow mid">Download</div>
+      <h2 data-i18n="intro.free">It's free.<br>Grab it and enjoy!</h2>
+      <!-- app.js 가 릴리즈 데이터로 href·파일명·용량을 채우고, 없는 OS 는 숨긴다 -->
+      <div class="os-row" id="osRow">
+        <a class="os hidden" id="osMacos" href="#latest-assets">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.6.9s-1.9-.9-3.1-.8c-1.6 0-3.1.9-3.9 2.4-1.7 2.9-.4 7.1 1.2 9.5.8 1.1 1.7 2.4 3 2.4 1.2 0 1.6-.8 3.1-.8s1.9.8 3.1.7c1.3 0 2.1-1.2 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.6-1-2.6-3.8zM14 5.2c.7-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.5z"/></svg>
+          <span>macOS<small></small></span>
+        </a>
+        <a class="os hidden" id="osWindows" href="#latest-assets">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>
+          <span>Windows<small></small></span>
+        </a>
+        <a class="os hidden" id="osLinux" href="#latest-assets">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-2 0-3 1.7-3 3.6 0 1.4-.3 2.2-1.1 3.3C6.6 10.6 6 12 6 13.8c0 1-.6 1.9-1 2.6-.6 1-.3 2.1 1 2.4 1 .2 2 .6 2.8 1.2.9.7 1.9 1 3.2 1s2.3-.3 3.2-1c.8-.6 1.8-1 2.8-1.2 1.3-.3 1.6-1.4 1-2.4-.4-.7-1-1.6-1-2.6 0-1.8-.6-3.2-1.9-4.9-.8-1.1-1.1-1.9-1.1-3.3C15 3.7 14 2 12 2z"/></svg>
+          <span>Linux<small></small></span>
+        </a>
+      </div>
+      <div class="nums hidden" id="statsLine">
+        <div class="num hidden" id="statDownloads"><b>—</b><span data-i18n="stats.downloads">Downloads</span></div>
+        <div class="num hidden" id="statVisits"><b>—</b><span data-i18n="stats.visits">Visits</span></div>
+        <div class="num hidden" id="statVersion"><b>—</b><span data-i18n="stats.latest">Latest</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap f-in">
+    <div class="f-l">
+      <img src="https://github.com/qwerfunch.png?size=96" alt="qwerfunch" loading="lazy">
+      <div><b>qwerfunch</b><span data-i18n="footer.role">Maker of LogcatOn</span></div>
+    </div>
+    <div class="f-r">
+      <a href="https://github.com/qwerfunch" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/qwerfunch/logcat-on-releases/issues/new?template=bug_report.yml" target="_blank" rel="noopener" data-i18n="footer.reportBug">Report a bug</a>
+      <a href="https://github.com/qwerfunch/logcat-on-releases/issues/new?template=feature_request.yml" target="_blank" rel="noopener" data-i18n="footer.requestFeature">Request a feature</a>
+      <a href="https://github.com/qwerfunch/logcat-on-releases/releases" target="_blank" rel="noopener" data-i18n="footer.releaseNotes">Release notes</a>
+    </div>
+  </div>
+  <div class="wrap copy">
+    © 2026 qwerfunch ·
+    <a href="https://github.com/qwerfunch/logcat-on-releases/releases" target="_blank" rel="noopener">GitHub Releases</a> ·
+    Built with <a href="https://github.com/qwerfunch/cladding" target="_blank" rel="noopener">cladding</a>
+  </div>
+</footer>
+
+<script type="module" src="assets/app.js"></script>
 </body>
 </html>
