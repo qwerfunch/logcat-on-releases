@@ -496,7 +496,9 @@ h2{ font-size:clamp(27px,3.5vw,42px); font-weight:800; letter-spacing:-.035em; l
   position:sticky; top:96px; border-radius:14px; overflow:hidden;
   border:1px solid var(--line); background:var(--chrome); aspect-ratio:1600/1005; box-shadow:var(--sh-lg);
 }
-@media(max-width:960px){ .sc-stage{ position:static } }
+/* sticky 만 끄고 기준 블록은 유지해야 한다. static 으로 두면 아래 img(absolute)
+   들이 이 요소를 기준으로 잡지 못하고 .wrap 까지 올라가 섹션 전체를 덮어버린다. */
+@media(max-width:960px){ .sc-stage{ position:relative } }
 .sc-stage img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   opacity:0; transform:scale(1.04); transition:opacity .6s ease, transform .95s var(--ease);
