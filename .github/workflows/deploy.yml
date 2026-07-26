@@ -12,9 +12,11 @@ on:
     types: [published, unpublished, edited, deleted]
   push:
     branches: [main]
-  # 매일 1회 재빌드 — 릴리즈 자산 download_count(스탯 표시용) 최신화
+  # 6시간마다 재빌드 — 다운로드 수는 클라이언트에서 갱신할 방법이 없다(GitHub API
+  # 비인증 레이트 리밋·응답 크기). 빌드 주기가 그대로 지표의 지연 상한이 된다.
+  # 같은 빌드에서 방문 수도 함께 구워, 광고 차단된 방문자의 바닥값을 최신화한다.
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:

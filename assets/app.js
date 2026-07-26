@@ -337,21 +337,9 @@ function ensureGoatCounter() {
   document.body.appendChild(s);
 }
 
-// 숫자를 0 에서 목표까지 한 번만 굴린다. 값이 바뀌면(언어 전환 등) 애니메이션 없이 갱신.
-const counted = new WeakSet();
-function setNumber(el, value, format) {
-  if (counted.has(el) || reduceMotion) { el.textContent = format(value); return; }
-  counted.add(el);
-  let start = null;
-  const run = (ts) => {
-    start ??= ts;
-    const p = Math.min((ts - start) / 1400, 1);
-    el.textContent = format(Math.floor(value * (1 - Math.pow(1 - p, 3))));
-    if (p < 1) requestAnimationFrame(run);
-  };
-  requestAnimationFrame(run);
-}
-
+// 숫자는 곧바로 찍는다. 카운트업 애니메이션을 쓰면 (1) 완성된 값이 보이기까지
+// 1.4초가 걸려 "지금 값"이라는 인상이 약해지고, (2) 구운 값으로 굴러가던 루프가
+// 나중에 도착한 라이브 방문수를 매 프레임 덮어써 옛 숫자로 끝나는 문제가 있었다.
 const fmtNum = (n) => new Intl.NumberFormat(DATE_LOCALE[state.lang]).format(n);
 
 // count 가 숫자로 확정되기 전에는 숨김 — 그 외에는 0 이라도 항상 표시한다.
@@ -359,7 +347,7 @@ function showStat(id, count) {
   const el = $(id);
   if (!el) return;
   if (typeof count !== 'number' || Number.isNaN(count)) { el.classList.add('hidden'); return; }
-  setNumber(el.querySelector('b'), count, fmtNum);
+  el.querySelector('b').textContent = fmtNum(count);
   el.classList.remove('hidden');
   $('statsLine').classList.remove('hidden');
   $('statsLine').classList.add('flex');
